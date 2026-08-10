@@ -1,8 +1,12 @@
 """PSO over the kinematic bounds (v, a, j, s)_max.
 
-Two scenarios sharing plant, controller, threshold, and throughput penalty:
-  E3: servo cost      J = mean(per-die max MSD)/threshold + penalty
-  E4: yield-aware CNN J = (1 - P_none) + P_ood            + penalty
+Two scenarios sharing plant, controller, threshold, and a throughput reward
+(GAMMA * t_wafer / T_REF, so faster is cheaper):
+  E3: servo cost      J = mean(per-die max MSD)/threshold + throughput
+  E4: yield-aware CNN J = (1 - P_none) + P_ood            + throughput
+The servo cost trades throughput against error magnitude; the CNN cost trades
+it against pattern acceptability (P_ood is the wall that stops over-aggression),
+tolerating scanner-plausible failures a servo cost would spend accuracy to avoid.
 
 The wafer runs with a short settling budget (transition regime) so that the
 cost actually varies over the search space. The failure threshold is fixed
@@ -46,7 +50,9 @@ os.makedirs(fig_dir, exist_ok=True)
 DIE_L = 0.032
 WAFER_R = 0.150
 T_STEP = 0.15            # transition-regime settling budget
-T_BUDGET = 15.0          # s per wafer (soft constraint)
+T_REF = 15.0             # reference wafer cycle time for the throughput reward
+GAMMA = 1.0              # throughput weight: cost carries GAMMA * t_wafer / T_REF
+                         # (faster is cheaper; the pattern term is the wall)
 BOUNDS = np.array([[0.2, 1.5],        # v [m/s]
                    [5.0, 45.0],       # a [m/s^2]
                    [200.0, 5000.0],   # j [m/s^3]
@@ -57,7 +63,7 @@ N_ITER = 8
 dies = litho_sim.get_wafer_dies(WAFER_R, DIE_L)
 
 print(f"[{SCENARIO}] config={CONFIG} dies={len(dies)} t_step={T_STEP}s "
-      f"T_budget={T_BUDGET}s", flush=True)
+      f"T_ref={T_REF}s gamma={GAMMA}", flush=True)
 print("Calibrating feedforward at baseline ...", flush=True)
 FF_W, FF_R = lc.calibrate_lag(0.8, 20.0, 1600.0, 1e5)
 
@@ -90,12 +96,13 @@ def evaluate(x):
     d_ramp = v * ((v / a) + (a / j))
     t_scan = PROFILE_FACTORY(v, a, j, s, DIE_L + d_ramp).t_total
     t_wafer = len(dies) * (t_scan + T_STEP)
-    penalty = costfn.BETA * max(0.0, t_wafer - T_BUDGET) / T_BUDGET
+    tput = GAMMA * t_wafer / T_REF        # throughput reward: faster is cheaper
     j_map, info = costfn.map_cost(wm)
-    if SCENARIO == "e4":
-        cost = j_map + penalty
-    else:
-        cost = float(np.mean(msd)) / THRESH + penalty
+    nfail = int((status == 2).sum())
+    if SCENARIO == "e4":                   # yield-aware CNN pattern cost
+        cost = j_map + tput
+    else:                                  # e3: conventional servo cost
+        cost = float(np.mean(msd)) / THRESH + tput
     history.append((tuple(x), cost, int((status == 2).sum()), info["label"],
                     j_map, t_wafer))
     print(f"  eval v={v:.3f} a={a:5.1f} j={j:6.0f} s={s:8.0f} "

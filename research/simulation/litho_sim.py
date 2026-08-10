@@ -6,6 +6,13 @@ import sys
 import argparse
 import os
 
+# Exact bounded-derivative generators (Profile2/3/4). The StepperController
+# uses the exact 4th-order generator by default; the polynomial Profile4thOrder
+# below is retained only for reference and is no longer used.
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                             "..", "experiments"))
+import profiles  # noqa: E402
+
 # ============================================================
 # PAPER PARAMETERS - Appendix B
 # Al-Rawashdeh et al., Mech. Mach. Theory 170 (2022) 104638
@@ -141,7 +148,7 @@ class StepperController:
         self.t_start = 0
         t_ramp = (v_scan/a_scan) + (a_scan/j_max)
         d_ramp = v_scan * t_ramp
-        self.profile = Profile4thOrder(v_scan, a_scan, j_max, s_max, self.die_l + d_ramp)
+        self.profile = profiles.Profile4(v_scan, a_scan, j_max, s_max, self.die_l + d_ramp)
         self.d_offset = d_ramp / 2
         self.t_step = 0.2
 
@@ -244,8 +251,8 @@ MONITOR_CONFIG = [
     ("optics_y","Y", "Optics box (j=2, Body 3) [Housing]", K3_O),
     ("lens_x",  "X", "Lens element (j=2, Body 4) [Lens]", K4_O),
     ("lens_y",  "Y", "Lens element (j=2, Body 4) [Lens]", K4_O),
-    ("wafer_x", "X", "Wafer (j=3, Body 8) [Substrate]", K8_W),
-    ("wafer_y", "Y", "Wafer (j=3, Body 8) [Substrate]", K8_W),
+    ("wafer_x", "X", "Wafer die (j=3, Body 7) [end-effector]", K8_W),
+    ("wafer_y", "Y", "Wafer die (j=3, Body 7) [end-effector]", K8_W),
 ]
 
 def get_wafer_dies(radius, die_l):
@@ -327,20 +334,13 @@ def get_model_xml(die_l, die_grid_xml):
                                 <joint name="w_st_y"  type="slide" axis="0 1 0" stiffness="0" damping="{KV_ACT_TRANS}"/>
                                 <joint name="w_st_rz" type="hinge" axis="0 0 1" stiffness="0" damping="{KV_ACT_ROT}"/>
                                 <geom type="cylinder" size="0.16 0.015" material="ws_alum" contype="0" conaffinity="0"/>
-                                <body name="w_st_flex" pos="0 0 0.02">
-                                    <inertial pos="0 0 0" mass="{M_ST_F}" diaginertia="{I_ST_F_XX} {I_ST_F_XX} {I_ST_F_ZZ}"/>
-                                    <joint name="w_stf_x"  type="slide" axis="1 0 0" stiffness="{K_ST_F}"     damping="{C_ST_F}"/>
-                                    <joint name="w_stf_y"  type="slide" axis="0 1 0" stiffness="{K_ST_F}"     damping="{C_ST_F}"/>
-                                    <joint name="w_stf_rz" type="hinge" axis="0 0 1" stiffness="{K_ST_F_ROT}" damping="{C_ST_F_ROT}"/>
-                                    <geom type="cylinder" size="0.16 0.015" material="ws_alum" contype="0" conaffinity="0"/>
-                                    <body name="wafer" pos="0 0 0.02">
-                                        <inertial pos="0 0 0" mass="{M_WAFR}" diaginertia="{I_WAFR_XX} {I_WAFR_XX} {I_WAFR_ZZ}"/>
-                                        <joint name="wafer_x"  type="slide" axis="1 0 0" stiffness="{K8_W}"     damping="{C8_W}"/>
-                                        <joint name="wafer_y"  type="slide" axis="0 1 0" stiffness="{K8_W}"     damping="{C8_W}"/>
-                                        <joint name="wafer_rz" type="hinge" axis="0 0 1" stiffness="{K8_W_ROT}" damping="{C8_W_ROT}"/>
-                                        <geom type="cylinder" size="0.15 0.001" material="silicon" mass="{M_WAFR}" contype="0" conaffinity="0"/>
-{die_grid_xml}                                    </body>
-                                </body>
+                                <body name="wafer" pos="0 0 0.02">
+                                    <inertial pos="0 0 0" mass="{M_WAFR}" diaginertia="{I_WAFR_XX} {I_WAFR_XX} {I_WAFR_ZZ}"/>
+                                    <joint name="wafer_x"  type="slide" axis="1 0 0" stiffness="{K8_W}"     damping="{C8_W}"/>
+                                    <joint name="wafer_y"  type="slide" axis="0 1 0" stiffness="{K8_W}"     damping="{C8_W}"/>
+                                    <joint name="wafer_rz" type="hinge" axis="0 0 1" stiffness="{K8_W_ROT}" damping="{C8_W_ROT}"/>
+                                    <geom type="cylinder" size="0.15 0.001" material="silicon" contype="0" conaffinity="0"/>
+{die_grid_xml}                                </body>
                             </body>
                         </body>
                     </body>
@@ -376,20 +376,13 @@ def get_model_xml(die_l, die_grid_xml):
                                 <joint name="r_st_y"  type="slide" axis="0 1 0" stiffness="0" damping="{KV_ACT_TRANS}"/>
                                 <joint name="r_st_rz" type="hinge" axis="0 0 1" stiffness="0" damping="{KV_ACT_ROT}"/>
                                 <geom type="box" size="0.1 0.1 0.015" material="ws_alum" contype="0" conaffinity="0"/>
-                                <body name="r_st_flex" pos="0 0 -0.02">
-                                    <inertial pos="0 0 0" mass="{M_ST_F}" diaginertia="{I_ST_F_XX} {I_ST_F_XX} {I_ST_F_ZZ}"/>
-                                    <joint name="r_stf_x"  type="slide" axis="1 0 0" stiffness="{K_ST_F}"     damping="{C_ST_F}"/>
-                                    <joint name="r_stf_y"  type="slide" axis="0 1 0" stiffness="{K_ST_F}"     damping="{C_ST_F}"/>
-                                    <joint name="r_stf_rz" type="hinge" axis="0 0 1" stiffness="{K_ST_F_ROT}" damping="{C_ST_F_ROT}"/>
-                                    <geom type="box" size="0.1 0.1 0.015" material="ws_alum" contype="0" conaffinity="0"/>
-                                    <body name="mask" pos="0 0 -0.02">
-                                        <inertial pos="0 0 0" mass="{M_MASK}" diaginertia="{I_MASK_XX} {I_MASK_XX} {I_MASK_ZZ}"/>
-                                        <joint name="mask_x"  type="slide" axis="1 0 0" stiffness="{K8_R}"     damping="{C8_R}"/>
-                                        <joint name="mask_y"  type="slide" axis="0 1 0" stiffness="{K8_R}"     damping="{C8_R}"/>
-                                        <joint name="mask_rz" type="hinge" axis="0 0 1" stiffness="{K8_R_ROT}" damping="{C8_R_ROT}"/>
-                                        <geom type="box" size="0.05 0.05 0.005" material="glass" mass="{M_MASK}" contype="0" conaffinity="0"/>
-                                        <geom type="box" size="{die_l*2} {die_l*2} 0.006" pos="0 0 -0.005" rgba="1 1 0 0.2" contype="0" conaffinity="0"/>
-                                    </body>
+                                <body name="mask" pos="0 0 -0.02">
+                                    <inertial pos="0 0 0" mass="{M_MASK}" diaginertia="{I_MASK_XX} {I_MASK_XX} {I_MASK_ZZ}"/>
+                                    <joint name="mask_x"  type="slide" axis="1 0 0" stiffness="{K8_R}"     damping="{C8_R}"/>
+                                    <joint name="mask_y"  type="slide" axis="0 1 0" stiffness="{K8_R}"     damping="{C8_R}"/>
+                                    <joint name="mask_rz" type="hinge" axis="0 0 1" stiffness="{K8_R_ROT}" damping="{C8_R_ROT}"/>
+                                    <geom type="box" size="0.05 0.05 0.005" material="glass" contype="0" conaffinity="0"/>
+                                    <geom type="box" size="{die_l*2} {die_l*2} 0.006" pos="0 0 -0.005" rgba="1 1 0 0.2" contype="0" conaffinity="0"/>
                                 </body>
                             </body>
                         </body>
