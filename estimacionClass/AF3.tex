@@ -1,0 +1,96 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage[spanish,mexico,english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[top=2.4cm,bottom=2.4cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{parskip}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue}
+
+\definecolor{uanlBlue}{RGB}{0,56,101}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\small\textcolor{uanlBlue}{MCIE -- Control No Lineal}}
+\fancyhead[R]{\small\textcolor{uanlBlue}{Ene-Jun 2026}}
+\fancyfoot[C]{\thepage}
+
+\begin{document}
+
+% ---------- PORTADA ----------
+\thispagestyle{empty}
+\begin{center}
+  {\bfseries Universidad Autónoma de Nuevo León}\\
+  Facultad de Ingeniería Mecánica y Eléctrica\\[0.6em]
+  \textcolor{uanlBlue}{\rule{\linewidth}{1pt}}\\[0.6em]
+  Maestría en Ciencias de la Ingeniería Eléctrica\\
+  Unidad de Aprendizaje: \textbf{Control No Lineal}\\[1.2em]
+  {\LARGE\bfseries Actividad Fundamental 3}\\[1em]
+  \textcolor{uanlBlue}{\rule{0.6\linewidth}{0.4pt}}\\[1em]
+  \begin{tabular}{rl}
+    Estudiante: & Roberto Treviño Cervantes \\
+    Matrícula:  & 1915003 \\
+    Maestro:    & Dr.\ Alberto Cavazos \\
+  \end{tabular}
+\end{center}
+
+\vfill
+\newpage
+\setcounter{page}{1}
+
+\selectlanguage{english}
+
+\section*{Introduction}
+
+Trajectory generation is a well studied problem. We understand that trajectories that have smooth higher order derivatives result in less excitation of poorly damped modes in the structure. To properly test the trajectories we will be generating against the yield they will generate on the machine, then we need a test bed on which they can be performed on-line before actually reproducing them in the machine.
+
+\section*{Simulation}
+
+We implemented a simulation of the model recovered from the state-space characterization article using the MuJoCo physics engine for Python. The simulation serves as a virtual test bed where the proposed trajectories can be validated under the dynamic model developed in the modeling chapter.
+
+The MuJoCo Python bindings allow us to define the context of the simulation from an XML string by calling \texttt{mujoco.MjModel.from\_xml\_string(MODEL\_XML)}. We extend from MuJoCo's \texttt{<worldbody>} tag on which we place a root \texttt{<body>} tag, representing our \textit{base frame}; this allows us to organize the machine in the simulation using the three-chain hierarchical tree.
+
+\begin{table}[h]
+\centering
+\caption{MuJoCo XML tag functions in the scanner simulation.}
+\begin{tabular}{ll}
+\toprule
+Tag & Function \\
+\midrule
+\texttt{<worldbody>} & Defines the inertial root, the floor plane ($\mathcal{F}_0$). \\
+\texttt{<body>}      & Creates a rigid body with its own local coordinate system. \\
+\texttt{<inertial>}  & Assigns mass $m_{i_j}$ and the aggregated inertia tensor $I_{i_j}$. \\
+\texttt{<joint>}     & Implements the degrees of freedom $f_{i_j}$ and $\theta_{z_{i_j}}$. \\
+\texttt{<geom>}      & Defines the material and collision shapes. \\
+\texttt{<actuator>}  & Models the Lorentz and moving-coil motors via servo controllers. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The mechanical properties of the couplings, represented by Kelvin-Voigt elements, are implemented via the \texttt{stiffness} and \texttt{damping} attributes of the \texttt{<joint>} tags. For actuated stages, where the physical stiffness is replaced by the controller's active response, the simulation uses high \texttt{kp} values.
+
+\section*{Trajectory and controller}
+
+For the actuated stages (Long-Stroke, Short-Stroke, and Fine stages) we use MuJoCo's position actuators. To approximate the near-infinite stiffness of a rigid servo motor while maintaining numerical stability with the implicit integrator at $dt = 10^{-4}$\,s, we employ a proportional gain $K_P = 10^7$, with derivative gains $K_V$ tuned to the $C/K$ ratios provided in the characterization data.
+
+The simulation incorporates a \texttt{StepperController} that generates the references for the scanning and stepping phases. During the scanning phase, the wafer stage moves at a constant velocity $v_{w,\text{scan}} = 0.8$\,m/s while the reticle stage moves in the opposite direction at $v_{r,\text{scan}} = 3.2$\,m/s, maintaining the demagnification ratio $\alpha = 0.25$. This testing framework allows us to evaluate the impact of the centripetal and Coriolis terms and the effectiveness of the inertia aggregation when subjected to high-acceleration ($a_{w,\max} = 20$\,m/s$^2$) transients.
+
+\section*{CNN-based cost function}
+
+The contribution of this work is the forward direction of the defect-prediction problem: given trajectory parameters $(v_{\max}, a_{\max}, j_{\max}, s_{\max})$, predict the expected wafer defect pattern by means of a CNN trained on the WM-811K dataset of real wafer maps. The cost function to minimize is the cumulative probability mass on the non-plausible defect classes; the scanner-plausible subset is $\mathcal{C}_{\text{scan}} = \{\textit{none}, \textit{scratch}, \textit{edge-local}, \textit{random}\}$:
+\begin{equation}
+    J(\boldsymbol{r}) = \sum_{c\,\notin\,\mathcal{C}_{\text{scan}}} \hat{p}_c(\boldsymbol{r}).
+\end{equation}
+
+\section*{Validation criterion}
+
+The methodology is valid when, simultaneously: synthetic wafer maps activate only the classes in $\mathcal{C}_{\text{scan}}$; the cost function $J(\boldsymbol{r})$ shifts reproducibly under independent sweeps of $(v, a, j, s)_{\max}$; and the CNN never activates \textit{donut} or \textit{near-full}, which correspond to etching/cleaning patterns.
+
+\end{document}

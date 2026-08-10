@@ -1,0 +1,712 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{none/global//global/global/global}
+    \entry{Butler2011_PositionControl}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=6cfab56ee9038f64592fc440a4093475}{%
+           family={Butler},
+           familyi={B\bibinitperiod},
+           given={Hans},
+           giveni={H\bibinitperiod}}}%
+      }
+      \strng{namehash}{6cfab56ee9038f64592fc440a4093475}
+      \strng{fullhash}{6cfab56ee9038f64592fc440a4093475}
+      \strng{fullhashraw}{6cfab56ee9038f64592fc440a4093475}
+      \strng{bibnamehash}{6cfab56ee9038f64592fc440a4093475}
+      \strng{authorbibnamehash}{6cfab56ee9038f64592fc440a4093475}
+      \strng{authornamehash}{6cfab56ee9038f64592fc440a4093475}
+      \strng{authorfullhash}{6cfab56ee9038f64592fc440a4093475}
+      \strng{authorfullhashraw}{6cfab56ee9038f64592fc440a4093475}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Control Systems Magazine}
+      \field{month}{10}
+      \field{number}{5}
+      \field{title}{Position Control in Lithographic Equipment [Applications of Control]}
+      \field{volume}{31}
+      \field{year}{2011}
+      \field{pages}{28\bibrangedash 47}
+      \range{pages}{20}
+      \verb{doi}
+      \verb 10.1109/MCS.2011.941882
+      \endverb
+    \endentry
+    \entry{Schmidt2012_UltraPrecision}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=d49079e7c32969f9d30f60a19539e7fa}{%
+           family={Schmidt},
+           familyi={S\bibinitperiod},
+           given={Robert-H.\bibnamedelimi Munnig},
+           giveni={R\bibinithyphendelim H\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+      }
+      \strng{namehash}{d49079e7c32969f9d30f60a19539e7fa}
+      \strng{fullhash}{d49079e7c32969f9d30f60a19539e7fa}
+      \strng{fullhashraw}{d49079e7c32969f9d30f60a19539e7fa}
+      \strng{bibnamehash}{d49079e7c32969f9d30f60a19539e7fa}
+      \strng{authorbibnamehash}{d49079e7c32969f9d30f60a19539e7fa}
+      \strng{authornamehash}{d49079e7c32969f9d30f60a19539e7fa}
+      \strng{authorfullhash}{d49079e7c32969f9d30f60a19539e7fa}
+      \strng{authorfullhashraw}{d49079e7c32969f9d30f60a19539e7fa}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Philosophical Transactions of the Royal Society A}
+      \field{title}{Ultra-precision engineering in lithographic exposure equipment for the semiconductor industry}
+      \field{volume}{370}
+      \field{year}{2012}
+      \field{pages}{3950\bibrangedash 3972}
+      \range{pages}{23}
+      \verb{doi}
+      \verb 10.1098/rsta.2011.0054
+      \endverb
+    \endentry
+    \entry{Page2021_PRISMA}{article}{}{}
+      \name{author}{26}{}{%
+        {{hash=016b86afb0a98379bf77b3f074f34761}{%
+           family={Page},
+           familyi={P\bibinitperiod},
+           given={Matthew\bibnamedelima J.},
+           giveni={M\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=8c647eae0c93ec008ebe092eb144eeee}{%
+           family={McKenzie},
+           familyi={M\bibinitperiod},
+           given={Joanne\bibnamedelima E.},
+           giveni={J\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=c342b2f9e98d8bcaabcbd5ec10522ad4}{%
+           family={Bossuyt},
+           familyi={B\bibinitperiod},
+           given={Patrick\bibnamedelima M.},
+           giveni={P\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=fa885033d820893c45692b99c8b4bbc6}{%
+           family={Boutron},
+           familyi={B\bibinitperiod},
+           given={Isabelle},
+           giveni={I\bibinitperiod}}}%
+        {{hash=8fd2430e75c6bb84661c811e408f6377}{%
+           family={Hoffmann},
+           familyi={H\bibinitperiod},
+           given={Tammy\bibnamedelima C.},
+           giveni={T\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=9da5818ae381747539d8a98ecf2d13b1}{%
+           family={Mulrow},
+           familyi={M\bibinitperiod},
+           given={Cynthia\bibnamedelima D.},
+           giveni={C\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{hash=d1c6b0b224969ed1ccfe648b31dc7de4}{%
+           family={Shamseer},
+           familyi={S\bibinitperiod},
+           given={Larissa},
+           giveni={L\bibinitperiod}}}%
+        {{hash=640f8392f6a7388c779d2b60fdd93350}{%
+           family={Tetzlaff},
+           familyi={T\bibinitperiod},
+           given={Jennifer\bibnamedelima M.},
+           giveni={J\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=4ca61686dc125837a0d9741be62f3427}{%
+           family={Akl},
+           familyi={A\bibinitperiod},
+           given={Elie\bibnamedelima A.},
+           giveni={E\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=e822c8724e88eb518ec5eb8015bbaab0}{%
+           family={Brennan},
+           familyi={B\bibinitperiod},
+           given={Sue\bibnamedelima E.},
+           giveni={S\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=01e789422f68da54234ac2f1e791eac4}{%
+           family={Chou},
+           familyi={C\bibinitperiod},
+           given={Roger},
+           giveni={R\bibinitperiod}}}%
+        {{hash=19c8626c5dbf0aaa5ca05c6fa19ad49f}{%
+           family={Glanville},
+           familyi={G\bibinitperiod},
+           given={Julie},
+           giveni={J\bibinitperiod}}}%
+        {{hash=18acccd95580a48bd6c5f4010bb058a7}{%
+           family={Grimshaw},
+           familyi={G\bibinitperiod},
+           given={Jeremy\bibnamedelima M.},
+           giveni={J\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=aa6b6295cc5b496c1858297b2a62fa5f}{%
+           family={Hróbjartsson},
+           familyi={H\bibinitperiod},
+           given={Asbj{ø}rn},
+           giveni={A\bibinitperiod}}}%
+        {{hash=0a2541509ccb6793b91fce2cf0f72dcc}{%
+           family={Lalu},
+           familyi={L\bibinitperiod},
+           given={Manoj\bibnamedelima M.},
+           giveni={M\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=0100456cf4ced53a2aab31f2c3055f6a}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={Tianjing},
+           giveni={T\bibinitperiod}}}%
+        {{hash=6e270d436c864242b119a3605283c8bf}{%
+           family={Loder},
+           familyi={L\bibinitperiod},
+           given={Elizabeth\bibnamedelima W.},
+           giveni={E\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+        {{hash=d149e7026acd95db856d30314dba9a9e}{%
+           family={Mayo-Wilson},
+           familyi={M\bibinithyphendelim W\bibinitperiod},
+           given={Evan},
+           giveni={E\bibinitperiod}}}%
+        {{hash=4ed61e5ea9f906c20e5e737e3d84c854}{%
+           family={McDonald},
+           familyi={M\bibinitperiod},
+           given={Steve},
+           giveni={S\bibinitperiod}}}%
+        {{hash=b7314b4cde4c01764b4b3580e015b768}{%
+           family={McGuinness},
+           familyi={M\bibinitperiod},
+           given={Luke\bibnamedelima A.},
+           giveni={L\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=d600e9a8a01053464e53fc2aadeb009b}{%
+           family={Stewart},
+           familyi={S\bibinitperiod},
+           given={Lesley\bibnamedelima A.},
+           giveni={L\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=1ad8d835a95f8df394e6faf5d8e0548f}{%
+           family={Thomas},
+           familyi={T\bibinitperiod},
+           given={James},
+           giveni={J\bibinitperiod}}}%
+        {{hash=0b396572e13e5a8b08e1ee1d493aaa2a}{%
+           family={Tricco},
+           familyi={T\bibinitperiod},
+           given={Andrea\bibnamedelima C.},
+           giveni={A\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=75fdbaed8e43fddb210da313631d8639}{%
+           family={Welch},
+           familyi={W\bibinitperiod},
+           given={Vivian\bibnamedelima A.},
+           giveni={V\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=792d7051a4c2169e6aac0073ce62ba8e}{%
+           family={Whiting},
+           familyi={W\bibinitperiod},
+           given={Penny},
+           giveni={P\bibinitperiod}}}%
+        {{hash=af56ff14657d1110bff4b784198b0505}{%
+           family={Moher},
+           familyi={M\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{69c1efa4f6ab0deea3df12876fea0709}
+      \strng{fullhash}{b37368b8b0982e5c110334919bd2e0e1}
+      \strng{fullhashraw}{b37368b8b0982e5c110334919bd2e0e1}
+      \strng{bibnamehash}{69c1efa4f6ab0deea3df12876fea0709}
+      \strng{authorbibnamehash}{69c1efa4f6ab0deea3df12876fea0709}
+      \strng{authornamehash}{69c1efa4f6ab0deea3df12876fea0709}
+      \strng{authorfullhash}{b37368b8b0982e5c110334919bd2e0e1}
+      \strng{authorfullhashraw}{b37368b8b0982e5c110334919bd2e0e1}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{BMJ}
+      \field{title}{The {PRISMA} 2020 Statement: An Updated Guideline for Reporting Systematic Reviews}
+      \field{volume}{372}
+      \field{year}{2021}
+      \verb{doi}
+      \verb 10.1136/bmj.n71
+      \endverb
+    \endentry
+    \entry{Song2021_Review}{article}{}{}
+      \name{author}{5}{}{%
+        {{hash=764af46396f532154388ab329f7644c1}{%
+           family={Song},
+           familyi={S\bibinitperiod},
+           given={Yi},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=293ee7f35826bb64e4e0fa6e6325dd00}{%
+           family={Gui},
+           familyi={G\bibinitperiod},
+           given={Chengqun},
+           giveni={C\bibinitperiod}}}%
+        {{hash=642e87f689c257388ea2bc671ad5a49c}{%
+           family={Huo},
+           familyi={H\bibinitperiod},
+           given={Zongliang},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=b7050437914a04c41d994a3e1bd34c16}{%
+           family={Lee},
+           familyi={L\bibinitperiod},
+           given={S.\bibnamedelimi W.\bibnamedelimi Ricky},
+           giveni={S\bibinitperiod\bibinitdelim W\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+        {{hash=b51d008c8f8b480734bdad360774940e}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={Sheng},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{03965629982dfcc8576d00b13f450154}
+      \strng{fullhash}{f4e55de6c35b61fa7409d69c643abb0f}
+      \strng{fullhashraw}{f4e55de6c35b61fa7409d69c643abb0f}
+      \strng{bibnamehash}{f4e55de6c35b61fa7409d69c643abb0f}
+      \strng{authorbibnamehash}{f4e55de6c35b61fa7409d69c643abb0f}
+      \strng{authornamehash}{03965629982dfcc8576d00b13f450154}
+      \strng{authorfullhash}{f4e55de6c35b61fa7409d69c643abb0f}
+      \strng{authorfullhashraw}{f4e55de6c35b61fa7409d69c643abb0f}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issue}{1}
+      \field{journaltitle}{International Journal of Mechanical System Dynamics}
+      \field{title}{Mechanical system and dynamic control in photolithography for nanoscale fabrication: {A} critical review}
+      \field{volume}{1}
+      \field{year}{2021}
+      \field{pages}{35\bibrangedash 51}
+      \range{pages}{17}
+      \verb{doi}
+      \verb 10.1002/msd2.12010
+      \endverb
+    \endentry
+    \entry{Heertjes2020_Control}{inproceedings}{}{}
+      \name{author}{9}{}{%
+        {{hash=6042fcacf26929e544f6c27e03d5eb81}{%
+           family={Heertjes},
+           familyi={H\bibinitperiod},
+           given={Marcel\bibnamedelima F.},
+           giveni={M\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
+        {{hash=6cfab56ee9038f64592fc440a4093475}{%
+           family={Butler},
+           familyi={B\bibinitperiod},
+           given={Hans},
+           giveni={H\bibinitperiod}}}%
+        {{hash=9274b651603dee49ab695d69df5a42dc}{%
+           family={Dirkx},
+           familyi={D\bibinitperiod},
+           given={Niels\bibnamedelima J.},
+           giveni={N\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=d821458ec251ce61c7c036cfa2d5adbe}{%
+           family={Meulen},
+           familyi={M\bibinitperiod},
+           given={Sjirk\bibnamedelima H.},
+           giveni={S\bibinitperiod\bibinitdelim H\bibinitperiod},
+           prefix={van\bibnamedelima der},
+           prefixi={v\bibinitperiod\bibinitdelim d\bibinitperiod}}}%
+        {{hash=714baecb8b0ce872bbe9b682e4e2a17f}{%
+           family={Ahlawat},
+           familyi={A\bibinitperiod},
+           given={Rahul},
+           giveni={R\bibinitperiod}}}%
+        {{hash=23c77a2205bed201f3f00c50ca50ccb9}{%
+           family={O'Brien},
+           familyi={O\bibinitperiod},
+           given={Kevin},
+           giveni={K\bibinitperiod}}}%
+        {{hash=8c4abd6d393aeab22c64af7722ec1f47}{%
+           family={Simonelli},
+           familyi={S\bibinitperiod},
+           given={Joe},
+           giveni={J\bibinitperiod}}}%
+        {{hash=6828d4818cda9d293cec972bfebfeac1}{%
+           family={Teng},
+           familyi={T\bibinitperiod},
+           given={Kian-Teck},
+           giveni={K\bibinithyphendelim T\bibinitperiod}}}%
+        {{hash=aa23faee11180ab04c3c1bfd6005992d}{%
+           family={Zhao},
+           familyi={Z\bibinitperiod},
+           given={Yusong},
+           giveni={Y\bibinitperiod}}}%
+      }
+      \strng{namehash}{ba8f7045c34c372360297e46982b84aa}
+      \strng{fullhash}{c46222e194d28a0d355e17196bc25f53}
+      \strng{fullhashraw}{c46222e194d28a0d355e17196bc25f53}
+      \strng{bibnamehash}{ba8f7045c34c372360297e46982b84aa}
+      \strng{authorbibnamehash}{ba8f7045c34c372360297e46982b84aa}
+      \strng{authornamehash}{ba8f7045c34c372360297e46982b84aa}
+      \strng{authorfullhash}{c46222e194d28a0d355e17196bc25f53}
+      \strng{authorfullhashraw}{c46222e194d28a0d355e17196bc25f53}
+      \field{extraname}{1}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2020 American Control Conference (ACC)}
+      \field{month}{7}
+      \field{title}{Control of Wafer Scanners: Methods and Developments}
+      \field{year}{2020}
+      \field{pages}{3686\bibrangedash 3703}
+      \range{pages}{18}
+      \verb{doi}
+      \verb 10.23919/ACC45564.2020.9147464
+      \endverb
+    \endentry
+    \entry{Al-Rawashdeh2023a}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=c220a2d7c92d41121731ad7a5a79695d}{%
+           family={Al-Rawashdeh},
+           familyi={A\bibinithyphendelim R\bibinitperiod},
+           given={Yazan\bibnamedelima M.},
+           giveni={Y\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=49aca8eb5e7dcf8185af600f6c26b6ef}{%
+           family={Janaideh},
+           familyi={J\bibinitperiod},
+           given={Mohammad\bibnamedelima Al},
+           giveni={M\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=6042fcacf26929e544f6c27e03d5eb81}{%
+           family={Heertjes},
+           familyi={H\bibinitperiod},
+           given={Marcel\bibnamedelima F.},
+           giveni={M\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
+      }
+      \strng{namehash}{9af064b4e19bd25608617c3e2d10e8d8}
+      \strng{fullhash}{ac55f9ce8123e2e6f34b1e535ca35c25}
+      \strng{fullhashraw}{ac55f9ce8123e2e6f34b1e535ca35c25}
+      \strng{bibnamehash}{ac55f9ce8123e2e6f34b1e535ca35c25}
+      \strng{authorbibnamehash}{ac55f9ce8123e2e6f34b1e535ca35c25}
+      \strng{authornamehash}{9af064b4e19bd25608617c3e2d10e8d8}
+      \strng{authorfullhash}{ac55f9ce8123e2e6f34b1e535ca35c25}
+      \strng{authorfullhashraw}{ac55f9ce8123e2e6f34b1e535ca35c25}
+      \field{extraname}{1}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{1558-3783}
+      \field{issue}{1}
+      \field{journaltitle}{IEEE Transactions on Automation Science and Engineering}
+      \field{month}{1}
+      \field{title}{Kinodynamic Generation of Wafer Scanners Trajectories Used in Semiconductor Manufacturing}
+      \field{volume}{20}
+      \field{year}{2023}
+      \field{pages}{718\bibrangedash 732}
+      \range{pages}{15}
+      \verb{doi}
+      \verb 10.1109/TASE.2022.3196318
+      \endverb
+    \endentry
+    \entry{Al-Rawashdeh2022_Caracterization}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=c220a2d7c92d41121731ad7a5a79695d}{%
+           family={Al-Rawashdeh},
+           familyi={A\bibinithyphendelim R\bibinitperiod},
+           given={Yazan\bibnamedelima M.},
+           giveni={Y\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=49aca8eb5e7dcf8185af600f6c26b6ef}{%
+           family={Janaideh},
+           familyi={J\bibinitperiod},
+           given={Mohammad\bibnamedelima Al},
+           giveni={M\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=94294f82736da8b7d5680f9620c49a68}{%
+           family={Heertjes},
+           familyi={H\bibinitperiod},
+           given={Marcel},
+           giveni={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{9af064b4e19bd25608617c3e2d10e8d8}
+      \strng{fullhash}{f620c10c3c67125a06550e023af37c39}
+      \strng{fullhashraw}{f620c10c3c67125a06550e023af37c39}
+      \strng{bibnamehash}{f620c10c3c67125a06550e023af37c39}
+      \strng{authorbibnamehash}{f620c10c3c67125a06550e023af37c39}
+      \strng{authornamehash}{9af064b4e19bd25608617c3e2d10e8d8}
+      \strng{authorfullhash}{f620c10c3c67125a06550e023af37c39}
+      \strng{authorfullhashraw}{f620c10c3c67125a06550e023af37c39}
+      \field{extraname}{2}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0094114X}
+      \field{journaltitle}{Mechanism and Machine Theory}
+      \field{month}{4}
+      \field{title}{On characterization of a generic lithography machine in a multi-directional space}
+      \field{volume}{170}
+      \field{year}{2022}
+      \field{pages}{104638}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1016/j.mechmachtheory.2021.104638
+      \endverb
+    \endentry
+    \entry{Al-Rawashdeh2023b}{inproceedings}{}{}
+      \name{author}{3}{}{%
+        {{hash=c220a2d7c92d41121731ad7a5a79695d}{%
+           family={Al-Rawashdeh},
+           familyi={A\bibinithyphendelim R\bibinitperiod},
+           given={Yazan\bibnamedelima M.},
+           giveni={Y\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=94294f82736da8b7d5680f9620c49a68}{%
+           family={Heertjes},
+           familyi={H\bibinitperiod},
+           given={Marcel},
+           giveni={M\bibinitperiod}}}%
+        {{hash=49aca8eb5e7dcf8185af600f6c26b6ef}{%
+           family={Janaideh},
+           familyi={J\bibinitperiod},
+           given={Mohammad\bibnamedelima Al},
+           giveni={M\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \strng{namehash}{9af064b4e19bd25608617c3e2d10e8d8}
+      \strng{fullhash}{7f47ce346201380b882f4ca392c5c6d6}
+      \strng{fullhashraw}{7f47ce346201380b882f4ca392c5c6d6}
+      \strng{bibnamehash}{7f47ce346201380b882f4ca392c5c6d6}
+      \strng{authorbibnamehash}{7f47ce346201380b882f4ca392c5c6d6}
+      \strng{authornamehash}{9af064b4e19bd25608617c3e2d10e8d8}
+      \strng{authorfullhash}{7f47ce346201380b882f4ca392c5c6d6}
+      \strng{authorfullhashraw}{7f47ce346201380b882f4ca392c5c6d6}
+      \field{extraname}{3}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2023 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)}
+      \field{issn}{2153-0866}
+      \field{month}{10}
+      \field{title}{Motion Orchestration in Dual-Stage Wafer Scanners}
+      \field{year}{2023}
+      \field{pages}{8304\bibrangedash 8309}
+      \range{pages}{6}
+      \verb{doi}
+      \verb 10.1109/IROS55552.2023.10342526
+      \endverb
+    \endentry
+    \entry{Chen2023}{inproceedings}{}{}
+      \name{author}{4}{}{%
+        {{hash=93bf0c282b547f6ff1929cb47eaa9ead}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={Shuaiqi},
+           giveni={S\bibinitperiod}}}%
+        {{hash=621013bf54d3546375ad71f17f020b5b}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={Yang},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=d1761797f70a6afd6545707f0b9bebfa}{%
+           family={Song},
+           familyi={S\bibinitperiod},
+           given={Fazhi},
+           giveni={F\bibinitperiod}}}%
+        {{hash=5fdc8808b6dd217d031b34027d0679f5}{%
+           family={Cui},
+           familyi={C\bibinitperiod},
+           given={Ning},
+           giveni={N\bibinitperiod}}}%
+      }
+      \strng{namehash}{df065b05a22ff8c35bdb1453d3267e71}
+      \strng{fullhash}{48e4c04448bbb6e1cb1b0396921985c6}
+      \strng{fullhashraw}{48e4c04448bbb6e1cb1b0396921985c6}
+      \strng{bibnamehash}{48e4c04448bbb6e1cb1b0396921985c6}
+      \strng{authorbibnamehash}{48e4c04448bbb6e1cb1b0396921985c6}
+      \strng{authornamehash}{df065b05a22ff8c35bdb1453d3267e71}
+      \strng{authorfullhash}{48e4c04448bbb6e1cb1b0396921985c6}
+      \strng{authorfullhashraw}{48e4c04448bbb6e1cb1b0396921985c6}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2023 42nd Chinese Control Conference (CCC)}
+      \field{issn}{1934-1768}
+      \field{month}{7}
+      \field{title}{Model Prediction Based Feedforward Control for Precision Motion Stage}
+      \field{year}{2023}
+      \field{pages}{2826\bibrangedash 2831}
+      \range{pages}{6}
+      \verb{doi}
+      \verb 10.23919/CCC58697.2023.10240384
+      \endverb
+    \endentry
+    \entry{Subramanian2024}{misc}{}{}
+      \name{author}{3}{}{%
+        {{hash=b3508e5416c1812092cb40bf21f883eb}{%
+           family={Subramanian},
+           familyi={S\bibinitperiod},
+           given={Raaja\bibnamedelima Ganapathy},
+           giveni={R\bibinitperiod\bibinitdelim G\bibinitperiod}}}%
+        {{hash=2fa9123f69f0df4874a9328ddd28b0e9}{%
+           family={Moest},
+           familyi={M\bibinitperiod},
+           given={Barry},
+           giveni={B\bibinitperiod}}}%
+        {{hash=4b230b8a7b051c67eed2113d56b0bee9}{%
+           family={Paarhuis},
+           familyi={P\bibinitperiod},
+           given={Bart},
+           giveni={B\bibinitperiod}}}%
+      }
+      \strng{namehash}{303bd7f1c05dbbc9400d4c6d8df96820}
+      \strng{fullhash}{1bf80e4ee3f373bc788fc2cc14a6d207}
+      \strng{fullhashraw}{1bf80e4ee3f373bc788fc2cc14a6d207}
+      \strng{bibnamehash}{1bf80e4ee3f373bc788fc2cc14a6d207}
+      \strng{authorbibnamehash}{1bf80e4ee3f373bc788fc2cc14a6d207}
+      \strng{authornamehash}{303bd7f1c05dbbc9400d4c6d8df96820}
+      \strng{authorfullhash}{1bf80e4ee3f373bc788fc2cc14a6d207}
+      \strng{authorfullhashraw}{1bf80e4ee3f373bc788fc2cc14a6d207}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{2}
+      \field{note}{arXiv:2402.13928}
+      \field{title}{Partial State-Feedback Reduced-Order Switching Predictive Models for Next-Generation Optical Lithography Systems}
+      \field{year}{2024}
+      \verb{urlraw}
+      \verb https://arxiv.org/pdf/2402.13928
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/pdf/2402.13928
+      \endverb
+    \endentry
+    \entry{Wu2015_WM811K}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=6472f1ff94919e413b5652dab7fd889f}{%
+           family={Wu},
+           familyi={W\bibinitperiod},
+           given={Ming-Ju},
+           giveni={M\bibinithyphendelim J\bibinitperiod}}}%
+        {{hash=e1e594f67c6eae9f5f395e8e76e4610c}{%
+           family={Jang},
+           familyi={J\bibinitperiod},
+           given={Jyh-Shing\bibnamedelima R.},
+           giveni={J\bibinithyphendelim S\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+        {{hash=eb7fc76f65d27311bce34bc99663a562}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={Jui-Long},
+           giveni={J\bibinithyphendelim L\bibinitperiod}}}%
+      }
+      \strng{namehash}{fb72ed85effac926fa12af528a03c755}
+      \strng{fullhash}{372fee5ccce56bce3ff04f73dfd3195c}
+      \strng{fullhashraw}{372fee5ccce56bce3ff04f73dfd3195c}
+      \strng{bibnamehash}{372fee5ccce56bce3ff04f73dfd3195c}
+      \strng{authorbibnamehash}{372fee5ccce56bce3ff04f73dfd3195c}
+      \strng{authornamehash}{fb72ed85effac926fa12af528a03c755}
+      \strng{authorfullhash}{372fee5ccce56bce3ff04f73dfd3195c}
+      \strng{authorfullhashraw}{372fee5ccce56bce3ff04f73dfd3195c}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Semiconductor Manufacturing}
+      \field{number}{1}
+      \field{title}{Wafer Map Failure Pattern Recognition and Similarity Ranking for Large-Scale Data Sets}
+      \field{volume}{28}
+      \field{year}{2015}
+      \field{pages}{1\bibrangedash 12}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1109/TSM.2014.2364237
+      \endverb
+    \endentry
+    \entry{Heertjes2023_CDC}{inproceedings}{}{}
+      \name{author}{3}{}{%
+        {{hash=94294f82736da8b7d5680f9620c49a68}{%
+           family={Heertjes},
+           familyi={H\bibinitperiod},
+           given={Marcel},
+           giveni={M\bibinitperiod}}}%
+        {{hash=aae4a8593fe0b0203531236bf96b606f}{%
+           family={Torres},
+           familyi={T\bibinitperiod},
+           given={Jazmin\bibnamedelima Zenteno},
+           giveni={J\bibinitperiod\bibinitdelim Z\bibinitperiod}}}%
+        {{hash=49aca8eb5e7dcf8185af600f6c26b6ef}{%
+           family={Janaideh},
+           familyi={J\bibinitperiod},
+           given={Mohammad\bibnamedelima Al},
+           giveni={M\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \strng{namehash}{2ca726c3de4965d2a6e66f0ec062d52e}
+      \strng{fullhash}{f828ed0e736228f1d693c13096f0ed14}
+      \strng{fullhashraw}{f828ed0e736228f1d693c13096f0ed14}
+      \strng{bibnamehash}{f828ed0e736228f1d693c13096f0ed14}
+      \strng{authorbibnamehash}{f828ed0e736228f1d693c13096f0ed14}
+      \strng{authornamehash}{2ca726c3de4965d2a6e66f0ec062d52e}
+      \strng{authorfullhash}{f828ed0e736228f1d693c13096f0ed14}
+      \strng{authorfullhashraw}{f828ed0e736228f1d693c13096f0ed14}
+      \field{extraname}{2}
+      \field{sortinit}{9}
+      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2023 62nd IEEE Conference on Decision and Control (CDC)}
+      \field{issn}{2576-2370}
+      \field{month}{12}
+      \field{title}{Fourth-Order Reference Trajectories in Lithography Stages with Weakly-Damped Modes --- a Frequency-Domain Perspective}
+      \field{year}{2023}
+      \field{pages}{8696\bibrangedash 8701}
+      \range{pages}{6}
+      \verb{doi}
+      \verb 10.1109/CDC49753.2023.10384162
+      \endverb
+    \endentry
+    \entry{Kuang2020}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=10df0a8f23062baf744b2d503a446b54}{%
+           family={Kuang},
+           familyi={K\bibinitperiod},
+           given={Zhian},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=46fad125fda69044259286abd9b862f1}{%
+           family={Sun},
+           familyi={S\bibinitperiod},
+           given={Liting},
+           giveni={L\bibinitperiod}}}%
+        {{hash=b2058bd06cf63096abcd492595c342f3}{%
+           family={Gao},
+           familyi={G\bibinitperiod},
+           given={Huijun},
+           giveni={H\bibinitperiod}}}%
+        {{hash=84b66ce2b6f9f8530dd504fc63a4cc64}{%
+           family={Tomizuka},
+           familyi={T\bibinitperiod},
+           given={Masayoshi},
+           giveni={M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier B.V.}%
+      }
+      \strng{namehash}{50d6a365a72a089bc2a81d9d845e6a63}
+      \strng{fullhash}{965b09ff1ee745322034f80de1607c96}
+      \strng{fullhashraw}{965b09ff1ee745322034f80de1607c96}
+      \strng{bibnamehash}{965b09ff1ee745322034f80de1607c96}
+      \strng{authorbibnamehash}{965b09ff1ee745322034f80de1607c96}
+      \strng{authornamehash}{50d6a365a72a089bc2a81d9d845e6a63}
+      \strng{authorfullhash}{965b09ff1ee745322034f80de1607c96}
+      \strng{authorfullhashraw}{965b09ff1ee745322034f80de1607c96}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{24058963}
+      \field{journaltitle}{IFAC-PapersOnLine}
+      \field{title}{Precise motion control of wafer stages via adaptive neural network and fractional-order super-twisting algorithm}
+      \field{volume}{53}
+      \field{year}{2020}
+      \field{pages}{8315\bibrangedash 8320}
+      \range{pages}{6}
+      \verb{doi}
+      \verb 10.1016/j.ifacol.2020.12.1898
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

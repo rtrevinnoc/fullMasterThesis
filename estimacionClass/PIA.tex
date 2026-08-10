@@ -1,0 +1,124 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage[spanish,mexico,english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[top=2.4cm,bottom=2.4cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\graphicspath{{../presentation/pictures/}}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{parskip}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue}
+
+\definecolor{uanlBlue}{RGB}{0,56,101}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\small\textcolor{uanlBlue}{MCIE -- Control No Lineal}}
+\fancyhead[R]{\small\textcolor{uanlBlue}{Ene-Jun 2026}}
+\fancyfoot[C]{\thepage}
+
+\begin{document}
+
+% ---------- PORTADA ----------
+\thispagestyle{empty}
+\begin{center}
+  {\bfseries Universidad Autónoma de Nuevo León}\\
+  Facultad de Ingeniería Mecánica y Eléctrica\\[0.6em]
+  \textcolor{uanlBlue}{\rule{\linewidth}{1pt}}\\[0.6em]
+  Maestría en Ciencias de la Ingeniería Eléctrica\\
+  Unidad de Aprendizaje: \textbf{Control No Lineal}\\[1.2em]
+  {\LARGE\bfseries Proyecto Integrador de Aprendizaje}\\[1em]
+  \textcolor{uanlBlue}{\rule{0.6\linewidth}{0.4pt}}\\[1em]
+  \begin{tabular}{rl}
+    Estudiante: & Roberto Treviño Cervantes \\
+    Matrícula:  & 1915003 \\
+    Maestro:    & Dr.\ Alberto Cavazos \\
+  \end{tabular}
+\end{center}
+
+\vfill
+\newpage
+\setcounter{page}{1}
+
+\selectlanguage{english}
+
+\section*{Case study}
+
+\textit{Yield-Aware Higher-Order Trajectory Optimization for Step-and-Scan Wafer Stages.}
+
+The commercial performance of a scanner is ultimately measured in wafers per hour. The time spent stepping and \textit{settling} --- the interval between the end of a step motion and the moment the stage has damped its residual vibrations to within the nanometre-level positioning specification --- represents a significant and controllable fraction of the total cycle time, which places the allowable settle time below 10\,ms. The key lever for reducing settling time is the generation of \textit{reference trajectories}: motion profiles that command the stage from its current position to the next scanning start-point with minimal excitation of mechanical resonances.
+
+\section*{Model}
+
+Al-Rawashdeh et al.\ propose modeling the lithography scanner as a combination of three open-loop serial chains: the reticle chain ($j=1$), the optics chain ($j=2$), and the wafer chain ($j=3$). A dual-stage architecture is employed: a long-stroke motor (LS) for large-range travel of at least 300\,mm with micrometer accuracy, and a short-stroke motor (SS) with Lorentz actuators for nanometric, contact-free positioning. The physical connections between stages are represented by lumped-parameter spring-damper systems according to the Kelvin-Voigt model.
+
+The full 6-DOF model is restricted to in-plane motions, since rotations about $x$, $y$ and translation on $z$ are used mainly for focusing. The machine comprises 16 bodies; the global state vector has $6\times 16 = 96$ states.
+
+\section*{Methodology}
+
+Trajectories that have smooth higher-order derivatives result in less excitation of poorly damped modes in the structure. We implemented a simulation of the multi-body model using the MuJoCo physics engine for Python. The simulation serves as a virtual test bed where the proposed trajectories can be validated under the dynamic model.
+
+The Kelvin-Voigt couplings are implemented as MuJoCo joints with explicit \texttt{stiffness} and \texttt{damping} parameters. For the actuated stages, MuJoCo position actuators are used with $K_P = 10^7$ at $dt = 10^{-4}$\,s. During the scanning phase, the wafer stage moves at $v_{w,\text{scan}} = 0.8$\,m/s while the reticle moves in the opposite direction at $v_{r,\text{scan}} = 3.2$\,m/s, maintaining the demagnification ratio $\alpha = 0.25$.
+
+\section*{CNN cost function and validation}
+
+The contribution of this work is the forward direction of the defect-prediction problem: given trajectory parameters $(v_{\max}, a_{\max}, j_{\max}, s_{\max})$, predict the expected wafer defect pattern by means of a CNN trained on the WM-811K dataset of real wafer maps. The cost function penalizes the cumulative probability mass on the non-plausible defect classes:
+\begin{equation}
+    J(\boldsymbol{r}) = \sum_{c\,\notin\,\mathcal{C}_{\text{scan}}} \hat{p}_c(\boldsymbol{r}),
+    \qquad
+    \mathcal{C}_{\text{scan}} = \{\textit{none}, \textit{scratch}, \textit{edge-local}, \textit{random}\}.
+\end{equation}
+
+The methodology is valid when synthetic wafer maps activate only the classes in $\mathcal{C}_{\text{scan}}$ and $J(\boldsymbol{\pi})$ shifts reproducibly under independent sweeps of $(v, a, j, s)_{\max}$. The CNN must never activate \textit{donut} or \textit{near-full}, which correspond to etching/cleaning patterns rather than trajectory-induced defects.
+
+\selectlanguage{spanish}
+\section*{Resultados}
+
+\paragraph{Control PID + \textit{feedforward}.}
+\begin{equation*}
+    u(t) = \underbrace{K_p\, e(t) + K_i\!\int_0^{t}\! e(\tau)\,d\tau + K_d\,\frac{d\,e(t)}{dt}}_{\text{PID}} + \underbrace{m\,\ddot r(t)}_{\text{FF}}
+\end{equation*}
+{\footnotesize $e(t) = r(t) - y_{\text{larga}}(t)$\;\; (realimentación sobre la etapa larga).}
+
+Ancho de banda $f_{bw}=50$ Hz, $\omega_c = 2\pi f_{bw}$, $\alpha\approx 3$.
+\begin{center}
+\footnotesize
+\begin{tabular}{r@{$\;\approx\;$}l@{\qquad}r@{$\;=\;$}l}
+$K_p$ & $8.66\times 10^{6}$ N/m            & $K_p$ & $m\,(2\pi f_{bw})^2$ \\
+$K_i$ & $2.72\times 10^{8}$ N/(m$\cdot$s)  & $K_d$ & $m\,\omega_c$ \\
+$K_d$ & $2.75\times 10^{4}$ N$\cdot$s/m    & $K_i$ & $K_p\,\omega_c/\alpha^2$ \\
+$m$   & $87$ kg                            & \multicolumn{2}{l}{} \\
+\end{tabular}
+\end{center}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.58\linewidth}\centering
+        \includegraphics[width=\linewidth]{sim_combined_y.png}\\[2pt]
+        {\footnotesize Error $e_{syn}$, MA y MSD (dir.\ Y).}
+    \end{minipage}\hfill
+    \begin{minipage}{0.38\linewidth}\centering
+        \includegraphics[width=\linewidth]{scanning_3d.png}\\[2pt]
+        {\footnotesize Entorno de simulación MuJoCo.}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.55\linewidth]{cnn_confmat.png}\\[2pt]
+    {\footnotesize Matriz de confusión --- 3 conv + 2 FC, 96.88\,\% \textit{accuracy}.}
+\end{figure}
+
+\selectlanguage{english}
+\section*{Conclusion}
+
+The forward direction explored here --- trajectory parameters $\to$ predicted defect pattern --- complements the established industrial inverse problem of inferring process causes from observed wafer defect maps. The CNN-based cost function enables trajectory optimization to proceed entirely in simulation, without access to physical lithographic equipment, and provides a reproducible link between the kinematic parameters of the reference trajectory and the predicted yield signature on the wafer.
+
+\end{document}

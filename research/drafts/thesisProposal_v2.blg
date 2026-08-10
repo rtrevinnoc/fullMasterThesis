@@ -1,0 +1,14 @@
+[0] Config.pm:328> INFO - This is Biber 2.21
+[0] Config.pm:331> INFO - Logfile is 'thesisProposal_v2.blg'
+[38] biber-darwin:342> INFO - === Mon Jun  1, 2026, 07:55:48
+[48] Biber.pm:421> INFO - Reading 'thesisProposal_v2.bcf'
+[90] Biber.pm:1002> INFO - Found 21 citekeys in bib section 0
+[99] Biber.pm:4487> INFO - Processing section 0
+[105] Biber.pm:4678> INFO - Looking for bibtex file 'references_v2.bib' for section 0
+[106] bibtex.pm:1713> INFO - LaTeX decoding ...
+[119] bibtex.pm:1519> INFO - Found BibTeX data source 'references_v2.bib'
+[244] UCollate.pm:68> INFO - Overriding locale 'es-ES' defaults 'variable = shifted' with 'variable = non-ignorable'
+[247] UCollate.pm:68> INFO - Overriding locale 'es-ES' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[247] Biber.pm:4307> INFO - Sorting list 'none/global//global/global/global' of type 'entry' with template 'none' and locale 'es-ES'
+[258] bbl.pm:676> INFO - Writing 'thesisProposal_v2.bbl' with encoding 'UTF-8'
+[277] bbl.pm:779> INFO - Output to thesisProposal_v2.bbl

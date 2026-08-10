@@ -1,0 +1,168 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage[spanish,mexico,english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[top=2.4cm,bottom=2.4cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{parskip}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue}
+
+\definecolor{uanlBlue}{RGB}{0,56,101}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\small\textcolor{uanlBlue}{MCIE -- Control No Lineal}}
+\fancyhead[R]{\small\textcolor{uanlBlue}{Ene-Jun 2026}}
+\fancyfoot[C]{\thepage}
+
+\begin{document}
+
+% ---------- PORTADA ----------
+\thispagestyle{empty}
+\begin{center}
+  {\bfseries Universidad Autónoma de Nuevo León}\\
+  Facultad de Ingeniería Mecánica y Eléctrica\\[0.6em]
+  \textcolor{uanlBlue}{\rule{\linewidth}{1pt}}\\[0.6em]
+  Maestría en Ciencias de la Ingeniería Eléctrica\\
+  Unidad de Aprendizaje: \textbf{Control No Lineal}\\[1.2em]
+  {\LARGE\bfseries Actividad Fundamental 4}\\[1em]
+  \textcolor{uanlBlue}{\rule{0.6\linewidth}{0.4pt}}\\[1em]
+  \begin{tabular}{rl}
+    Estudiante: & Roberto Treviño Cervantes \\
+    Matrícula:  & 1915003 \\
+    Maestro:    & Dr.\ Alberto Cavazos \\
+  \end{tabular}
+\end{center}
+
+\vfill
+\newpage
+\setcounter{page}{1}
+
+\selectlanguage{english}
+
+\section*{Simulation environment}
+
+We implemented a simulation of the model recovered from the state-space characterization article using the MuJoCo physics engine for Python. The simulation serves as a virtual test bed where the proposed trajectories can be validated under the dynamic model. The MuJoCo Python bindings allow us to define the context of our simulation from an XML string by calling the \texttt{mujoco.MjModel.from\_xml\_string(MODEL\_XML)} method. We extend from MuJoCo's \texttt{<worldbody>} tag on which we place a root \texttt{<body>} tag, representing our base frame; this allows us to organize the machine in the simulation using the three-chain hierarchical tree.
+
+The simulation environment is defined through several specialized XML attributes that handle different aspects of the physical world. Table~\ref{tab:tags} summarizes the function of each tag within the context of the lithography scanner model, and Table~\ref{tab:bodies} maps the specific names used in the MuJoCo XML to their counterparts in the structural diagram of the multi-body lithography model.
+
+\begin{table}[H]
+\centering
+\caption{MuJoCo XML tag functions in the scanner simulation.}
+\label{tab:tags}
+\begin{tabular}{ll}
+\toprule
+Tag & Function \\
+\midrule
+\texttt{<worldbody>} & Defines the inertial root, the floor plane ($\mathcal{F}_0$). \\
+\texttt{<body>}      & Creates a rigid body with its own local coordinate system. \\
+\texttt{<inertial>}  & Assigns mass $m_{i_j}$ and the aggregated inertia tensor $I_{i_j}$. \\
+\texttt{<joint>}     & Implements the degrees of freedom $f_{i_j}$ and $\theta_{z_{i_j}}$. \\
+\texttt{<geom>}      & Defines the material (granite, silicon, glass) and collision shapes. \\
+\texttt{<actuator>}  & Models the Lorentz and moving-coil motors via servo controllers. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Mapping of MuJoCo XML bodies to the model components.}
+\label{tab:bodies}
+\begin{tabular}{ll}
+\toprule
+\texttt{<body>} \texttt{name} & Model body \\
+\midrule
+\texttt{base\_frame}  & Base Frame ($\mathcal{F}_1$) \\
+\texttt{w\_ls\_act}   & Wafer LS ($i_3=2$) \\
+\texttt{w\_ls\_flex}  & flex coupling ($i_3=3$) \\
+\texttt{w\_ss\_act}   & Wafer SS ($i_3=4$) \\
+\texttt{w\_ss\_flex}  & flex coupling ($i_3=5$) \\
+\texttt{w\_st\_act}   & Wafer Stage ($i_3=6$) \\
+\texttt{wafer}        & Die ($N_3=7$) \\
+\texttt{r\_ls\_act}   & Reticle LS ($i_1=2$) \\
+\texttt{r\_ls\_flex}  & flex coupling ($i_1=3$) \\
+\texttt{r\_ss\_act}   & Reticle SS ($i_1=4$) \\
+\texttt{r\_ss\_flex}  & flex coupling ($i_1=5$) \\
+\texttt{r\_st\_act}   & Reticle Stage ($i_1=6$) \\
+\texttt{mask}         & Mask ($N_1=7$) \\
+\texttt{metro\_frame} & Metrology Frame ($i_2=2$) \\
+\texttt{optics\_box}  & Optics Box ($i_2=3$) \\
+\texttt{lens}         & Lens Element ($i_2=4$) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section*{Topology and Kelvin-Voigt couplings}
+
+The simulation topology mirrors the multi-body hierarchy described in the modeling chapter. The common base frame ($\mathcal{F}_1$) is anchored to the world frame ($\mathcal{F}_0$) via a 3-DOF joint (two prismatic, one revolute) representing the isolation system with stiffness $K_1$ and damping $C_1$. From this base, three serial chains are constructed using nested body definitions in MuJoCo's XML format, where each child body's joint coordinate corresponds directly to the relative displacement $f_{i_j}$ and rotation $\theta_{z_{i_j}}$ defined in the kinematics model.
+
+The mechanical properties of the couplings, represented by the Kelvin-Voigt elements, are implemented via the \texttt{stiffness} and \texttt{damping} attributes of the \texttt{<joint>} tags. For actuated stages, where the physical stiffness is replaced by the controller's active response, the simulation uses high \texttt{kp} values. For the actuated stages (Long-Stroke, Short-Stroke, and Fine stages), we use MuJoCo's position actuators. To approximate the near-infinite stiffness of a rigid servo motor while maintaining numerical stability with the implicit integrator at a timestep of $dt = 10^{-4}$\,s, we employ a proportional gain $K_P = 10^7$, with derivative gains $K_V$ tuned to the $C/K$ ratios provided in the characterization data.
+
+\section*{Chain parameters}
+
+Tables~\ref{tab:wafer}, \ref{tab:reticle}, and \ref{tab:optics} illustrate the distribution of the stiffness and damping variables for the three chains.
+
+\begin{table}[H]
+\centering
+\caption{Wafer chain stiffness ($K$) and damping ($C$) parameters.}
+\label{tab:wafer}
+\begin{tabular}{lcc}
+\toprule
+Coupling Interface & Stiffness ($K$) & Damping ($C$) \\
+\midrule
+Floor $\rightarrow$ Base Frame  & \texttt{K1}       & \texttt{C1} \\
+Base $\rightarrow$ LS Stage     & \texttt{KP\_ACT}  & \texttt{KV\_ACT\_TRANS} \\
+LS Stage $\rightarrow$ LS Flex  & \texttt{K\_LS\_F} & \texttt{C\_LS\_F} \\
+SS Stage $\rightarrow$ SS Flex  & \texttt{K\_SS\_F} & \texttt{C\_SS\_F} \\
+Fine Stage $\rightarrow$ Flex   & \texttt{K\_ST\_F} & \texttt{C\_ST\_F} \\
+Stage $\rightarrow$ Die         & \texttt{K8\_W}    & \texttt{C8\_W} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Reticle chain stiffness ($K$) and damping ($C$) parameters.}
+\label{tab:reticle}
+\begin{tabular}{lcc}
+\toprule
+Coupling Interface & Stiffness ($K$) & Damping ($C$) \\
+\midrule
+Floor $\rightarrow$ Base Frame  & \texttt{K1}       & \texttt{C1} \\
+Base $\rightarrow$ LS Stage     & \texttt{KP\_ACT}  & \texttt{KV\_ACT\_TRANS} \\
+LS Stage $\rightarrow$ LS Flex  & \texttt{K\_LS\_F} & \texttt{C\_LS\_F} \\
+SS Stage $\rightarrow$ SS Flex  & \texttt{K\_SS\_F} & \texttt{C\_SS\_F} \\
+Fine Stage $\rightarrow$ Flex   & \texttt{K\_ST\_F} & \texttt{C\_ST\_F} \\
+Stage $\rightarrow$ Mask        & \texttt{K8\_R}    & \texttt{C8\_R} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Optics chain stiffness ($K$) and damping ($C$) parameters.}
+\label{tab:optics}
+\begin{tabular}{lcc}
+\toprule
+Coupling Interface & Stiffness ($K$) & Damping ($C$) \\
+\midrule
+Base Frame $\rightarrow$ Metro Frame  & \texttt{K2\_O} & \texttt{C2\_O} \\
+Metro Frame $\rightarrow$ Optics Box  & \texttt{K3\_O} & \texttt{C3\_O} \\
+Optics Box $\rightarrow$ Lens Element & \texttt{K4\_O} & \texttt{C4\_O} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section*{Step-and-scan controller}
+
+The simulation incorporates a \texttt{StepperController} that generates the references for the scanning and stepping phases. During the scanning phase, the wafer stage moves at a constant velocity $v_{w,\text{scan}} = 0.8$\,m/s while the reticle stage moves in the opposite direction at $v_{r,\text{scan}} = 3.2$\,m/s, maintaining the demagnification ratio $\alpha = 0.25$. This testing framework allows us to evaluate the impact of the centripetal and Coriolis terms and the effectiveness of the inertia aggregation when subjected to high-acceleration ($a_{w,\max} = 20$\,m/s$^2$) transients.
+
+\end{document}

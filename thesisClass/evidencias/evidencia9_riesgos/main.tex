@@ -1,0 +1,83 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{soul}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{ragged2e}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+
+\begin{document}
+\setcounter{section}{0}
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Análisis de Riesgos}\\[4pt]
+{\large Tesis I}\\[2pt]
+Roberto Treviño Cervantes
+\end{center}
+
+\section{Contexto}
+
+La presente tesis aborda el diseño de perfiles de trayectoria de cuarto orden (\textit{snap-limited}) optimizados por enjambre de partículas (PSO), utilizando una red neuronal convolucional (CNN) entrenada con el conjunto WM-811K como función de costo dinámica. La validación se realiza íntegramente sobre una simulación del multi-cuerpo de Al-Rawashdeh (2022). Bajo este alcance —exclusivamente simulación numérica— los riesgos relevantes son aquellos asociados a la disponibilidad de datos, la convergencia del entrenamiento y la capacidad de cómputo, no al acceso a equipo físico de litografía.
+
+\section{Matriz de Riesgos}
+
+La Tabla~\ref{tab:riesgos} sintetiza los riesgos identificados, su impacto sobre los entregables del proyecto y la estrategia de mitigación correspondiente.
+
+\begingroup
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.5}
+\begin{longtable}{L{3.8cm} L{2.2cm} L{6.5cm}}
+\caption{Matriz de riesgos del proyecto de tesis.}
+\label{tab:riesgos} \\
+\toprule
+\textbf{Riesgo} & \textbf{Impacto} & \textbf{Mitigación} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+
+No obtener datos &
+Alto &
+El entrenamiento de la CNN depende del acceso al conjunto WM-811K. Si las condiciones de licencia se vuelven restrictivas, se genera un conjunto sintético equivalente a partir de perturbaciones controladas de trayectoria sobre el gemelo digital, replicando las clases de defecto morfológico de WM-811K. \\[4pt]
+
+Modelo no converge &
+Medio &
+La función de costo aprendida no es convexa y el acoplamiento CNN--PSO puede estancarse en mínimos locales. Se simplifica el problema reduciendo la dimensión del espacio de búsqueda $(v_{max},\, a_{max},\, j_{max},\, s_{max})$, fijando subconjuntos de parámetros y empleando una inicialización estrategia antes de escalar al problema completo. \\[4pt]
+
+Hardware no disponible &
+Alto &
+El riesgo se refiere a la capacidad de cómputo requerida para entrenar la CNN y ejecutar PSO sobre la simulación. Se puede utilizar la configuración reducida sin rotaciones como banco de pruebas de menor escala, conservando la validez metodológica del estudio. \\[4pt]
+
+\end{longtable}
+\endgroup
+
+\end{document}

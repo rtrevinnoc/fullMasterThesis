@@ -1,0 +1,19 @@
+# Secrets and API Keys
+kaggle.json
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+
+# Simulation/Data
+*.pkl
+*.zip
+*.h5
+*.pth
+build/
+.texpadtmp/
+research/nn/cnn/dataset/

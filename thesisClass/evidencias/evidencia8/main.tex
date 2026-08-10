@@ -1,0 +1,191 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{xcolor}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\usepackage{soul}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{ragged2e}
+\usepackage[style=ieee, backend=biber]{biblatex}
+\addbibresource{references.bib}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+
+\begin{document}
+\setcounter{section}{0}
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Matriz de Literatura}\\[4pt]
+{\large Tesis I}\\[2pt]
+Roberto Treviño Cervantes
+\end{center}
+
+\section{Matriz de Literatura}
+
+La presente matriz sintetiza los artículos identificados mediante la revisión sistemática de literatura bajo las directrices PRISMA 2020 \supercite{Page2021_PRISMA}, cubriendo el período 2020--2025. La búsqueda se realizó en cuatro bases de datos (IEEE Xplore, SPIE Digital Library, Wiley Digital Library y arXiv), de la cual se seleccionaron 12 trabajos que reportan métodos de control de trayectorias para la etapa de oblea en sistemas de fotolitografía tipo \textit{step-and-scan}. Adicionalmente se incluyen tres revisiones de referencia del dominio \supercite{Song2021_Review, Heertjes2023_ICM, Heertjes2020_Control}. Los artículos se clasificaron en seis categorías metodológicas: \textbf{\textit{Input Shaping}}, \textbf{Sincronización de Cadenas}, \textbf{Control Adaptable}, \textbf{Redes Neuronales}, \textbf{Control Basado en Datos} y \textbf{Modelado Predictivo}.
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.3}
+\begin{longtable}{L{2cm} L{2.6cm} L{4.4cm} L{2.8cm} L{3.9cm}}
+\caption{Matriz de literatura: control de trayectorias en escáneres de obleas (2020--2025).}
+\label{tab:matrix} \\
+\toprule
+\textbf{Referencia} & \textbf{Categoría} & \textbf{Contribución principal} & \textbf{Enfoque técnico} & \textbf{Limitaciones / Alcance} \\
+\midrule
+\endfirsthead
+\multicolumn{5}{c}{\small\textit{(continuación de la Tabla~\ref{tab:matrix})}} \\[4pt]
+\toprule
+\textbf{Referencia} & \textbf{Categoría} & \textbf{Contribución principal} & \textbf{Enfoque técnico} & \textbf{Limitaciones / Alcance} \\
+\midrule
+\endhead
+\midrule
+\multicolumn{5}{r}{\small\textit{continúa en la página siguiente}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+
+% ---- Input Shaping ----
+\multicolumn{5}{l}{\textit{Categoría: Input Shaping}} \\[2pt]
+
+\supercite{Al-Rawashdeh2023a} &
+Input Shaping &
+Análisis de perfiles de movimiento de tercer orden en relación al \textit{throughput}; generación analítica de trayectorias para el ciclo \textit{step-and-scan}. &
+Perfil polinomial \textit{switched} de orden $q=3$; gráficas cinemáticas de punto de operación óptimo; expresiones analíticas en forma cerrada. &
+Evaluado en un modelo simplificado de la máquina; la métrica de costo es el tiempo de operación, sin considerar la calidad del patrón impreso. \\[4pt]
+
+\supercite{Al-Rawashdeh2023b} &
+Input Shaping &
+Orquestación de trayectorias para dos plataformas de oblea (ciclos de escaneo y medición en paralelo), factorizando la geometría del sistema para suprimir vibraciones sin penalizar \textit{throughput}. &
+\textit{Input shaping} basada en la distribución de masas del sistema para mantener el centro de gravedad estacionario del conjunto de cadenas. &
+Limitado al ciclo de escaneo/medición paralelo; no incluye la interacción con la cadena de la reticula ni métricas de \textit{overlay}. \\[4pt]
+
+\supercite{Heertjes2023_CDC} &
+Input Shaping &
+Representación paramétrica en el dominio de la frecuencia para generar trayectorias de cuarto orden (\textit{snap-limited}) que atenúan modos débilmente amortiguados del lazo cerrado sin penalizar \textit{throughput}. &
+Perfil de referencia de cuarto orden diseñado mediante pares ($s_{max}$, $j_{max}$) en el dominio de la frecuencia; análisis de la función de sensibilidad del lazo cerrado. &
+Validado en escenarios con uno o dos modos débilmente amortiguados. \\[8pt]
+
+% ---- Sincronización de Cadenas ----
+\multicolumn{5}{l}{\textit{Categoría: Sincronización de Cadenas}} \\[2pt]
+
+\supercite{Al-Rawashdeh2021} &
+Sincronización de Cadenas &
+Sincronización de las cadenas de lazo abierto de la máquina litográfica mediante una etapa de posicionamiento fino como módulo de acoplamiento y compensación de errores de seguimiento. &
+Etapa de posicionamiento microscopico añadida como complemento a la máquina existente. &
+Resultados de simulación; la eficacia de los lazos existentes se preserva. \\[4pt]
+
+\supercite{Li2020} &
+Sincronización de Cadenas &
+Compensación de fase del error de seguimiento para mejorar la sincronización entre la cadena de la oblea y la cadena de la reticula en equipos \textit{step-and-scan}. &
+Estimación del error de seguimiento y compensación en frecuencia; análisis de la relación entre MA, MSD y correlación de errores entre etapas. &
+Requiere un modelo lineal preciso de ambas etapas; sensible a variaciones de los parámetros dinámicos en función de la posición. \\[8pt]
+
+% ---- Control Adaptable ----
+\multicolumn{5}{l}{\textit{Categoría: Control Adaptable}} \\[2pt]
+
+\supercite{Kuang2021} &
+Control Adaptable &
+Control por modos deslizantes de orden fraccionario con ganancia variable (\textit{super-twisting}), mejorando el rechazo a perturbaciones e incertidumbres respecto a la versión previa de los autores. &
+Superficie de deslizamiento de orden fraccionario (FSS); algoritmo \textit{Super-Twisting} con ganancia adaptable en tiempo real; análisis de estabilidad en condiciones prácticas. &
+Requiere ajuste cuidadoso de los parámetros fraccionales; la certificación para producción industrial exige análisis de robustez ante desgaste mecánico. \\[8pt]
+
+% ---- Redes Neuronales ----
+\multicolumn{5}{l}{\textit{Categoría: Redes Neuronales}} \\[2pt]
+
+\supercite{Kuang2020} &
+Redes Neuronales &
+Control adaptable combinado de red neuronal de función de base radial (RBF) y algoritmo \textit{super-twisting} de orden fraccionario para la plataforma de oblea. &
+RBF como compensador adaptable dentro de un controlador FOSMC (\textit{Fractional-Order Sliding Mode Control}). &
+La generalización de la RBF ante cambios de configuración mecánica no está garantizada sin reentrenamiento; interpretabilidad limitada en producción. \\[8pt]
+
+% ---- Control Basado en Datos ----
+\multicolumn{5}{l}{\textit{Categoría: Control Basado en Datos}} \\[2pt]
+
+\supercite{Al-Rawashdeh2024} &
+Control Basado en Datos &
+Controlador libre de modelo para un el motor de largo alcance (\textit{long-stroke}) con un microposicionador no lineal (\textit{short-stroke} piezocerámico) como módulo adicional; sin necesidad de identificación del sistema. &
+Inversión de la planta en el ancho de banda de operación sin modelado; el único parámetro requerido es el ancho de banda deseado. &
+Validación experimental en configuración con un solo eje; la extensión a los tres grados de libertad del escáner requiere análisis del acoplamiento entre ejes. \\[4pt]
+
+\supercite{Liu2024} &
+Control Basado en Datos &
+Desacoplamiento dinámico basado en datos para etapas de movimiento MIMO con compensación de la dinámica de los motores, usando datos de experimentos de identificación mínima. &
+Matriz de desacoplamiento dinámica obtenida a partir de datos experimentales; análisis del efecto de errores en parámetros mecánicos y diferencias entre accionadores. &
+La validez del desacoplamiento está acotada al régimen de operación cubierto por el experimento de identificación; verificado en simulación numérica. \\[4pt]
+
+\supercite{Sun2024} &
+Control Basado en Datos &
+Control de aprendizaje libre de modelo en el dominio de la frecuencia con un parámetro de adaptación para mejorar la respuesta transitoria de la etapa de oblea. &
+ILC (\textit{Iterative Learning Control}) de dominio frecuencial con parámetro adaptable actualizado a partir de la historia de errores de iteraciones previas. &
+La convergencia del ILC supone repetibilidad exacta del perfil de referencia entre ciclos; variaciones en el proceso pueden degradar el aprendizaje. \\[8pt]
+
+% ---- Modelado Predictivo ----
+\multicolumn{5}{l}{\textit{Categoría: Modelado Predictivo}} \\[2pt]
+
+\supercite{Chen2023} &
+Modelado Predictivo &
+Control \textit{feedforward} basado en un modelo de predicción de planta virtual para reducir el tiempo de asentamiento de trayectorias de cuarto orden en plataformas de movimiento de precisión. &
+Modelo virtual de la planta en paralelo; la señal de anticipación exacta reduce el error residual del controlador de retroalimentación de bajo orden. &
+Errores de modelado se traducen en error de seguimiento no compensado. \\[4pt]
+
+\supercite{Subramanian2024} &
+Modelado Predictivo &
+Modelo predictivo de orden reducido con conmutación adaptable para compensar el calentamiento de la reticula a medida que el \textit{throughput} aumenta, mejorando el error de colocación del \textit{die} y la productividad. &
+Modelo térmico espacio-temporal integrado al lazo de control del escáner. &
+No aborda directamente la generación de trayectorias de la plataforma de oblea. \\[8pt]
+
+\end{longtable}
+\endgroup
+
+\section{Revisión Crítica}
+
+Del análisis de las seis categorías emergen tres observaciones críticas:
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+
+\item \textbf{Desconexión entre trayectoria y calidad del patrón.} En ninguno de los doce artículos se establece un vínculo explícito entre los parámetros del perfil de movimiento y la morfología del defecto sobre la oblea. Las métricas de evaluación se limitan a indicadores servo-mecánicos (tiempo de asentamiento, MSE, \textit{overlay} cinemático), no a la calidad funcional del circuito impreso. El trabajo de Subramanian et al.\ \supercite{Subramanian2024} es el que más se acerca al problema del proceso, al abordar el error de colocación de \textit{die} como consecuencia directa del \textit{throughput}; no obstante, no extiende este vínculo a los parámetros de la trayectoria.
+
+\item \textbf{Subutilización del modelo multi-cuerpo completo.} El modelo de cadenas seriales de la máquina litográfica \supercite{Al-Rawashdeh2022_Caracterization}, que captura el acoplamiento entre la cadena de la oblea, la cadena óptica y la cadena de la reticula en su formulación completa en espacio de estados, no es empleado por ninguno de los doce artículos como base para el diseño de trayectorias. Los trabajos de conformación de entrada utilizan modelos cinemáticos simplificados o aproximaciones de masa-resorte reducidas. Solo Al-Rawashdeh et al.\ \supercite{Al-Rawashdeh2023b} utilizan la geometría y distribución de masas del sistema multi-cuerpo, pero de forma analítica y sin simular la respuesta dinámica completa del sistema en espacio de estados.
+
+\item \textbf{Tendencia hacia perfiles de alto orden sin función de costo dinámica.} La literatura publicada en la segunda mitad del período revisado (2023--2025) converge hacia perfiles de cuarto orden (\textit{snap-limited}) con parámetros ajustables \supercite{Heertjes2023_CDC, Al-Rawashdeh2023a}, validando la hipótesis de que este orden reduce la excitación de modos estructurales. No obstante, la optimización de los parámetros del perfil se realiza sobre criterios temporales o en el dominio de la frecuencia de la respuesta servo-mecánica, nunca sobre una función de costo que integre el rendimiento de fabricación. La incorporación de un modelo subrogado de predicción de defectos como función de costo durante la optimización de parámetros representa un salto metodológico aún no documentado en la literatura.
+
+\end{enumerate}
+
+\printbibliography
+
+\end{document}

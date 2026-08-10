@@ -1,0 +1,84 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage[spanish,mexico,english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[top=2.4cm,bottom=2.4cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{parskip}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue}
+
+\definecolor{uanlBlue}{RGB}{0,56,101}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\small\textcolor{uanlBlue}{MCIE -- Control No Lineal}}
+\fancyhead[R]{\small\textcolor{uanlBlue}{Ene-Jun 2026}}
+\fancyfoot[C]{\thepage}
+
+\begin{document}
+
+% ---------- PORTADA ----------
+\thispagestyle{empty}
+\begin{center}
+  {\bfseries Universidad Autónoma de Nuevo León}\\
+  Facultad de Ingeniería Mecánica y Eléctrica\\[0.6em]
+  \textcolor{uanlBlue}{\rule{\linewidth}{1pt}}\\[0.6em]
+  Maestría en Ciencias de la Ingeniería Eléctrica\\
+  Unidad de Aprendizaje: \textbf{Control No Lineal}\\[1.2em]
+  {\LARGE\bfseries Actividad Fundamental 1}\\[1em]
+  \textcolor{uanlBlue}{\rule{0.6\linewidth}{0.4pt}}\\[1em]
+  \begin{tabular}{rl}
+    Estudiante: & Roberto Treviño Cervantes \\
+    Matrícula:  & 1915003 \\
+    Maestro:    & Dr.\ Alberto Cavazos \\
+  \end{tabular}
+\end{center}
+
+\vfill
+\newpage
+\setcounter{page}{1}
+
+\selectlanguage{english}
+
+\section*{Technological context}
+
+The history of modern electronics is inseparable from the history of lithography. Since the independent invention of the integrated circuit (IC) by Jack Kilby at Texas Instruments and Robert Noyce at Fairchild Semiconductor in 1958, Moore's Law has governed the relentless progression of the semiconductor industry: the density of components on a chip doubles approximately every two years. The engine of this revolution is \textit{photolithography} --- the process by which the intricate patterns of a transistor, a wire, or a memory cell are projected onto a silicon wafer with nanometre-scale fidelity.
+
+The minimum printable feature size, known as the \textit{critical dimension} (CD), is governed by:
+\begin{equation}
+    \mathrm{CD} = k\,\frac{\lambda}{\mathrm{NA}},
+\end{equation}
+where $\lambda$ is the illumination wavelength, $\mathrm{NA}$ is the numerical aperture of the projection lens, and $k$ is a process-dependent factor.
+
+The \textit{scanner} replaces the full-field flash with a \textit{scanning exposure}: the illumination system reveals only a narrow rectangular slit of the reticle, and the reticle stage sweeps the mask through this slit while the wafer stage moves synchronously in the opposite direction, maintaining the 4:1 demagnification relationship throughout. After each die is scanned, the wafer is stepped to the next die position and the scan repeats, defining the \textit{step-and-scan} cycle that gives modern lithographic tools their name.
+
+A critical consequence of the multi-layer nature of IC fabrication is the requirement that each new layer be positioned with nanometre-level accuracy relative to all preceding layers --- a specification known as \textit{overlay}. Overlay requirements currently sit below 4\,nm for leading-edge nodes.
+
+\section*{Problem statement}
+
+The commercial performance of a scanner is ultimately measured in wafers per hour (WPH). Although the exposure time per die is fixed by the optics and the process, the time spent stepping and \textit{settling} --- the interval between the end of a step motion and the moment the stage has damped its residual vibrations to within the nanometre-level positioning specification --- represents a significant and controllable fraction of the total cycle time, which places the allowable settle time below 10\,ms. Every millisecond saved in settling directly translates into more dies exposed per hour.
+
+The key lever for reducing settling time --- and thus for increasing scanner throughput --- is the generation of \textit{reference trajectories}: motion profiles that command the stage from its current position to the next scanning start-point with minimal excitation of mechanical resonances and the shortest possible residual settling tail.
+
+\section*{Knowledge gap and contribution}
+
+The \textit{inverse problem} (observed defect map $\to$ infer process cause) is well established in industry. The contribution of this work is the \textit{forward direction}: given trajectory parameters $(v_{\max}, a_{\max}, j_{\max}, s_{\max})$, predict the expected defect pattern on the wafer by means of a convolutional neural network (CNN) trained on the WM-811K dataset of real wafer maps. This data-driven cost function enables trajectory optimization without access to physical lithographic equipment.
+
+\section*{Objectives}
+
+\begin{enumerate}
+  \item Implement the multi-body mechanical model of the step-and-scan scanner following the characterization of Al-Rawashdeh et al.
+  \item Design and parameterize fourth-order trajectory profiles for the wafer and reticle stages.
+  \item Train a CNN on WM-811K to classify wafer defect maps into the nine standard classes.
+  \item Validate that the CNN outputs activate only the scanner-plausible classes (\textit{none}, \textit{scratch}, \textit{edge-local}, \textit{random}) under parametric sweeps of $(v, a, j, s)_{\max}$.
+  \item Demonstrate that the cost function shifts reproducibly when the kinematic parameters are modified.
+\end{enumerate}
+
+\end{document}

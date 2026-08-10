@@ -1,0 +1,94 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{soul}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{ragged2e}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+
+\begin{document}
+\setcounter{section}{0}
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Ruta Crítica de Ejecución}\\[4pt]
+{\large Tesis I}\\[2pt]
+Roberto Treviño Cervantes
+\end{center}
+
+\section{Contexto}
+
+La presente ruta crítica organiza las actividades de tesis para el periodo comprendido entre mayo y septiembre de 2026, cubriendo los cinco meses restantes antes de la entrega del manuscrito. Cada hito se asocia a un mes específico y representa un entregable verificable que alimenta al siguiente. El alcance es exclusivamente computacional: refinamiento de modelo, simulación, validación, análisis y escritura, todos sobre el gemelo digital del escáner de fotolitografía.
+
+\section{Hitos Mensuales}
+
+\begingroup
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.5}
+\begin{longtable}{L{2.5cm} L{3.5cm} L{6.5cm}}
+\caption{Ruta crítica de ejecución mayo--septiembre 2026.}
+\label{tab:ruta} \\
+\toprule
+\textbf{Mes} & \textbf{Hito} & \textbf{Descripción del entregable} \\
+\midrule
+\endfirsthead
+\multicolumn{3}{c}{\small\textit{(continuación de la Tabla~\ref{tab:ruta})}} \\[4pt]
+\toprule
+\textbf{Mes} & \textbf{Hito} & \textbf{Descripción del entregable} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+
+Mayo 2026 &
+Refinamiento del modelo &
+Ajuste del modelo multi-cuerpo y del generador de perfiles de cuarto orden con 15 segmentos. Verificación de parámetros inerciales, rigideces y amortiguamientos. \\[4pt]
+
+Junio 2026 &
+Simulaciones iniciales &
+Ejecución de la simulación con barridos sistemáticos de los parámetros cinemáticos $(v_{max},\, a_{max},\, j_{max},\, s_{max})$. Generación del primer conjunto de mapas de error de seguimiento. \\[4pt]
+
+Julio 2026 &
+Validación &
+Entrenamiento y validación cruzada de la CNN sobre WM-811K como función de costo sustituta. Validación de la correspondencia entre patrones de error de trayectoria y morfologías de defecto. \\[4pt]
+
+Agosto 2026 &
+Análisis &
+Ejecución del PSO acoplado a la CNN como función de costo. Análisis comparativo de las trayectorias óptimas en términos de \textit{yield} estimado frente a \textit{throughput}. \\[4pt]
+
+Septiembre 2026 &
+Escritura &
+Redacción del manuscrito final de tesis, integración de figuras, tablas y referencias. \\[4pt]
+
+\end{longtable}
+\endgroup
+
+\end{document}

@@ -1,0 +1,677 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nty/global//global/global/global}
+    \entry{Butler2011_PositionControl}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=6cfab56ee9038f64592fc440a4093475}{%
+           family={Butler},
+           familyi={B\bibinitperiod},
+           given={Hans},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{6cfab56ee9038f64592fc440a4093475}
+      \strng{fullhash}{6cfab56ee9038f64592fc440a4093475}
+      \strng{fullhashraw}{6cfab56ee9038f64592fc440a4093475}
+      \strng{bibnamehash}{6cfab56ee9038f64592fc440a4093475}
+      \strng{authorbibnamehash}{6cfab56ee9038f64592fc440a4093475}
+      \strng{authornamehash}{6cfab56ee9038f64592fc440a4093475}
+      \strng{authorfullhash}{6cfab56ee9038f64592fc440a4093475}
+      \strng{authorfullhashraw}{6cfab56ee9038f64592fc440a4093475}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Control Systems Magazine}
+      \field{month}{10}
+      \field{number}{5}
+      \field{title}{Position Control in Lithographic Equipment [Applications of Control]}
+      \field{volume}{31}
+      \field{year}{2011}
+      \field{pages}{28\bibrangedash 47}
+      \range{pages}{20}
+      \verb{doi}
+      \verb 10.1109/MCS.2011.941882
+      \endverb
+    \endentry
+    \entry{Dong2023_SCurve}{inproceedings}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=47ab5b4291802c7fccdc42c32571e551}{%
+           family={Dong},
+           familyi={D\bibinitperiod},
+           given={Yue},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=dd4145400a917eb4b58620770e210fa1}{%
+           family={Wan},
+           familyi={W\bibinitperiod},
+           given={Yu},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=894f12b2b837ba092c82313e34bc86a2}{%
+           family={Song},
+           familyi={S\bibinitperiod},
+           given={Shuo},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=502de95c3193f5c283f4ef712520a97e}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={Li},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{dc12ba9e28c816f1c1873785a47e67a3}
+      \strng{fullhash}{e950c6cb2e6828bdcf67b7daac872ad6}
+      \strng{fullhashraw}{e950c6cb2e6828bdcf67b7daac872ad6}
+      \strng{bibnamehash}{dc12ba9e28c816f1c1873785a47e67a3}
+      \strng{authorbibnamehash}{dc12ba9e28c816f1c1873785a47e67a3}
+      \strng{authornamehash}{dc12ba9e28c816f1c1873785a47e67a3}
+      \strng{authorfullhash}{e950c6cb2e6828bdcf67b7daac872ad6}
+      \strng{authorfullhashraw}{e950c6cb2e6828bdcf67b7daac872ad6}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2023 International Workshop on Advanced Patterning Solutions (IWAPS)}
+      \field{title}{Lithographic Stepping Trajectory Planning for Residual Vibration Suppression: An Asymmetric S-Curve Method}
+      \field{year}{2023}
+      \field{pages}{1\bibrangedash 5}
+      \range{pages}{5}
+      \verb{doi}
+      \verb 10.1109/IWAPS60466.2023.10366135
+      \endverb
+      \keyw{Vibrations;Trajectory planning;Simulation;Lithography;Resonant frequency;Switches;Throughput;Lithography equipment;stepping motion;S-curve planning;asymmetric S-curve}
+    \endentry
+    \entry{Heertjes2025_NonlinearControl}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=6042fcacf26929e544f6c27e03d5eb81}{%
+           family={Heertjes},
+           familyi={H\bibinitperiod},
+           given={{Marcel F.}},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=90bff0026f6658a8109bf1e5d61cdf4c}{%
+           family={Hoogeveen},
+           familyi={H\bibinitperiod},
+           given={{Thomas P.}},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=382fd62887bbef2094cd35ba4d6e9265}{%
+           family={{van den Eijnden}},
+           familyi={v\bibinitperiod},
+           given={{Sebastiaan J.A.M.}},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{language}{1}{%
+        {English}%
+      }
+      \list{publisher}{1}{%
+        {Annual Reviews Inc.}%
+      }
+      \strng{namehash}{ba8f7045c34c372360297e46982b84aa}
+      \strng{fullhash}{e64d7bf2c08b768bf5e605de9b1e4c66}
+      \strng{fullhashraw}{e64d7bf2c08b768bf5e605de9b1e4c66}
+      \strng{bibnamehash}{ba8f7045c34c372360297e46982b84aa}
+      \strng{authorbibnamehash}{ba8f7045c34c372360297e46982b84aa}
+      \strng{authornamehash}{ba8f7045c34c372360297e46982b84aa}
+      \strng{authorfullhash}{e64d7bf2c08b768bf5e605de9b1e4c66}
+      \strng{authorfullhashraw}{e64d7bf2c08b768bf5e605de9b1e4c66}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Linear integrators are well known for their ability to counter static forces and improve low-frequency disturbance rejection properties in control systems. However, linear integrators introduce phase lag, which is a frequency-dependent time shift or delay. Since the early introduction of the Clegg integrator, nonlinear integrators have held the promise of providing phase advantages over linear integrators when evaluated from the perspective of a describing function. This could potentially reduce delay and therefore provide the means to surpass linear design limitations; for example, overshoot and settling times can be reduced or even avoided. In addition, loop gains can be increased, which improves the low-frequency disturbance rejection properties. For five nonlinear integrators - the Clegg integrator, a generalized first-order reset integrator called the constant-in-gain-lead-in-phase (CgLp) element, a hybrid integrator-gain system, a variable gain integrator, and a split-path integrator - this article provides a comparison and overview of recent developments in stage motion control. Benchmark examples are taken from the industrial practice of wafer scanners, which form the pivotal machines used in the manufacturing of computer chips.}
+      \field{issn}{2573-5144}
+      \field{journaltitle}{Annual Review of Control, Robotics, and Autonomous Systems}
+      \field{month}{5}
+      \field{note}{Publisher Copyright: {©} 2025 by the author(s).}
+      \field{number}{1}
+      \field{title}{Stage Motion Control: Nonlinear Integrators Revisited}
+      \field{volume}{8}
+      \field{year}{2025}
+      \field{pages}{267\bibrangedash 294}
+      \range{pages}{28}
+      \verb{doi}
+      \verb 10.1146/annurev-control-030323-024047
+      \endverb
+      \keyw{frequency-domain design,Lyapunov methods,motion control,nonlinear integrators,stability tools}
+    \endentry
+    \entry{Yang2018_Yield}{inproceedings}{}{}
+      \name{author}{6}{}{%
+        {{un=0,uniquepart=base,hash=e7033eda5eba11000d081ff886303d38}{%
+           family={Jang},
+           familyi={J\bibinitperiod},
+           given={Sung-Ju},
+           giveni={S\bibinithyphendelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e513ef79622f9b2b0273c7f315730141}{%
+           family={Lee},
+           familyi={L\bibinitperiod},
+           given={Jee-Hyong},
+           giveni={J\bibinithyphendelim H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=13328fd2d2dbeec7b6cb1b19b4e3af38}{%
+           family={Kim},
+           familyi={K\bibinitperiod},
+           given={Tae-Woo},
+           giveni={T\bibinithyphendelim W\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2a7f4e68bf1c91d89f4184d8f0ec4d72}{%
+           family={Kim},
+           familyi={K\bibinitperiod},
+           given={Jong-Seong},
+           giveni={J\bibinithyphendelim S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7be328e3311fac2487e9ed5968fee348}{%
+           family={Lee},
+           familyi={L\bibinitperiod},
+           given={Hyun-Jin},
+           giveni={H\bibinithyphendelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3bae67d30d76b9e050f7e68a3a9a694a}{%
+           family={Lee},
+           familyi={L\bibinitperiod},
+           given={Jong-Bae},
+           giveni={J\bibinithyphendelim B\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{3ce110be7520381d1462b2a300d21a44}
+      \strng{fullhash}{142be348bcc66be4cd06ca66f399335b}
+      \strng{fullhashraw}{142be348bcc66be4cd06ca66f399335b}
+      \strng{bibnamehash}{3ce110be7520381d1462b2a300d21a44}
+      \strng{authorbibnamehash}{3ce110be7520381d1462b2a300d21a44}
+      \strng{authornamehash}{3ce110be7520381d1462b2a300d21a44}
+      \strng{authorfullhash}{142be348bcc66be4cd06ca66f399335b}
+      \strng{authorfullhashraw}{142be348bcc66be4cd06ca66f399335b}
+      \field{sortinit}{J}
+      \field{sortinithash}{b2f54a9081ace9966a7cb9413811edb4}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2018 29th Annual SEMI Advanced Semiconductor Manufacturing Conference (ASMC)}
+      \field{title}{A wafer map yield model based on deep learning for wafer productivity enhancement}
+      \field{year}{2018}
+      \field{pages}{29\bibrangedash 34}
+      \range{pages}{6}
+      \verb{doi}
+      \verb 10.1109/ASMC.2018.8373137
+      \endverb
+      \keyw{Semiconductor device modeling;Productivity;Predictive models;Manufacturing;Prediction algorithms;Machine learning;Data models;yield modeling;wafer map;wafer productivity;semiconductor manufacturing;deep learning}
+    \endentry
+    \entry{Kim2017_Market}{inproceedings}{}{}
+      \name{author}{5}{ul=2}{%
+        {{un=0,uniquepart=base,hash=2a7f4e68bf1c91d89f4184d8f0ec4d72}{%
+           family={Kim},
+           familyi={K\bibinitperiod},
+           given={Jong-Seong},
+           giveni={J\bibinithyphendelim S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0e261b2028d125cc67b6826ac922909d}{%
+           family={Ahn},
+           familyi={A\bibinitperiod},
+           given={Chang\bibnamedelima Wook},
+           giveni={C\bibinitperiod\bibinitdelim W\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=13328fd2d2dbeec7b6cb1b19b4e3af38}{%
+           family={Kim},
+           familyi={K\bibinitperiod},
+           given={Tae-Woo},
+           giveni={T\bibinithyphendelim W\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7be328e3311fac2487e9ed5968fee348}{%
+           family={Lee},
+           familyi={L\bibinitperiod},
+           given={Hyun-Jin},
+           giveni={H\bibinithyphendelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3bae67d30d76b9e050f7e68a3a9a694a}{%
+           family={Lee},
+           familyi={L\bibinitperiod},
+           given={Jong-Bae},
+           giveni={J\bibinithyphendelim B\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{c2e6ed8ce5dd50ba7f01ccb3f3cbfce3}
+      \strng{fullhash}{9231417d2951a43ffc25e9340f042163}
+      \strng{fullhashraw}{9231417d2951a43ffc25e9340f042163}
+      \strng{bibnamehash}{c2e6ed8ce5dd50ba7f01ccb3f3cbfce3}
+      \strng{authorbibnamehash}{c2e6ed8ce5dd50ba7f01ccb3f3cbfce3}
+      \strng{authornamehash}{c2e6ed8ce5dd50ba7f01ccb3f3cbfce3}
+      \strng{authorfullhash}{9231417d2951a43ffc25e9340f042163}
+      \strng{authorfullhashraw}{9231417d2951a43ffc25e9340f042163}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2017 28th Annual SEMI Advanced Semiconductor Manufacturing Conference (ASMC)}
+      \field{title}{A market-oriented wafer map optimization methodology using differential evolution to maximize wafer productivity}
+      \field{year}{2017}
+      \field{pages}{393\bibrangedash 398}
+      \range{pages}{6}
+      \verb{doi}
+      \verb 10.1109/ASMC.2017.7969268
+      \endverb
+      \keyw{Productivity;Throughput;Semiconductor device modeling;Lithography;Optimization;Industries;differential evolution;profitability enhancements;manufacturing strategy;wafer map optimization;wafer productivity}
+    \endentry
+    \entry{Kim2019_Productivity}{article}{}{}
+      \name{author}{5}{ul=2}{%
+        {{un=0,uniquepart=base,hash=2a7f4e68bf1c91d89f4184d8f0ec4d72}{%
+           family={Kim},
+           familyi={K\bibinitperiod},
+           given={Jong-Seong},
+           giveni={J\bibinithyphendelim S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e7033eda5eba11000d081ff886303d38}{%
+           family={Jang},
+           familyi={J\bibinitperiod},
+           given={Sung-Ju},
+           giveni={S\bibinithyphendelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=13328fd2d2dbeec7b6cb1b19b4e3af38}{%
+           family={Kim},
+           familyi={K\bibinitperiod},
+           given={Tae-Woo},
+           giveni={T\bibinithyphendelim W\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7be328e3311fac2487e9ed5968fee348}{%
+           family={Lee},
+           familyi={L\bibinitperiod},
+           given={Hyun-Jin},
+           giveni={H\bibinithyphendelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3bae67d30d76b9e050f7e68a3a9a694a}{%
+           family={Lee},
+           familyi={L\bibinitperiod},
+           given={Jong-Bae},
+           giveni={J\bibinithyphendelim B\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{3830c7db96ecac1e89feb351b1e9bf8f}
+      \strng{fullhash}{98719114810a8c07250dd47a668bdb73}
+      \strng{fullhashraw}{98719114810a8c07250dd47a668bdb73}
+      \strng{bibnamehash}{3830c7db96ecac1e89feb351b1e9bf8f}
+      \strng{authorbibnamehash}{3830c7db96ecac1e89feb351b1e9bf8f}
+      \strng{authornamehash}{3830c7db96ecac1e89feb351b1e9bf8f}
+      \strng{authorfullhash}{98719114810a8c07250dd47a668bdb73}
+      \strng{authorfullhashraw}{98719114810a8c07250dd47a668bdb73}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Semiconductor Manufacturing}
+      \field{number}{1}
+      \field{title}{A Productivity-Oriented Wafer Map Optimization Using Yield Model Based on Machine Learning}
+      \field{volume}{32}
+      \field{year}{2019}
+      \field{pages}{39\bibrangedash 47}
+      \range{pages}{9}
+      \verb{doi}
+      \verb 10.1109/TSM.2018.2870253
+      \endverb
+      \keyw{Productivity;Semiconductor device modeling;Throughput;Lithography;Optimization;Fabrication;Wafer map optimization;wafer productivity;wafer manufacturing strategy;profitability enhancements;yield modeling}
+    \endentry
+    \entry{Lambrechts2003_Trajectories}{report}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=065704f8a98bf248e20b9d4f5a3717c9}{%
+           family={Lambrechts},
+           familyi={L\bibinitperiod},
+           given={Paul\bibnamedelima F.},
+           giveni={P\bibinitperiod\bibinitdelim F\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{institution}{1}{%
+        {Technische Universiteit Eindhoven}%
+      }
+      \strng{namehash}{065704f8a98bf248e20b9d4f5a3717c9}
+      \strng{fullhash}{065704f8a98bf248e20b9d4f5a3717c9}
+      \strng{fullhashraw}{065704f8a98bf248e20b9d4f5a3717c9}
+      \strng{bibnamehash}{065704f8a98bf248e20b9d4f5a3717c9}
+      \strng{authorbibnamehash}{065704f8a98bf248e20b9d4f5a3717c9}
+      \strng{authornamehash}{065704f8a98bf248e20b9d4f5a3717c9}
+      \strng{authorfullhash}{065704f8a98bf248e20b9d4f5a3717c9}
+      \strng{authorfullhashraw}{065704f8a98bf248e20b9d4f5a3717c9}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{number}{DCT 2003-08}
+      \field{title}{Trajectory planning and feedforward design for electromechanical motion systems}
+      \field{type}{techreport}
+      \field{year}{2003}
+    \endentry
+    \entry{Al-Rawashdeh2023_Trajectories}{article}{}{}
+      \name{author}{3}{ul=2}{%
+        {{un=0,uniquepart=base,hash=c220a2d7c92d41121731ad7a5a79695d}{%
+           family={Al-Rawashdeh},
+           familyi={A\bibinithyphendelim R\bibinitperiod},
+           given={Yazan\bibnamedelima M.},
+           giveni={Y\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=29b1884a10642f2512b837e736716086}{%
+           family={Al\bibnamedelima Janaideh},
+           familyi={A\bibinitperiod\bibinitdelim J\bibinitperiod},
+           given={Mohammad},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6042fcacf26929e544f6c27e03d5eb81}{%
+           family={Heertjes},
+           familyi={H\bibinitperiod},
+           given={Marcel\bibnamedelima F.},
+           giveni={M\bibinitperiod\bibinitdelim F\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{3f87f139736e3e259b6f0ddedcdd187d}
+      \strng{fullhash}{0c197ca093ede2697b21f45963bcaec0}
+      \strng{fullhashraw}{0c197ca093ede2697b21f45963bcaec0}
+      \strng{bibnamehash}{3f87f139736e3e259b6f0ddedcdd187d}
+      \strng{authorbibnamehash}{3f87f139736e3e259b6f0ddedcdd187d}
+      \strng{authornamehash}{3f87f139736e3e259b6f0ddedcdd187d}
+      \strng{authorfullhash}{0c197ca093ede2697b21f45963bcaec0}
+      \strng{authorfullhashraw}{0c197ca093ede2697b21f45963bcaec0}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Automation Science and Engineering}
+      \field{number}{1}
+      \field{title}{Kinodynamic Generation of Wafer Scanners Trajectories Used in Semiconductor Manufacturing}
+      \field{volume}{20}
+      \field{year}{2023}
+      \field{pages}{718\bibrangedash 732}
+      \range{pages}{15}
+      \verb{doi}
+      \verb 10.1109/TASE.2022.3196318
+      \endverb
+      \keyw{Trajectory;Substrates;Tracking;Vibrations;Switches;Throughput;Dynamics;Trajectories;input shaping;throughput;lithography;operating point;operating charts;step-and-scan;traverse motion;analytical expressions}
+    \endentry
+    \entry{Al-Rawashdeh2022_Caracterization}{article}{}{}
+      \name{author}{3}{ul=2}{%
+        {{un=0,uniquepart=base,hash=c220a2d7c92d41121731ad7a5a79695d}{%
+           family={Al-Rawashdeh},
+           familyi={A\bibinithyphendelim R\bibinitperiod},
+           given={Yazan\bibnamedelima M.},
+           giveni={Y\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=49aca8eb5e7dcf8185af600f6c26b6ef}{%
+           family={Janaideh},
+           familyi={J\bibinitperiod},
+           given={Mohammad\bibnamedelima Al},
+           giveni={M\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=94294f82736da8b7d5680f9620c49a68}{%
+           family={Heertjes},
+           familyi={H\bibinitperiod},
+           given={Marcel},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{157469c03142561979f6b48c3a7dbdd3}
+      \strng{fullhash}{f620c10c3c67125a06550e023af37c39}
+      \strng{fullhashraw}{f620c10c3c67125a06550e023af37c39}
+      \strng{bibnamehash}{157469c03142561979f6b48c3a7dbdd3}
+      \strng{authorbibnamehash}{157469c03142561979f6b48c3a7dbdd3}
+      \strng{authornamehash}{157469c03142561979f6b48c3a7dbdd3}
+      \strng{authorfullhash}{f620c10c3c67125a06550e023af37c39}
+      \strng{authorfullhashraw}{f620c10c3c67125a06550e023af37c39}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0094114X}
+      \field{journaltitle}{Mechanism and Machine Theory}
+      \field{month}{4}
+      \field{title}{On characterization of a generic lithography machine in a multi-directional space}
+      \field{volume}{170}
+      \field{year}{2022}
+      \field{pages}{104638}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1016/j.mechmachtheory.2021.104638
+      \endverb
+    \endentry
+    \entry{Schmidt2012_UltraPrecision}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=d49079e7c32969f9d30f60a19539e7fa}{%
+           family={Schmidt},
+           familyi={S\bibinitperiod},
+           given={Robert-H.\bibnamedelimi Munnig},
+           giveni={R\bibinithyphendelim H\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{d49079e7c32969f9d30f60a19539e7fa}
+      \strng{fullhash}{d49079e7c32969f9d30f60a19539e7fa}
+      \strng{fullhashraw}{d49079e7c32969f9d30f60a19539e7fa}
+      \strng{bibnamehash}{d49079e7c32969f9d30f60a19539e7fa}
+      \strng{authorbibnamehash}{d49079e7c32969f9d30f60a19539e7fa}
+      \strng{authornamehash}{d49079e7c32969f9d30f60a19539e7fa}
+      \strng{authorfullhash}{d49079e7c32969f9d30f60a19539e7fa}
+      \strng{authorfullhashraw}{d49079e7c32969f9d30f60a19539e7fa}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Philosophical Transactions of the Royal Society A}
+      \field{title}{Ultra-precision engineering in lithographic exposure equipment for the semiconductor industry}
+      \field{volume}{370}
+      \field{year}{2012}
+      \field{pages}{3950\bibrangedash 3972}
+      \range{pages}{23}
+      \verb{doi}
+      \verb 10.1098/rsta.2011.0054
+      \endverb
+    \endentry
+    \entry{tissingh2023improving}{thesis}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=e8fb65b843f6b77906edd5848a6894e9}{%
+           family={Tissingh},
+           familyi={T\bibinitperiod},
+           given={Luc},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{institution}{1}{%
+        {Eindhoven University of Technology}%
+      }
+      \list{location}{1}{%
+        {Eindhoven, Netherlands}%
+      }
+      \strng{namehash}{e8fb65b843f6b77906edd5848a6894e9}
+      \strng{fullhash}{e8fb65b843f6b77906edd5848a6894e9}
+      \strng{fullhashraw}{e8fb65b843f6b77906edd5848a6894e9}
+      \strng{bibnamehash}{e8fb65b843f6b77906edd5848a6894e9}
+      \strng{authorbibnamehash}{e8fb65b843f6b77906edd5848a6894e9}
+      \strng{authornamehash}{e8fb65b843f6b77906edd5848a6894e9}
+      \strng{authorfullhash}{e8fb65b843f6b77906edd5848a6894e9}
+      \strng{authorfullhashraw}{e8fb65b843f6b77906edd5848a6894e9}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Electrical Engineering}
+      \field{title}{Improving wafer stage long stroke commutation using artificial intelligence}
+      \field{type}{mathesis}
+      \field{year}{2023}
+      \verb{urlraw}
+      \verb https://research.tue.nl/en/studentTheses/improving-wafer-stage-long-stroke-commutation-using-artificial-in
+      \endverb
+      \verb{url}
+      \verb https://research.tue.nl/en/studentTheses/improving-wafer-stage-long-stroke-commutation-using-artificial-in
+      \endverb
+    \endentry
+    \entry{todorov2012mujoco}{inproceedings}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=b8e6506859bb7959c60c94c70a288a87}{%
+           family={Todorov},
+           familyi={T\bibinitperiod},
+           given={Emanuel},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3b79ca47f08451987877fd8682e971e5}{%
+           family={Erez},
+           familyi={E\bibinitperiod},
+           given={Tom},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=58112cb88a80c1bc045b6eaab26a8695}{%
+           family={Tassa},
+           familyi={T\bibinitperiod},
+           given={Yuval},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{organization}{1}{%
+        {IEEE}%
+      }
+      \strng{namehash}{86d57b0cbccc148b681566d51203ede9}
+      \strng{fullhash}{abe7dc5f7371f04e3c8e93075cd4d474}
+      \strng{fullhashraw}{abe7dc5f7371f04e3c8e93075cd4d474}
+      \strng{bibnamehash}{86d57b0cbccc148b681566d51203ede9}
+      \strng{authorbibnamehash}{86d57b0cbccc148b681566d51203ede9}
+      \strng{authornamehash}{86d57b0cbccc148b681566d51203ede9}
+      \strng{authorfullhash}{abe7dc5f7371f04e3c8e93075cd4d474}
+      \strng{authorfullhashraw}{abe7dc5f7371f04e3c8e93075cd4d474}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2012 IEEE/RSJ International Conference on Intelligent Robots and Systems}
+      \field{title}{MuJoCo: A physics engine for model-based control}
+      \field{year}{2012}
+      \field{pages}{5026\bibrangedash 5033}
+      \range{pages}{8}
+      \verb{doi}
+      \verb 10.1109/IROS.2012.6386109
+      \endverb
+    \endentry
+    \entry{deVries2005_GrossDie}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=d4b8cd945db360f064ba94ad90315976}{%
+           family={Vries},
+           familyi={V\bibinitperiod},
+           given={D.K.},
+           giveni={D\bibinitperiod},
+           givenun=0,
+           prefix={de},
+           prefixi={d\bibinitperiod},
+           prefixun=0}}%
+      }
+      \strng{namehash}{d4b8cd945db360f064ba94ad90315976}
+      \strng{fullhash}{d4b8cd945db360f064ba94ad90315976}
+      \strng{fullhashraw}{d4b8cd945db360f064ba94ad90315976}
+      \strng{bibnamehash}{d4b8cd945db360f064ba94ad90315976}
+      \strng{authorbibnamehash}{d4b8cd945db360f064ba94ad90315976}
+      \strng{authornamehash}{d4b8cd945db360f064ba94ad90315976}
+      \strng{authorfullhash}{d4b8cd945db360f064ba94ad90315976}
+      \strng{authorfullhashraw}{d4b8cd945db360f064ba94ad90315976}
+      \field{sortinit}{V}
+      \field{sortinithash}{afb52128e5b4dc4b843768c0113d673b}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Semiconductor Manufacturing}
+      \field{number}{1}
+      \field{title}{Investigation of gross die per wafer formulas}
+      \field{volume}{18}
+      \field{year}{2005}
+      \field{pages}{136\bibrangedash 139}
+      \range{pages}{4}
+      \verb{doi}
+      \verb 10.1109/TSM.2004.836656
+      \endverb
+      \keyw{Semiconductor device modeling;Testing;Clamps;Foundries;Fabrication;Sawing;Standardization;Semiconductor device manufacture;Taylor series;Gross die per wafer (GDW);potential good die;yield}
+    \endentry
+    \entry{Wu2015_WM811K}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=6472f1ff94919e413b5652dab7fd889f}{%
+           family={Wu},
+           familyi={W\bibinitperiod},
+           given={Ming-Ju},
+           giveni={M\bibinithyphendelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e1e594f67c6eae9f5f395e8e76e4610c}{%
+           family={Jang},
+           familyi={J\bibinitperiod},
+           given={Jyh-Shing\bibnamedelima R.},
+           giveni={J\bibinithyphendelim S\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=eb7fc76f65d27311bce34bc99663a562}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={Jui-Long},
+           giveni={J\bibinithyphendelim L\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{fb72ed85effac926fa12af528a03c755}
+      \strng{fullhash}{372fee5ccce56bce3ff04f73dfd3195c}
+      \strng{fullhashraw}{372fee5ccce56bce3ff04f73dfd3195c}
+      \strng{bibnamehash}{fb72ed85effac926fa12af528a03c755}
+      \strng{authorbibnamehash}{fb72ed85effac926fa12af528a03c755}
+      \strng{authornamehash}{fb72ed85effac926fa12af528a03c755}
+      \strng{authorfullhash}{372fee5ccce56bce3ff04f73dfd3195c}
+      \strng{authorfullhashraw}{372fee5ccce56bce3ff04f73dfd3195c}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Semiconductor Manufacturing}
+      \field{number}{1}
+      \field{title}{Wafer Map Failure Pattern Recognition and Similarity Ranking for Large-Scale Data Sets}
+      \field{volume}{28}
+      \field{year}{2015}
+      \field{pages}{1\bibrangedash 12}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1109/TSM.2014.2364237
+      \endverb
+      \keyw{Feature extraction;Transforms;Support vector machines;Semiconductor device modeling;Pattern recognition;Fabrication;data models;image recognition;information retrieval;pattern recognition;semiconductor defects;Data models;image recognition;information retrieval;pattern recognition;semiconductor defects}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

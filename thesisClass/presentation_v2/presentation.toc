@@ -1,0 +1,13 @@
+\babel@toc {spanish}{}\relax 
+\beamer@sectionintoc {1}{Introducción}{3}{0}{1}
+\beamer@sectionintoc {2}{Antecedentes}{6}{0}{2}
+\beamer@sectionintoc {3}{Identificación del vacío}{8}{0}{3}
+\beamer@sectionintoc {4}{Planteamiento del problema}{10}{0}{4}
+\beamer@sectionintoc {5}{Preguntas de investigación}{11}{0}{5}
+\beamer@sectionintoc {6}{Hipótesis}{12}{0}{6}
+\beamer@sectionintoc {7}{Objetivos}{13}{0}{7}
+\beamer@sectionintoc {8}{Variables}{15}{0}{8}
+\beamer@sectionintoc {9}{Metodología}{16}{0}{9}
+\beamer@sectionintoc {10}{Cronograma y retos}{21}{0}{10}
+\beamer@sectionintoc {11}{Delimitación}{23}{0}{11}
+\beamer@sectionintoc {12}{Línea de Generación y Aplicación del Conocimiento}{24}{0}{12}

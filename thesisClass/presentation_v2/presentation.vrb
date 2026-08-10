@@ -1,0 +1,87 @@
+\frametitle{Herramienta: modelo multicuerpo flexible}
+\begin{columns}
+        \column{.45\textwidth}
+        \begin{itemize}
+            \item Sirve al \textbf{Obj. 1} (mejorar el seguimiento) generando el error dinámico bajo un perfil dado.
+            \item Sirve al \textbf{Obj. 2} (vínculo predictivo) al producir los mapas de defectos sintéticos que alimentan a la CNN.
+            \item Tres cadenas seriales acopladas al marco base: retícula, óptica y oblea (\cite{Al-Rawashdeh2022_Caracterization}).
+            \item Implementado en \textbf{MuJoCo} (\cite{todorov2012mujoco}) como \textit{digital twin}; única vía de validación al no contar con un scanner físico.
+        \end{itemize}
+        \column{.55\textwidth}
+        \begin{center}
+          \begin{turn}{90}
+          \resizebox{0.36\linewidth}{!}{
+          \begin{tikzpicture}[scale=1, transform shape,
+            every node/.style    ={font=\small},
+            rfrm/.style          ={draw=frameEdge, line width=0.6pt, fill=frameFill, minimum height=0.80cm, font=\small\bfseries, inner sep=2pt},
+            rblk/.style          ={draw=reticleEdge, line width=0.5pt, fill=reticleFill, minimum height=0.55cm, font=\footnotesize, text=mnnwInk, inner sep=2.5pt},
+            rflx/.style          ={draw=reticleEdge, line width=0.4pt, fill=reticleFlex, minimum height=0.42cm, font=\scriptsize, text=mnnwInk, inner sep=2pt, dashed},
+            wblk/.style          ={draw=waferEdge, line width=0.5pt, fill=waferFill, minimum height=0.55cm, font=\footnotesize, text=mnnwInk, inner sep=2.5pt},
+            wflx/.style          ={draw=waferEdge, line width=0.4pt, fill=waferFlex, minimum height=0.42cm, font=\scriptsize, text=mnnwInk, inner sep=2pt, dashed},
+            oblk/.style          ={draw=opticsEdge, line width=0.5pt, fill=opticsFill, minimum height=0.55cm, font=\footnotesize, text=mnnwInk, inner sep=2.5pt},
+            oflx/.style          ={draw=opticsEdge, line width=0.4pt, fill=opticsFlex, minimum height=0.42cm, font=\scriptsize, text=mnnwInk, inner sep=2pt, dashed},
+            ghost/.style         ={draw=mnnwHair, dashed, line width=0.35pt, fill=none, minimum height=0.55cm},
+            hsp/.style           ={line width=0.5pt, mnnwInk, decorate, decoration={zigzag, segment length=3.6pt, amplitude=2pt, pre length=2pt, post length=2pt}},
+            vsp/.style           ={line width=0.5pt, mnnwInk, decorate, decoration={zigzag, segment length=3.6pt, amplitude=2pt, pre length=2pt, post length=2pt}},
+            darr/.style          ={Stealth-Stealth, line width=0.5pt, mnnwSignal},
+            lbl/.style           ={font=\scriptsize, text=mnnwInk},
+            ftn/.style           ={font=\scriptsize, text=mnnwSignal},
+            axis/.style          ={dashed, line width=0.4pt, mnnwMute},
+            pillar/.style        ={fill=black!8, draw=mnnwHair, line width=0.3pt},
+            hatchfloor/.style    ={pattern=north east lines, pattern color=mnnwMute},
+          ]
+          \def\xLeft{-8.0}\def\xRight{8.0}
+          \def\xPilL{-7.4}\def\xPilR{7.4}
+          \def\yFloor{0}
+          \def\yBase{1.4}
+          \def\yWa{3.4}\def\yWb{5.4}\def\yWc{7.4}\def\yWd{9.4}\def\yWe{11.4}\def\yWf{13.4}
+          \def\yOa{17.2}\def\yOb{19.2}\def\yOc{21.2}
+          \def\yRa{25.2}\def\yRb{27.2}\def\yRc{29.2}\def\yRd{31.2}\def\yRe{33.2}\def\yRf{35.2}
+          \def\yTop{35.5}
+          \def\yShA{15.4}\def\yShB{23.2}
+          \filldraw[hatchfloor, draw=mnnwInk, line width=0.7pt]
+            (\xRight, 0) -- (\xLeft-0.6, 0) -- (\xLeft-0.6, \yWb) -- (\xLeft-1.1, \yWb)
+            -- (\xLeft-1.1, -0.5) -- (\xRight, -0.5) -- cycle;
+          \node[lbl, anchor=west] at (\xRight+0.08,0.20) {$\mathcal{F}_0$};
+          \draw[axis] (0,-0.05) -- (0,\yTop);
+          \filldraw[draw=frameEdge, line width=0.6pt, fill=frameFill]
+            (7.8, \yBase-0.4) -- (-7.8, \yBase-0.4) -- (-7.8, \yTop) -- (-7.4, \yTop)
+            -- (-7.4, \yShB+0.4) -- (7.8, \yShB+0.4) -- (7.8, \yShB-0.4) -- (-7.4, \yShB-0.4)
+            -- (-7.4, \yShA+0.4) -- (7.8, \yShA+0.4) -- (7.8, \yShA-0.4) -- (-7.4, \yShA-0.4)
+            -- (-7.4, \yBase+0.4) -- (7.8, \yBase+0.4) -- cycle;
+          \node[font=\small\bfseries, text=mnnwInk] at (0, \yBase) {Marco Base $\;(\mathcal{F}_1)$};
+          \hdamperLong{\xLeft-0.6}{-7.8}{2.5}
+          \node[lbl, above=2pt] at ({(\xLeft-0.6-7.8)/2}, 2.5) {$C_1$};
+          \draw[hsp] (\xLeft-0.6, 2.0) -- (-7.8, 2.0) node[midway, below=4pt, lbl] {$K_1$};
+          \pgfmathsetmacro{\shelfW}{\yBase+0.4}
+          \xdef\lastSpringY{\shelfW} \xdef\lastX{0}
+          \chainrow{\yWa}{wblk}{0}{ 0.9}{\textbf{Oblea LS} $(i_3{=}2)$}{$K_{2,3}$}{$C_{2,3}$}{$f_{2,3}$}
+          \chainrow{\yWb}{wflx}{0.9}{ 1.8}{Acoplamiento flexible $(i_3{=}3)$}{$K_{3,3}$}{$C_{3,3}$}{$f_{3,3}$}
+          \chainrow{\yWc}{wblk}{1.8}{ 2.7}{\textbf{Oblea SS} $(i_3{=}4)$}{$K_{4,3}$}{$C_{4,3}$}{$f_{4,3}$}
+          \chainrow{\yWd}{wflx}{2.7}{ 3.6}{Acoplamiento flexible $(i_3{=}5)$}{$K_{5,3}$}{$C_{5,3}$}{$f_{5,3}$}
+          \chainrow{\yWe}{wblk}{3.6}{ 4.5}{\textbf{Plataforma de la Oblea} $(i_3{=}6)$}{$K_{6,3}$}{$C_{6,3}$}{$f_{6,3}$}
+          \chainrow{\yWf}{wblk}{4.5}{ 5.4}{\textbf{Dado} $(N_3{=}7)$}{$K_{N_3,3}$}{$C_{N_3,3}$}{$f_{N_3,3}$}
+          \pgfmathsetmacro{\shelfO}{\yShA+0.4}
+          \xdef\lastSpringY{\shelfO} \xdef\lastX{0}
+          \chainrow{\yOa}{oblk}{0}{-0.9}{\textbf{Marco de Metrología} $(i_2{=}2)$}{$K_{2,2}$}{$C_{2,2}$}{$f_{2,2}$}
+          \chainrow{\yOb}{oblk}{-0.9}{-1.8}{Caja de Óptica $(i_2{=}3)$}{$K_{3,2}$}{$C_{3,2}$}{$f_{3,2}$}
+          \chainrow{\yOc}{oblk}{-1.8}{-2.7}{Lente $(i_2{=}4)$}{$K_{4,2}$}{$C_{4,2}$}{$f_{4,2}$}
+          \pgfmathsetmacro{\shelfR}{\yShB+0.4}
+          \xdef\lastSpringY{\shelfR} \xdef\lastX{0}
+          \chainrow{\yRa}{rblk}{0}{-0.9}{\textbf{Retícula LS} $(i_1{=}2)$}{$K_{2,1}$}{$C_{2,1}$}{$f_{2,1}$}
+          \chainrow{\yRb}{rflx}{-0.9}{-1.8}{Acoplamiento flexible $(i_1{=}3)$}{$K_{3,1}$}{$C_{3,1}$}{$f_{3,1}$}
+          \chainrow{\yRc}{rblk}{-1.8}{-2.7}{\textbf{Retícula SS} $(i_1{=}4)$}{$K_{4,1}$}{$C_{4,1}$}{$f_{4,1}$}
+          \chainrow{\yRd}{rflx}{-2.7}{-3.6}{Acoplamiento flexible $(i_1{=}5)$}{$K_{5,1}$}{$C_{5,1}$}{$f_{5,1}$}
+          \chainrow{\yRe}{rblk}{-3.6}{-4.5}{\textbf{Plataforma de la Retícula} $(i_1{=}6)$}{$K_{6,1}$}{$C_{6,1}$}{$f_{6,1}$}
+          \chainrow{\yRf}{rblk}{-4.5}{-5.4}{\textbf{Fotomáscara} $(N_1{=}7)$}{$K_{N_1,1}$}{$C_{N_1,1}$}{$f_{N_1,1}$}
+          \draw[line width=0.4pt, waferEdge]   (\xPilR+0.30,\yWa-0.30) -- (\xPilR+0.30,\yWf+0.30);
+          \node[font=\scriptsize\bfseries, text=waferEdge, rotate=-90, anchor=south] at (\xPilR+0.55,{(\yWa+\yWf)/2}) {Cadena de la oblea $(j{=}3)$};
+          \draw[line width=0.4pt, opticsEdge]  (\xPilR+0.30,\yOa-0.30) -- (\xPilR+0.30,\yOc+0.30);
+          \node[font=\scriptsize\bfseries, text=opticsEdge, rotate=-90, anchor=south] at (\xPilR+0.55,{(\yOa+\yOc)/2}) {Cadena de óptica $(j{=}2)$};
+          \draw[line width=0.4pt, reticleEdge] (\xPilR+0.30,\yRa-0.30) -- (\xPilR+0.30,\yRf+0.30);
+          \node[font=\scriptsize\bfseries, text=reticleEdge, rotate=-90, anchor=south] at (\xPilR+0.55,{(\yRa+\yRf)/2}) {Cadena de la retícula $(j{=}1)$};
+          \end{tikzpicture}
+          }
+          \end{turn}
+        \end{center}
+    \end{columns}

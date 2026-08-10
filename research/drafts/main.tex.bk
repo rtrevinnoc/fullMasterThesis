@@ -1,0 +1,692 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{xcolor}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\usepackage{soul}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[style=ieee, backend=biber]{biblatex}
+\addbibresource{references.bib}
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathmorphing,patterns,arrows.meta,calc}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\begin{document}
+\setcounter{section}{8}
+\title{Theoretical Framework}
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Theoretical Framework}\\
+%{\large Physics 300}\\
+%Fall 2016
+\end{center}
+
+\section{Introduction}
+
+The history of modern electronics is inseparable from the history of lithography. Since the independent invention of the integrated circuit (IC) by Jack Kilby at Texas Instruments and Robert Noyce at Fairchild Semiconductor in 1958, Moore's Law has governed the relentless progression of the semiconductor industry: the density of components on a chip doubles approximately every two years \cite{Schmidt2012_UltraPrecision}. This exponential trajectory has translated into dramatic reductions in cost alongside equally dramatic increases in performance. The price of one gigabyte of NAND flash memory, for instance, fell from over \$1000 at the start of this millennium to below \$0.30 by the mid-2010s \cite{Butler2011_PositionControl}, while the minimum transistor feature size has shrunk from hundreds of nanometres to just a few tens of nanometres. The engine of this revolution is \textit{photolithography} — the process by which the intricate patterns of a transistor, a wire, or a memory cell are projected onto a silicon wafer with nanometre-scale fidelity.
+
+The fabrication of a modern IC consists of up to 30 sequential process cycles, each defining one distinct layer of the device \cite{Schmidt2012_UltraPrecision}. A monocrystalline silicon wafer — a thin disc of up to 300\,mm in diameter — serves as the substrate throughout this process. Each cycle begins with a chemical pre-treatment, such as the thermal growth of a thin oxide film for electrical isolation. A photosensitive material called \textit{resist} is then deposited onto the wafer surface. An optical exposure system projects the pattern for the current layer — defined in a chromium film on a transparent quartz plate known as the \textit{reticle}, or \textit{photo-mask} — onto the resist. After development, the regions that received light are selectively dissolved (in the case of a positive resist), exposing the underlying material. This material then undergoes one of several process steps. \textit{Plasma etching} selectively removes oxide or semiconductor material to define trenches and isolation regions. \textit{Ion implantation} locally modifies the electrical properties of the silicon to form transistor junctions and doped wells. \textit{Physical or chemical vapour deposition} lays down thin films of conductive metal — typically tungsten or copper — to form the interconnecting wiring that links the millions of functional elements stacked across all layers. After processing, the remaining resist is stripped and the cycle repeats for the next layer, until all layers are complete and the wafer is diced and packaged.
+
+In the earliest days of the industry, the reticle was brought into direct physical contact with the resist-coated wafer during exposure — a technique known as \textit{contact lithography}. While simple, this approach had two fundamental shortcomings. First, repeated physical contact progressively contaminated and damaged the delicate reticle pattern, necessitating its costly and time-consuming replacement. Second, a 1:1 projection offers no optical resolution advantage: any defect present on the reticle is transferred at full size onto the wafer. These limitations motivated a transition to \textit{projection optical lithography}, in which a reduction lens images the reticle pattern onto the wafer from a safe working distance. The projection lens introduces a demagnification factor of four, meaning that features on the reticle are printed four times smaller on the wafer, immediately relaxing the demands on reticle fabrication. The minimum printable feature size, known as the \textit{critical dimension} (CD), is governed by \cite{Schmidt2012_UltraPrecision}:
+\begin{equation}
+    \mathrm{CD} = k\,\frac{\lambda}{\mathrm{NA}},
+    \label{eq:rayleigh}
+\end{equation}
+where $\lambda$ is the illumination wavelength, $\mathrm{NA}$ is the numerical aperture of the projection lens, and $k$ is a process-dependent factor. Reducing CD requires a shorter wavelength, a higher NA, and process improvements that lower $k$. This relation has driven a continuous push toward shorter wavelengths — from mercury arc-lamp sources at 436\,nm and 365\,nm, through excimer lasers at 248\,nm and 193\,nm, to the extreme ultraviolet (EUV) sources at 13.5\,nm now entering production.
+
+Achieving a high numerical aperture, however, comes with a practical constraint. Since $\mathrm{NA} = n\sin\vartheta$, where $\vartheta$ is the half-angle of the marginal ray accepted by the lens, attaining values of NA close to one in air requires the lens to subtend a very wide solid angle. Constructing a lens element that simultaneously covers the full area of a 300\,mm wafer at high NA would require an optical element of impractical size and cost \cite{Schmidt2012_UltraPrecision}. The industry's solution was to accept a smaller \textit{exposure field} — typically $26 \times 32$\,mm, corresponding to a single IC die — and expose the wafer in successive steps: after each die is exposed, the wafer stage repositions the wafer to the next die location and the exposure is repeated. This architecture defines the \textit{wafer stepper}. In a stepper, each die is illuminated in a single, instantaneous full-field flash, with the stage brought to a complete stop before exposure commences.
+
+While the stepper represented a decisive step forward, exposing an entire die simultaneously subjects the full field to any non-uniformities in the illumination intensity or lens aberrations. The \textit{scanner} addresses this by replacing the full-field flash with a \textit{scanning exposure}: the illumination system reveals only a narrow rectangular slit of the reticle, and the reticle stage sweeps the mask through this slit while the wafer stage moves synchronously in the opposite direction, maintaining the 4:1 demagnification relationship throughout \cite{Butler2011_PositionControl, Schmidt2012_UltraPrecision}. Because the reticle moves at four times the speed of the wafer, it traverses the full reticle pattern in the same time that the wafer moves one die height. This scanning motion offers significant advantages over full-field exposure: it averages out illumination dose non-uniformities across the exposure field, improves imaging uniformity at the field edges, and allows the use of a physically larger reticle that is easier to write with electron-beam pattern generators. After each die is scanned, the wafer is stepped to the next die position and the scan repeats, defining the \textit{step-and-scan} cycle that gives modern lithographic tools their name. A throughput of over 175 wafers per hour — corresponding to less than 0.2\,s of exposure time per die — is not uncommon in state-of-the-art tools \cite{Butler2011_PositionControl}.
+
+A critical consequence of the multi-layer nature of IC fabrication is the requirement that each new layer be positioned with nanometre-level accuracy relative to all preceding layers — a specification known as \textit{overlay}. The functional layers of a chip are interconnected by millions of tiny conductive pillars called \textit{vias}; a misregistration between consecutive layers of even a few nanometres can misalign a via, break an intended connection, or create an unintended short circuit, rendering the IC defective \cite{Schmidt2012_UltraPrecision}. Overlay requirements scale roughly in proportion with the CD and currently sit below 4\,nm for leading-edge nodes. Overlay is therefore one of the primary technology drivers in scanner design, and it is governed directly by the positioning accuracy of the wafer and reticle stages during the scanning exposure.
+
+The commercial performance of a scanner is ultimately measured in wafers per hour (WPH), since a machine whose capital cost can exceed \$150 million must generate revenue continuously. Although the exposure time per die is fixed by the optics and the process, the time spent stepping and \textit{settling} — the interval between the end of a step motion and the moment the stage has damped its residual vibrations to within the nanometre-level positioning specification — represents a significant and controllable fraction of the total cycle time \cite{Butler2011_PositionControl}, which places the allowable settle time below 10\,ms. Every millisecond saved in settling directly translates into more dies exposed per hour and thus more chips delivered per unit time, with a lower cost per chip. Reducing settling time is therefore a central objective in scanner control engineering.
+
+It is worth noting that, while EUV lithography at 13.5\,nm has entered high-volume production for leading-edge nodes below 10\,nm, deep ultraviolet (DUV) optical lithography at 193\,nm remains the dominant technology for \textit{mature nodes} — technology generations at 28\,nm and above. Mature-node chips are the backbone of automotive electronics, industrial controllers, power management devices, analogue circuits, and the vast majority of consumer electronics. The aggregate volume of wafers produced at mature nodes substantially exceeds that at leading-edge nodes, and is projected to remain so for the foreseeable future. Throughput improvements in DUV step-and-scan tools therefore continue to have a large global impact.
+
+The key lever for reducing settling time — and thus for increasing scanner throughput — is the generation of \textit{reference trajectories}: motion profiles that command the stage from its current position to the next scanning start-point with minimal excitation of mechanical resonances and the shortest possible residual settling tail. A well-designed trajectory limits the energy injected into the structural eigenmodes of the machine, reduces induced vibrations in the sensitive metrology and optical systems, and enables the stage to reach nanometre-level positioning accuracy well within the allocated window. The design of such trajectories is a problem of direct industrial relevance, and forms the central subject of this work.
+
+% ---- Damper pics (horizontal and vertical) ----
+\tikzset{
+  hdamper/.pic={
+    % horizontal piston-cylinder: left rod, box, piston fin, right rod
+    \draw[thick] (-0.55,0) -- (-0.22,0);
+    \draw[thick] (-0.22,-0.12) rectangle (0.22,0.12);
+    \draw[thick] (0,   -0.12) -- (0,   0.12);
+    \draw[thick] (0.22,0) -- (0.55,0);
+  },
+  vdamper/.pic={
+    \draw[thick] (0,-0.55) -- (0,-0.22);
+    \draw[thick] (-0.12,-0.22) rectangle (0.12,0.22);
+    \draw[thick] (-0.12,0)     -- (0.12,0);
+    \draw[thick] (0,0.22) -- (0,0.55);
+  },
+}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=0.8, transform shape,
+  frm/.style   ={draw, thick, fill=green!12, minimum width=13cm, minimum height=0.75cm, font=\small\bfseries},
+  rblk/.style  ={draw, thick, fill=blue!12,  minimum height=0.65cm, font=\small},
+  wblk/.style  ={draw, thick, fill=red!12,   minimum height=0.65cm, font=\small},
+  gblk/.style  ={draw=gray!40, dashed, thin, fill=none, minimum height=0.65cm},
+  hsp/.style   ={thick, decorate,
+                  decoration={zigzag, segment length=5pt, amplitude=2.5pt}},
+  vsp/.style   ={thick, decorate,
+                  decoration={zigzag, segment length=5pt, amplitude=2.5pt}},
+  darr/.style  ={stealth-stealth, thick, blue!70!black},
+  lbl/.style   ={font=\footnotesize},
+]
+
+%% ===== FLOOR & PILLARS =====
+\fill[pattern=north east lines, pattern color=gray!30]
+  (-6.8,-0.3) rectangle (6.8,0);
+\draw[very thick] (-6.8,0) -- (6.8,0)
+  node[right, lbl] {$\mathcal{F}_0$};
+\fill[gray!20] (-6.5,0) rectangle (-6.2,22);
+\fill[gray!20] ( 6.2,0) rectangle ( 6.5,22);
+
+%% ===== Pd AXIS =====
+\draw[dashed, gray!55, thin] (0,-0.2) -- (0,22.5)
+  node[above, black, font=\small] {$P_d$};
+
+%% ===== BASE FRAME  (y = 1.1) =====
+\node[frm] (BF) at (0,1.1) {Base Frame $(\mathcal{F}_1)$};
+
+% K1 / C1  — vertical, left side
+\draw[vsp] (-5.4,0) -- (-5.4,0.725)
+  node[midway, left, lbl] {$K_1$};
+\pic[thick] at (-4.6,0.36) {vdamper};
+\node[right=2pt, lbl] at (-4.48,0.36) {$C_1$};
+
+%% ===== WAFER CHAIN =====
+% --- Wafer LS  (i3=2,  offset +1.2,  y=3.8) ---
+\node[gblk, minimum width=8.5cm] at (0,3.8) {};
+\node[wblk, minimum width=8.5cm] at (1.2,3.8)
+  {\small Wafer LS $(i_3{=}2)$};
+% spring
+\draw[hsp] (0,4.12) -- (1.2,4.12)
+  node[midway, above, lbl] {$K_{2,3}$};
+% damper
+\pic[thick] at (0.6,3.8) {hdamper};
+\node[below=6pt, lbl] at (0.6,3.8) {$C_{2,3}$};
+% deviation arrow
+\draw[darr] (0,3.45) -- (1.2,3.45)
+  node[midway, below, lbl] {$f_{2,3}$};
+
+% --- Wafer SS  (i3=3,  offset +2.1,  y=6.3) ---
+\node[gblk, minimum width=6cm] at (0,6.3) {};
+\node[wblk, minimum width=6cm] at (2.1,6.3)
+  {\small Wafer SS $(i_3{=}3)$};
+\draw[hsp] (0,6.62) -- (2.1,6.62)
+  node[midway, above, lbl] {$K_{3,3}$};
+\pic[thick] at (1.05,6.3) {hdamper};
+\node[below=6pt, lbl] at (1.05,6.3) {$C_{3,3}$};
+\draw[darr] (0,5.95) -- (2.1,5.95)
+  node[midway, below, lbl] {$f_{3,3}$};
+
+% --- Wafer  (N3,  offset +3.0,  y=8.8) ---
+\node[gblk, minimum width=3.5cm] at (0,8.8) {};
+\node[wblk, minimum width=3.5cm] at (3.0,8.8)
+  {\small Wafer $(N_3)$};
+\draw[hsp] (0,9.12) -- (3.0,9.12)
+  node[midway, above, lbl] {$K_{N_3,3}$};
+\pic[thick] at (1.5,8.8) {hdamper};
+\node[below=6pt, lbl] at (1.5,8.8) {$C_{N_3,3}$};
+\draw[darr] (0,8.45) -- (3.0,8.45)
+  node[midway, below, lbl] {$f_{N_3,3}$};
+
+%% ===== METROLOGY FRAME  (y = 12.2) =====
+\node[frm, minimum height=1.1cm] (MF) at (0,12.2)
+  {Metrology Frame $(\mathcal{F}_2)$};
+\node[draw, fill=gray!22, minimum width=3cm, minimum height=0.45cm,
+      font=\footnotesize] at (0,12.0) {Lens};
+
+% K2 / C2  — vertical, right side  (base frame top to metrology frame bottom)
+\draw[vsp] (5.5,1.475) -- (5.5,11.745)
+  node[midway, right, lbl] {$K_2$};
+\pic[thick] at (4.6,6.6) {vdamper};
+\node[right=2pt, lbl] at (4.72,6.6) {$C_2$};
+
+%% ===== RETICLE CHAIN =====
+% --- Reticle LS  (i1=2,  offset -1.2,  y=15.2) ---
+\node[gblk, minimum width=10cm] at (0,15.2) {};
+\node[rblk, minimum width=10cm] at (-1.2,15.2)
+  {\small Reticle LS $(i_1{=}2)$};
+\draw[hsp] (0,15.52) -- (-1.2,15.52)
+  node[midway, above, lbl] {$K_{2,1}$};
+\pic[thick] at (-0.6,15.2) {hdamper};
+\node[below=6pt, lbl] at (-0.6,15.2) {$C_{2,1}$};
+\draw[darr] (0,14.85) -- (-1.2,14.85)
+  node[midway, below, lbl] {$f_{2,1}$};
+
+% --- Reticle SS  (i1=3,  offset -2.1,  y=17.7) ---
+\node[gblk, minimum width=7cm] at (0,17.7) {};
+\node[rblk, minimum width=7cm] at (-2.1,17.7)
+  {\small Reticle SS $(i_1{=}3)$};
+\draw[hsp] (0,18.02) -- (-2.1,18.02)
+  node[midway, above, lbl] {$K_{3,1}$};
+\pic[thick] at (-1.05,17.7) {hdamper};
+\node[below=6pt, lbl] at (-1.05,17.7) {$C_{3,1}$};
+\draw[darr] (0,17.35) -- (-2.1,17.35)
+  node[midway, below, lbl] {$f_{3,1}$};
+
+% --- Mask  (N1,  offset -3.0,  y=20.2) ---
+\node[gblk, minimum width=4cm] at (0,20.2) {};
+\node[rblk, minimum width=4cm] at (-3.0,20.2)
+  {\small Mask $(N_1)$};
+\draw[hsp] (0,20.52) -- (-3.0,20.52)
+  node[midway, above, lbl] {$K_{N_1,1}$};
+\pic[thick] at (-1.5,20.2) {hdamper};
+\node[below=6pt, lbl] at (-1.5,20.2) {$C_{N_1,1}$};
+\draw[darr] (0,19.85) -- (-3.0,19.85)
+  node[midway, below, lbl] {$f_{N_1,1}$};
+
+\end{tikzpicture}
+\caption{Lumped-parameter mechatronic model of the lithography scanner following \cite{Al-Rawashdeh2022_Caracterization}. The dashed vertical line is the intended trajectory $P_d$. Each stage block is offset from $P_d$ by its generalised displacement $f_{i,j}$ (blue arrows). Horizontal Kelvin--Voigt elements ($K_{i,j}$, $C_{i,j}$) couple each scanning stage to the optical axis. Vertical elements ($K_1$, $C_1$; $K_2$, $C_2$) model ground-to-base-frame and base-to-metrology-frame vibration isolation.}
+\label{fig:litho_model_final}
+\end{figure}
+
+\section{Model}
+
+In \cite{Al-Rawashdeh2022_Caracterization}, the authors propose modeling the lithography scanner as a combination of three open-loop serial chains: the reticle chain ($j=1$), the optics chain ($j=2$), and the wafer chain ($j=3$), the latter being of primary interest for the step-and-scan motion problem studied here.
+
+The full 6-DOF model of \cite{Al-Rawashdeh2022_Caracterization} is here restricted to in-plane (planar) motions. The generalized coordinate used to describe the configuration of the $i$th stage within the $j$th chain is
+\begin{equation}
+    q_{i_j} = \begin{bmatrix} f_{i_j} \\ \theta_{z_{i_j}} \end{bmatrix} \in \mathbb{R}^{3\times1},
+\end{equation}
+where $f_{i_j} = [f_{x,i_j},\, f_{y,i_j}]^T \in \mathbb{R}^{2}$ collects the in-plane translational displacements of stage $i$ \emph{relative to its parent body} in chain $j$, and $\theta_{z_{i_j}} \in \mathbb{R}$ is the corresponding rotation about the out-of-plane $z$-axis. The joints between bodies within a chain are modeled as a low-mass Kelvin--Voigt element — a parallel spring-damper system \cite{Al-Rawashdeh2022_Caracterization}. Two distinct joint types arise: \emph{actuated} stages ($i \in \{2,4,6\}$), which are driven by servo motors and carry a near-infinite effective stiffness that keeps $f_{i_j}$ locked to the commanded trajectory; and \emph{flex} stages ($i \in \{3,5,7\}$), which are passive compliant connections whose stiffness $K_{i_j}$ and damping $C_{i_j}$ are physical material properties of the mechanical coupling. The associated generalized mass-inertia matrix for each body is
+\begin{equation}
+    M_{i_j} = \begin{bmatrix} m_{i_j}\,\mathbf{I}_2 & 0 \\ 0 & I_{z_{i_j}} \end{bmatrix} \in \mathbb{R}^{3\times3},
+\end{equation}
+and the generalized stiffness and damping matrices $K_{i_j},\, C_{i_j} \in \mathbb{R}^{3\times3}$ are block-diagonal, with a $2\times2$ translational block and a scalar rotational entry.
+
+In order to recover the absolute (inertial-frame) position $f^{0}_{i_j}$ of body $i$ from its relative joint coordinates, one accumulates the relative displacements along the chain from the floor frame $\mathcal{F}_{0}$. For bodies with $i \geq 2$ on any chain $j \in \{1,2,3\}$:
+\begin{equation} \label{eq:frameref}
+    f^{0}_{i_j} = f^{0}_{(i-1)_j} + f_{i_j}
+\end{equation}
+
+Since the rotation about the $z$-axis is a scalar, the angular position recurrence is simply additive:
+\begin{equation} \label{eq:angleref}
+    \theta^{0}_{z_{i_j}} = \theta^{0}_{z_{(i-1)_j}} + \theta_{z_{i_j}}
+\end{equation}
+
+The translational velocity expression appears as:
+\begin{equation}
+    \dot{f}^{0}_{i_j} = \dot{f}^{0}_{(i-1)_j} + \dot{f}_{i_j} + \omega_{(i-1)_j}
+    \times
+    f_{i_j}
+\end{equation}
+
+Where $\omega_{(i-1)_j}$ is the angular velocity \supercite{Ginsberg1984_AdvancedDynamics} of $\mathcal{F}_{(i-1)_j}$ with respect to the floor, $\mathcal{F}_{0}$.
+
+Taking the second derivative gives:
+\begin{align}
+    \begin{split}
+        \ddot{f}^{0}_{i_j} &= \ddot{f}^{0}_{(i-1)_j} + \ddot{f}_{i_j}
+        + \omega_{(i-1)_j} \times \dot{f}_{i_j}
+        + \dot{\omega_{(i-1)_j}} \times f_{i_j}
+        + \omega_{(i-1)_j} \times \left[
+            \dot{f}_{i_j} + \omega_{(i-1)_j} \times f_{i_j}
+        \right] \\
+        &= \ddot{f}^{0}_{(i-1)_j} + \ddot{f}_{i_j}
+        + \omega_{(i-1)_j} \times \dot{f}_{i_j}
+        + \dot{\omega_{(i-1)_j}} \times f_{i_j}
+        + \omega_{(i-1)_j} \times \dot{f}_{i_j}
+        + \omega_{(i-1)_j} \times \left[
+            \omega_{(i-1)_j} \times f_{i_j}
+        \right] \\
+        &= \ddot{f}^{0}_{(i-1)_j} + \ddot{f}_{i_j}
+        + 2 \left[ \omega_{(i-1)_j} \times \dot{f}_{i_j} \right]
+        + \dot{\omega_{(i-1)_j}} \times f_{i_j}
+        + \omega_{(i-1)_j} \times \left[
+            \omega_{(i-1)_j} \times f_{i_j}
+        \right]
+    \end{split}
+\end{align}
+
+Since we are concerned with planar movements in this work, we restrict the angular velocity of each body purely about the $z$-axis as $\omega = \dot{\theta}_z\,\hat{z}$, so that:
+\begin{equation}
+    \omega_{(i-1)_j} = \dot{\theta}^{0}_{z_{(i-1)_j}}\,\hat{z} \notag
+\end{equation}
+
+We substitute the cross-products as matrix-vector products using the skew-symmetric matrix. In \cite{Al-Rawashdeh2022_Caracterization}, it appears as:
+\begin{equation}
+    [\omega]
+    =
+    \begin{bmatrix}
+        0 & -\omega_z & \omega_y \\
+        \omega_z & 0 & -\omega_x \\
+        -\omega_y & \omega_x & 0
+    \end{bmatrix}
+    \notag
+\end{equation}
+Clearly, here we can set $\omega_x = 0$ and $\omega_y = 0$, thus $\omega = [0,\, 0,\, \dot{\theta}_z]^T$ the matrix becomes:
+\begin{equation}
+    [\omega]
+    =
+    \begin{bmatrix}
+        0 & -\omega_z & 0 \\
+        \omega_z & 0 & 0 \\
+        0 & 0 & 0
+    \end{bmatrix}
+    \notag
+\end{equation}
+
+Considering our 2D displacement vector, we only take the upper-left $2\times2$ 
+sub-matrix, and factoring out the scalar $\dot{\theta}^{0}_{z_{(i-1)_j}}$:
+\begin{equation} \label{eq:skew}
+    [\omega_{(i-1)_j}] = \dot{\theta}^{0}_{z_{(i-1)_j}}
+    \begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}
+\end{equation}
+such that $\omega_{(i-1)_j} \times f_{i_j} = [\omega_{(i-1)_j}]\,f_{i_j}$. 
+Applying this matrix twice gives the centripetal term:
+\begin{equation}
+    [\omega_{(i-1)_j}]^2 = -\left(\dot{\theta}^{0}_{z_{(i-1)_j}}\right)^2 \mathbf{I}_2
+\end{equation}
+so that $\omega_{(i-1)_j} \times [\omega_{(i-1)_j} \times f_{i_j}] =
+[\omega_{(i-1)_j}]^2\,f_{i_j}$. Substituting and expanding
+\eqref{eq:frameref} recursively from the floor frame, the translational kinematics become:
+\begin{align}
+    f^{0}_{i_j}
+        &= f^{0}_{1} + \sum^{i}_{k=2} f_{k_j}
+        \label{eq:pos_expanded} \\
+    \dot{f}^{0}_{i_j}
+        &= \dot{f}^{0}_{1} + \sum^{i}_{k=2} \dot{f}_{k_j}
+         + \sum^{i}_{k=2} [\omega_{(k-1)_j}]\, f_{k_j}
+        \label{eq:vel_expanded} \\
+    \ddot{f}^{0}_{i_j}
+        &= \ddot{f}^{0}_{1} + \sum^{i}_{k=2} \ddot{f}_{k_j}
+         + \sum^{i}_{k=2} \left[
+             2\,[\omega_{(k-1)_j}]\,\dot{f}_{k_j}
+             + [\dot{\omega}_{(k-1)_j}]\,f_{k_j}
+             + [\omega_{(k-1)_j}]^2\,f_{k_j}
+         \right]
+        \label{eq:acc_expanded}
+\end{align}
+
+Since the rotation $\theta_{z_{i_j}}$ is a scalar, no Coriolis or centripetal cross-terms arise in the angular kinematics. Expanding \eqref{eq:angleref} recursively from the floor frame gives the rotational analogues:
+\begin{align}
+    \theta^{0}_{z_{i_j}}
+        &= \theta^{0}_{z_1} + \sum^{i}_{k=2} \theta_{z_{k_j}}
+        \label{eq:angle_expanded} \\
+    \dot{\theta}^{0}_{z_{i_j}}
+        &= \dot{\theta}^{0}_{z_1} + \sum^{i}_{k=2} \dot{\theta}_{z_{k_j}}
+        \label{eq:angvel_expanded} \\
+    \ddot{\theta}^{0}_{z_{i_j}}
+        &= \ddot{\theta}^{0}_{z_1} + \sum^{i}_{k=2} \ddot{\theta}_{z_{k_j}}
+        \label{eq:angacc_expanded}
+\end{align}
+
+Thus the equation of the angular motion of the $i$th body in the $j$th chain w.r.t $\mathcal{F}_{0}$ is:
+\begin{equation}
+    {}^{0}\!I_j \, \dot{\omega}_j + \left( [\omega_j] \right) {}^{0}\!I_j \, \omega_j  = m_j^0
+\end{equation}
+
+Under the planar restriction $\omega_x = \omega_y = 0$ the gyroscopic term vanishes like:
+\begin{equation}
+    \left([\omega_{i_j}]\,{}^0\!I_{i_j}\right)\omega_{i_j}
+    =
+    \begin{bmatrix}
+        0 & -\dot{\theta}_z & 0 \\
+        \dot{\theta}_z & 0 & 0 \\
+        0 & 0 & 0
+    \end{bmatrix}
+    \begin{bmatrix}
+        I_{xx} & 0 & 0 \\
+        0 & I_{yy} & 0 \\
+        0 & 0 & I_{zz}
+    \end{bmatrix}
+    \begin{bmatrix}
+        0 \\
+        0 \\
+        \dot{\theta}_z
+    \end{bmatrix}
+    = 0
+    \notag
+\end{equation}
+
+Leaving only:
+\begin{equation}
+    I_{z_{i_j}}\ddot{\theta}^{0}_{z_{i_j}} = m^0_{z_{i_j}}
+\end{equation}
+
+where $I_{z_{i_j}}$ is the aggregated moment of inertia of all bodies from $i$ to the end-effector $N_j$, referred to the $z$-axis of body $i$ via Steiner's theorem, and $m^0_{z_{i_j}} \in \mathbb{R}$ is the net applied moment acting on body $i$ in chain $j$ about the $z$-axis.
+
+\paragraph{Steiner's theorem and inertia aggregation.}
+The parallel axis (Steiner's) theorem states that the moment of inertia of a rigid body about any axis parallel to one through its center of mass (CoG) satisfies
+\begin{equation} \label{eq:steiner}
+    I_z = \tilde{I}_z + m\,\|f\|^2,
+\end{equation}
+where $\tilde{I}_z$ is the body's own moment of inertia about the $z$-axis through its CoG, $m$ is its mass, and $\|f\|^2 = f_x^2 + f_y^2$ is the squared in-plane distance between the two parallel axes. In a serial chain, the inertia of every downstream body must be shifted to the frame of the current body using \eqref{eq:steiner}. Following \cite{Al-Rawashdeh2022_Caracterization} (Algorithm~1 therein), the aggregated inertia for the $j$th chain is computed recursively from the end-effector inward. In the planar restriction, the full $3\times3$ inertia matrix of the original algorithm reduces to a scalar $z$-axis inertia:
+
+\begin{algorithm}[H]
+\caption{Planar inertia aggregation for the $j$th chain — planar reduction of Algorithm~1 in \cite{Al-Rawashdeh2022_Caracterization}}
+\begin{algorithmic}[1]
+\Require{CoG inertias $\tilde{I}_{z_{i_j}}$, masses $m_{i_j}$, relative positions $f_{k_j}$ for $i = 2,\ldots,N_j$}
+\Ensure{Aggregated inertias $^0I_{z_{i_j}}$ for $i = 2,\ldots,N_j$}
+\State \textbf{Initialize:} $^0I_{z_{N_j}} \leftarrow \tilde{I}_{z_{N_j}}$
+\If{$2 \leq i < N_j$}
+    \For{$k = N_j,\;\ldots,\;i+1$}
+        \State $\tilde{m}_{(k-1)_j} \leftarrow \displaystyle\sum_{b=k}^{N_j} m_{b_j}$
+        \Comment{accumulated downstream mass}
+        \State $^0I_{z_{(k-1)_j}} \leftarrow {}^0I_{z_{k_j}} + \tilde{I}_{z_{(k-1)_j}} + \tilde{m}_{(k-1)_j}\bigl(f_{x,k_j}^2 + f_{y,k_j}^2\bigr)$
+        \Comment{Steiner shift from frame $k$ to frame $k\!-\!1$}
+    \EndFor
+\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+Here $\tilde{m}_{(k-1)_j} = \sum_{b=k}^{N_j} m_{b_j}$ is the total mass of all downstream bodies (from $k$ to the end-effector), $\tilde{I}_{z_{(k-1)_j}}$ is the local inertia of body $k-1$ about its own CoG, and $\tilde{m}_{(k-1)_j}(f_{x,k_j}^2 + f_{y,k_j}^2)$ is the Steiner correction that shifts the accumulated inertia from body $k$'s CoG to body $(k-1)$'s CoG. By the time the algorithm terminates, $^0I_{z_{2_j}}$ contains the inertia of the entire chain $j$ referred to the CoG of its first body.
+
+The aggregated inertia of the base frame (body~1) applies the same shift one more time, from body~2's CoG to the base frame:
+\begin{equation} \label{eq:Iz0}
+    {}^0I_{z_1} = \tilde{I}_{z_1}
+    + \sum_{j=1}^{3}\!\Bigl({}^0I_{z_{2_j}}
+      + \tilde{m}_{1_j}\bigl(f_{x,2_j}^2 + f_{y,2_j}^2\bigr)\Bigr),
+\end{equation}
+where $\tilde{m}_{1_j} = \sum_{b=2}^{N_j} m_{b_j}$ is the total mass of chain $j$. This is the quantity denoted $I_{z_0}$ in \eqref{eq:baseframerot}.
+
+Expanding $\ddot{\theta}^0_{z_{i_j}}$ using \eqref{eq:angacc_expanded}:
+\begin{equation} \label{eq:torqueeq_expanded}
+    I_{z_{i_j}}\ddot{\theta}^{0}_{z_1} 
+    + I_{z_{i_j}}\sum^{i}_{k=2}\ddot{\theta}_{z_{k_j}}
+    = m^0_{z_{i_j}}
+\end{equation}
+
+\subsection{For the base frame}
+
+To write the equations that govern the base frame, we start from Newton's equation $F = ma$. For every body ($i \geq 2$) within chain $j$, it connects to body $i-1$ through a spring above and body $i+1$ through the spring below:
+\begin{align} \label{eq:forceeq}
+    \begin{split}
+        m_{i_j}\ddot{f}^{0}_{1}
+        + m_{i_j}\sum^{i}_{k=2}\ddot{f}_{k_j}
+        + m_{i_j}\sum^{i}_{k=2}
+        &\left[
+            2\,[\omega_{(k-1)_j}]\,\dot{f}_{k_j}
+            + [\dot{\omega}_{(k-1)_j}]\,f_{k_j}
+            + [\omega_{(k-1)_j}]^2\,f_{k_j}
+        \right] \\
+        - K_i\left( f^0_{{(i-1)}_j} - f^0_{{i}_j}\right)
+        - C_i\left( \dot{f}^0_{{(i-1)}_j} - \dot{f}^0_{{i}_j}\right)
+        &+ K_{i+1}\left( f^0_{{i}_j} - f^0_{{(i+1)}_j}\right)
+        + C_{i+1}\left( \dot{f}^0_{{i}_j} - \dot{f}^0_{{(i+1)}_j}\right)
+        = u^0_{i_j}
+    \end{split}
+\end{align}
+
+Summing \eqref{eq:forceeq} over all bodies in a chain (taking the optics chain $j=2$, bodies $i=2,3,4$ as a representative example), the internal spring forces cancel by Newton's third law:
+\begin{align}
+    &- K_2(f^0_1 - f^0_2) - C_2(\dot{f}^0_1 - \dot{f}^0_2) \notag \\
+    &\quad \cancelto{0}{
+        + K_3(f^0_2 - f^0_3) + C_3(\dot{f}^0_2 - \dot{f}^0_3)
+        - K_3(f^0_2 - f^0_3) - C_3(\dot{f}^0_2 - \dot{f}^0_3)
+    } \notag \\
+    &\quad \cancelto{0}{
+        + K_4(f^0_3 - f^0_4) + C_4(\dot{f}^0_3 - \dot{f}^0_4)
+        - K_4(f^0_3 - f^0_4) - C_4(\dot{f}^0_3 - \dot{f}^0_4)
+    } \notag
+\end{align}
+
+Only the boundary term $- K_2(f^0_1 - f^0_2) - C_2(\dot{f}^0_1 - \dot{f}^0_2)$ survives, which corresponds to the connection between body $i = 2$ and the base frame. This extends to any $N_j$-body chain. Recalling \eqref{eq:frameref}, $f^{0}_{1} - f^{0}_{2_j} = -f_{2_j}$, and following \cite{Al-Rawashdeh2022_Caracterization} with ${}^0K_{i_j}={}^0R_{i_j} K_{i_j} {}^0R^T_{i_j}$ and ${}^0C_{i_j}={}^0R_{i_j} C_{i_j} {}^0R^T_{i_j}$, the total translational equation of the base frame (absorbing the balance masses and collecting all chain contributions) is:
+\begin{align} \label{eq:baseframeeq}
+    \begin{split}
+        m_0\,\ddot{f}^{0}_{1}
+        + {}^0\bar{C}^f_1\,\dot{f}_1
+        + {}^0\bar{K}^f_1\,f_1
+        - \sum_{j=1}^{3}\left\{
+            {}^0\bar{C}^f_{2_j}\,\dot{f}_{2_j} + {}^0\bar{K}^f_{2_j}\,f_{2_j}
+        \right\}
+        &= u^0_{1}
+    \end{split}
+\end{align}
+where $m_0 = m_{1} + \sum_{j=1}^{3}\!\left(m^j_{B} + \sum_{i=2}^{N_j} m_{i_j}\right)$ is the total system mass, and the superscript $f$ on the stiffness and damping matrices denotes the $2\times2$ translational block.
+
+By the exact same cancellation argument applied to the moment balance about the $z$-axis — the moment exerted by the spring connecting body $i$ to body $i-1$ is $-k_{\theta,i_j}\,\theta_{z_{i_j}}$, so internal moments cancel identically — the rotational equation of the base frame is:
+\begin{align} \label{eq:baseframerot}
+    \begin{split}
+        I_{z_0}\,\ddot{\theta}^{0}_{z_1}
+        + {}^0\bar{c}_{\theta,1}\,\dot{\theta}_{z_1}
+        + {}^0\bar{k}_{\theta,1}\,\theta_{z_1}
+        - \sum_{j=1}^{3}\left\{
+            {}^0\bar{c}_{\theta,2_j}\,\dot{\theta}_{z_{2_j}}
+            + {}^0\bar{k}_{\theta,2_j}\,\theta_{z_{2_j}}
+        \right\}
+        &= \tau^0_{1}
+    \end{split}
+\end{align}
+where $I_{z_0} = I_{z_1} + \sum_{j=1}^{3}\!\left(I^j_{z_B} + \sum_{i=2}^{N_j} I_{z_{i_j}}\right)$ is the total moment of inertia of the system about the $z$-axis, ${}^0\bar{c}_{\theta,i_j}$ and ${}^0\bar{k}_{\theta,i_j}$ are the scalar rotational damping and stiffness of the joint connecting body $i$ to its predecessor in chain $j$, and $\tau^0_1$ is the net applied torque on the base frame.
+
+\subsection{For each chain}
+
+Recalling \eqref{eq:forceeq} and \eqref{eq:torqueeq_expanded}, for the first body in the chain ($i=2$), which connects to the base frame above and to body $i=3$ below, the translational equation is:
+\begin{equation}
+        \bar{m}_{2_j}
+        \ddot{f}^{0}_{2_j}
+        + {}^0\bar{C}^f_{2_j}\,\dot{f}_{2_j}
+        + {}^0\bar{K}^f_{2_j}\,f_{2_j}
+        - \left\{
+            {}^0\bar{C}^f_{3_j}\,\dot{f}_{3_j} + {}^0\bar{K}^f_{3_j}\,f_{3_j}
+        \right\}
+        = u^0_{2_j}
+\end{equation}
+and the rotational equation is:
+\begin{equation}
+        I_{z_{2_j}}\ddot{\theta}^{0}_{z_{2_j}}
+        + {}^0\bar{c}_{\theta,2_j}\,\dot{\theta}_{z_{2_j}}
+        + {}^0\bar{k}_{\theta,2_j}\,\theta_{z_{2_j}}
+        - {}^0\bar{c}_{\theta,3_j}\,\dot{\theta}_{z_{3_j}}
+        - {}^0\bar{k}_{\theta,3_j}\,\theta_{z_{3_j}}
+        = \tau^0_{2_j}
+\end{equation}
+
+For bodies $3\leq i< N_j$, the same structure holds with bodies $2, \dots, i-1$ in between. The translational equation is:
+\begin{equation}
+        \bar{m}_{i_j}
+        \ddot{f}^{0}_{i_j}
+        + {}^0\bar{C}^f_{i_j}\,\dot{f}_{i_j}
+        + {}^0\bar{K}^f_{i_j}\,f_{i_j}
+        -
+        \left\{
+            {}^0\bar{C}^f_{(i+1)_j}\,\dot{f}_{(i+1)_j} + {}^0\bar{K}^f_{(i+1)_j}\,f_{(i+1)_j}
+        \right\}
+        = u^0_{i_j}
+\end{equation}
+and the rotational equation is:
+\begin{equation}
+        I_{z_{i_j}}\ddot{\theta}^{0}_{z_{i_j}}
+        + {}^0\bar{c}_{\theta,i_j}\,\dot{\theta}_{z_{i_j}}
+        + {}^0\bar{k}_{\theta,i_j}\,\theta_{z_{i_j}}
+        - {}^0\bar{c}_{\theta,(i+1)_j}\,\dot{\theta}_{z_{(i+1)_j}}
+        - {}^0\bar{k}_{\theta,(i+1)_j}\,\theta_{z_{(i+1)_j}}
+        = \tau^0_{i_j}
+\end{equation}
+
+Finally, for body $i = N_j$ (the end effector), there is no subsequent body in the chain. The translational and rotational equations are:
+\begin{equation}
+        \bar{m}_{{N_j}_j}
+        \ddot{f}^{0}_{{N_j}_j}
+        + {}^0\bar{C}^f_{{N_j}_j}\,\dot{f}_{{N_j}_j}
+        + {}^0\bar{K}^f_{{N_j}_j}\,f_{{N_j}_j}
+        = 0
+\end{equation}
+\begin{equation}
+        I_{z_{{N_j}_j}}\ddot{\theta}^{0}_{z_{{N_j}_j}}
+        + {}^0\bar{c}_{\theta,{N_j}_j}\,\dot{\theta}_{z_{{N_j}_j}}
+        + {}^0\bar{k}_{\theta,{N_j}_j}\,\theta_{z_{{N_j}_j}}
+        = 0
+\end{equation}
+
+\subsection{State-space formulation}
+
+With three in-plane degrees of freedom per body ($f_x$, $f_y$, $\theta_z$) and their time derivatives, each body contributes six states. Following Appendix~B of \cite{Al-Rawashdeh2022_Caracterization}, the machine comprises 7 bodies in the reticle chain (bodies $2$--$8$, indices matching $m_2,\ldots,m_8$), 3 bodies in the optics chain (bodies $2$--$4$), and 7 bodies in the wafer chain (bodies $2$--$8$). The shared base frame (body~1) and the three-chain end-effectors are included, giving last-body indices $N_1 = 8$, $N_2 = 4$, and $N_3 = 8$. The full state vector collects these for all $1 + (N_1-1) + (N_2-1) + (N_3-1) = 18$ bodies, yielding $6 \times 18 = 108$ states in total:
+
+\begin{equation}
+    x =
+    \begin{bmatrix}
+        \underbrace{x_1, \ldots, x_6}_{\text{base frame}} \;,\;
+        \underbrace{x_7, \ldots, x_{6N_1}}_{\text{chain 1: bodies } 2 \to N_1} \;,\;
+        \underbrace{\ldots}_{\text{chain 2}} \;,\;
+        \underbrace{\ldots}_{\text{chain 3}}
+    \end{bmatrix}^T
+\end{equation}
+
+The meaning of each state is given below, where $p$ denotes the sequential index of body $i$ in chain $j$ within the ordered list of all bodies (base frame first, then chains 1, 2, 3). Note that each $q_{i_j}$ entry in the state vector corresponds to a \emph{relative} joint displacement; the associated inertial position $f^0_{i_j}$ is recovered via the recursive summation of \eqref{eq:pos_expanded}--\eqref{eq:angle_expanded}.
+
+\begin{center}
+\begin{tabular}{cll}
+\toprule
+State-space Variable & Expression & Meaning \\
+\midrule
+$x_1$       & $f_{x_1}$                  & base frame $x$-position \\
+$x_2$       & $f_{y_1}$                  & base frame $y$-position \\
+$x_3$       & $\theta_{z_1}$             & base frame rotation \\
+$x_4$       & $\dot{f}_{x_1}$            & base frame $x$-velocity \\
+$x_5$       & $\dot{f}_{y_1}$            & base frame $y$-velocity \\
+$x_6$       & $\dot{\theta}_{z_1}$       & base frame angular velocity \\
+$x_7$       & $f_{x_{2_1}}$              & chain 1, body 2, $x$-position \\
+$x_8$       & $f_{y_{2_1}}$              & chain 1, body 2, $y$-position \\
+$x_9$       & $\theta_{z_{2_1}}$         & chain 1, body 2, rotation \\
+$x_{10}$    & $\dot{f}_{x_{2_1}}$        & chain 1, body 2, $x$-velocity \\
+$x_{11}$    & $\dot{f}_{y_{2_1}}$        & chain 1, body 2, $y$-velocity \\
+$x_{12}$    & $\dot{\theta}_{z_{2_1}}$   & chain 1, body 2, angular velocity \\
+$\vdots$    & $\vdots$                   & $\vdots$ \\
+$x_{6p-5}$  & $f_{x_{i_j}}$              & chain $j$, body $i$, $x$-position \\
+$x_{6p-4}$  & $f_{y_{i_j}}$              & chain $j$, body $i$, $y$-position \\
+$x_{6p-3}$  & $\theta_{z_{i_j}}$         & chain $j$, body $i$, rotation \\
+$x_{6p-2}$  & $\dot{f}_{x_{i_j}}$        & chain $j$, body $i$, $x$-velocity \\
+$x_{6p-1}$  & $\dot{f}_{y_{i_j}}$        & chain $j$, body $i$, $y$-velocity \\
+$x_{6p}$    & $\dot{\theta}_{z_{i_j}}$   & chain $j$, body $i$, angular velocity \\
+$\vdots$    & $\vdots$                   & $\vdots$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Solving \eqref{eq:baseframeeq} and \eqref{eq:baseframerot} for the base-frame accelerations:
+\begin{align}
+    \ddot{f}^{0}_{1}
+    &= -\frac{{}^0\bar{C}^f_1}{m_0}\,\dot{f}_1
+       -\frac{{}^0\bar{K}^f_1}{m_0}\,f_1
+       +\frac{1}{m_0}\sum_{j=1}^{3}\left\{
+           {}^0\bar{C}^f_{2_j}\,\dot{f}_{2_j} + {}^0\bar{K}^f_{2_j}\,f_{2_j}
+       \right\}
+       +\frac{u^0_{1}}{m_0} \label{eq:f1ddot} \\[4pt]
+    \ddot{\theta}^{0}_{z_1}
+    &= -\frac{{}^0\bar{c}_{\theta,1}}{I_{z_0}}\,\dot{\theta}_{z_1}
+       -\frac{{}^0\bar{k}_{\theta,1}}{I_{z_0}}\,\theta_{z_1}
+       +\frac{1}{I_{z_0}}\sum_{j=1}^{3}\left\{
+           {}^0\bar{c}_{\theta,2_j}\,\dot{\theta}_{z_{2_j}} + {}^0\bar{k}_{\theta,2_j}\,\theta_{z_{2_j}}
+       \right\}
+       +\frac{\tau^0_{1}}{I_{z_0}} \label{eq:th1ddot}
+\end{align}
+
+In matrix form, the six base-frame rows of the state-space system $\dot{x} = Ax + Bu$ are:
+\setcounter{MaxMatrixCols}{20}
+\begin{equation}
+\begin{bmatrix}\dot{x}_1\\\dot{x}_2\\\dot{x}_3\\\dot{x}_4\\\dot{x}_5\\\dot{x}_6\end{bmatrix}
+=
+\begin{bmatrix}
+    0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & \cdots \\
+    0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & \cdots \\
+    0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & \cdots \\
+    -\frac{K^f_{1,xx}}{m_0} & -\frac{K^f_{1,xy}}{m_0} & 0 &
+    -\frac{C^f_{1,xx}}{m_0} & -\frac{C^f_{1,xy}}{m_0} & 0 &
+    \frac{K^f_{2_1,xx}}{m_0} & \frac{K^f_{2_1,xy}}{m_0} & 0 &
+    \frac{C^f_{2_1,xx}}{m_0} & \cdots \\
+    -\frac{K^f_{1,yx}}{m_0} & -\frac{K^f_{1,yy}}{m_0} & 0 &
+    -\frac{C^f_{1,yx}}{m_0} & -\frac{C^f_{1,yy}}{m_0} & 0 &
+    \frac{K^f_{2_1,yx}}{m_0} & \frac{K^f_{2_1,yy}}{m_0} & 0 &
+    \frac{C^f_{2_1,yx}}{m_0} & \cdots \\
+    0 & 0 & -\frac{k_{\theta,1}}{I_{z_0}} & 0 & 0 &
+    -\frac{c_{\theta,1}}{I_{z_0}} & 0 & 0 &
+    \frac{k_{\theta,2_1}}{I_{z_0}} & 0 & \cdots \\
+\end{bmatrix}
+x
++
+\begin{bmatrix}
+    0 & 0 & 0 & \cdots \\
+    0 & 0 & 0 & \cdots \\
+    0 & 0 & 0 & \cdots \\
+    \frac{1}{m_0} & 0 & 0 & \cdots \\
+    0 & \frac{1}{m_0} & 0 & \cdots \\
+    0 & 0 & \frac{1}{I_{z_0}} & \cdots
+\end{bmatrix}
+\begin{bmatrix}u^0_{x,1}\\u^0_{y,1}\\\tau^0_1\\\vdots\end{bmatrix}
+\end{equation}
+
+where $K^f_{1,xx}$, $K^f_{1,xy}$, etc.\ denote the individual entries of the $2\times2$ translational stiffness matrix ${}^0\bar{K}^f_1$. The translational rows (4 and 5) and the rotational row (6) are structurally decoupled in this linear state-space: the translational stiffness/damping entries are zero in the $\theta_z$ column (column 3), and the rotational entries are zero in the $f_x$, $f_y$ columns (columns 1, 2). This block-diagonal decoupling is a direct consequence of the block-diagonal Kelvin-Voigt joint model under the planar assumption. The nonlinear coupling between translational and rotational dynamics --- through the Coriolis and centripetal terms in \eqref{eq:acc_expanded} --- is not captured in this linear state-space and may be incorporated as a nonlinear perturbation if required.
+
+\subsubsection{General State-Space Form for the Chain Bodies}
+
+For each of the bodies (7, 3, and 7 chain-specific bodies respectively, for chains 1, 2, and 3) we express the state derivatives in a structured general form. Using the identity $\ddot{f}_{i_j} = \ddot{f}^0_{i_j} - \ddot{f}^0_{(i-1)_j}$ — which follows directly from \eqref{eq:acc_expanded} — we can subtract consecutive absolute accelerations to isolate the relative acceleration and thereby the forces acting on each body in its parent frame. 
+
+For the \textbf{first body in the chain} ($i=2$), the translational state derivatives ($\dot{v}_{2_j} = \ddot{f}_{2_j}$) and rotational state derivatives are:
+\begin{align}
+    \ddot{f}_{2_j} &= 
+    \left(\frac{1}{\bar{m}_{2_j}}\right) \Big[ u^0_{2_j} - {}^0\bar{C}^f_{2_j}\dot{f}_{2_j} - {}^0\bar{K}^f_{2_j}f_{2_j} + {}^0\bar{C}^f_{3_j}\dot{f}_{3_j} + {}^0\bar{K}^f_{3_j}f_{3_j} \Big] \notag \\
+    &\quad - \left(\frac{1}{m_0}\right) \Big[ u^0_1 - {}^0\bar{C}^f_1\dot{f}_1 - {}^0\bar{K}^f_1 f_1 \notag \\
+    &\quad + \sum_{k=1}^3 \left( {}^0\bar{C}^f_{2_k}\dot{f}_{2_k} + {}^0\bar{K}^f_{2_k}f_{2_k} \right) \Big] \\
+    \ddot{\theta}_{z_{2_j}} &= 
+    \left(\frac{1}{I_{z_{2_j}}}\right) \Big[ \tau^0_{2_j} - {}^0\bar{c}_{\theta,2_j}\dot{\theta}_{z_{2_j}} - {}^0\bar{k}_{\theta,2_j}\theta_{z_{2_j}} + {}^0\bar{c}_{\theta,3_j}\dot{\theta}_{z_{3_j}} + {}^0\bar{k}_{\theta,3_j}\theta_{z_{3_j}} \Big] \notag \\
+    &\quad - \left(\frac{1}{I_{z_0}}\right) \Big[ \tau^0_1 - {}^0\bar{c}_{\theta,1}\dot{\theta}_{z_1} - {}^0\bar{k}_{\theta,1} \theta_{z_1} \notag \\
+    &\quad + \sum_{k=1}^3 \left( {}^0\bar{c}_{\theta,2_k}\dot{\theta}_{z_{2_k}} + {}^0\bar{k}_{\theta,2_k}\theta_{z_{2_k}} \right) \Big]
+\end{align}
+
+For a \textbf{general intermediate body} ($2 < i < N_j$), the terms group naturally:
+\begin{align}
+    \ddot{f}_{i_j} &= 
+    \left(\frac{1}{\bar{m}_{i_j}}\right) \Big[ u^0_{i_j} - {}^0\bar{C}^f_{i_j}\dot{f}_{i_j} - {}^0\bar{K}^f_{i_j}f_{i_j} + {}^0\bar{C}^f_{(i+1)_j}\dot{f}_{(i+1)_j} + {}^0\bar{K}^f_{(i+1)_j}f_{(i+1)_j} \Big] \notag \\
+    &\quad - \left(\frac{1}{\bar{m}_{(i-1)_j}}\right) \Big[ u^0_{(i-1)_j} - {}^0\bar{C}^f_{(i-1)_j}\dot{f}_{(i-1)_j} - {}^0\bar{K}^f_{(i-1)_j}f_{(i-1)_j} \notag \\
+    &\quad + {}^0\bar{C}^f_{i_j}\dot{f}_{i_j} + {}^0\bar{K}^f_{i_j}f_{i_j} \Big] \\
+    \ddot{\theta}_{z_{i_j}} &= 
+    \left(\frac{1}{I_{z_{i_j}}}\right) \Big[ \tau^0_{i_j} - {}^0\bar{c}_{\theta,i_j}\dot{\theta}_{z_{i_j}} - {}^0\bar{k}_{\theta,i_j}\theta_{z_{i_j}} + {}^0\bar{c}_{\theta,(i+1)_j}\dot{\theta}_{z_{(i+1)_j}} + {}^0\bar{k}_{\theta,(i+1)_j}\theta_{z_{(i+1)_j}} \Big] \notag \\
+    &\quad - \left(\frac{1}{I_{z_{(i-1)_j}}}\right) \Big[ \tau^0_{(i-1)_j} - {}^0\bar{c}_{\theta,(i-1)_j}\dot{\theta}_{z_{(i-1)_j}} - {}^0\bar{k}_{\theta,(i-1)_j}\theta_{z_{(i-1)_j}} \notag \\
+    &\quad + {}^0\bar{c}_{\theta,i_j}\dot{\theta}_{z_{i_j}} + {}^0\bar{k}_{\theta,i_j}\theta_{z_{i_j}} \Big]
+\end{align}
+
+For the \textbf{end-effector body} ($i = N_j$), the downstream forces evaluate to zero:
+\begin{align}
+    \ddot{f}_{{N_j}_j} &= 
+    \left(\frac{1}{\bar{m}_{{N_j}_j}}\right) \Big[ u^0_{{N_j}_j} - {}^0\bar{C}^f_{{N_j}_j}\dot{f}_{{N_j}_j} - {}^0\bar{K}^f_{{N_j}_j}f_{{N_j}_j} \Big] \notag \\
+    &\quad - \left(\frac{1}{\bar{m}_{({N_j}-1)_j}}\right) \Big[ u^0_{({N_j}-1)_j} - {}^0\bar{C}^f_{({N_j}-1)_j}\dot{f}_{({N_j}-1)_j} - {}^0\bar{K}^f_{({N_j}-1)_j}f_{({N_j}-1)_j} \notag \\
+    &\quad + {}^0\bar{C}^f_{{N_j}_j}\dot{f}_{{N_j}_j} + {}^0\bar{K}^f_{{N_j}_j}f_{{N_j}_j} \Big] \\
+    \ddot{\theta}_{z_{{N_j}_j}} &= 
+    \left(\frac{1}{I_{z_{{N_j}_j}}}\right) \Big[ \tau^0_{{N_j}_j} - {}^0\bar{c}_{\theta,{N_j}_j}\dot{\theta}_{z_{{N_j}_j}} - {}^0\bar{k}_{\theta,{N_j}_j}\theta_{z_{{N_j}_j}} \Big] \notag \\
+    &\quad - \left(\frac{1}{I_{z_{({N_j}-1)_j}}}\right) \Big[ \tau^0_{({N_j}-1)_j} - {}^0\bar{c}_{\theta,({N_j}-1)_j}\dot{\theta}_{z_{({N_j}-1)_j}} - {}^0\bar{k}_{\theta,({N_j}-1)_j}\theta_{z_{({N_j}-1)_j}} \notag \\
+    &\quad + {}^0\bar{c}_{\theta,{N_j}_j}\dot{\theta}_{z_{{N_j}_j}} + {}^0\bar{k}_{\theta,{N_j}_j}\theta_{z_{{N_j}_j}} \Big]
+\end{align}
+
+\printbibliography
+
+\end{document}

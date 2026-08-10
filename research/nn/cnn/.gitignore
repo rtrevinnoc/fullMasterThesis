@@ -1,0 +1,6 @@
+dataset/
+*.zip
+*.pkl
+*.h5
+*.pth
+kaggle.json

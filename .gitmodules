@@ -1,0 +1,12 @@
+[submodule "fullThesis"]
+	path = fullThesis
+	url = git@github.com:rtrevinnoc/mastersThesis.git
+[submodule "CNCA"]
+	path = CNCA
+	url = git@github.com:rtrevinnoc/cnca2026.git
+[submodule "PlotNeuralNet"]
+	path = PlotNeuralNet
+	url = https://github.com/HarisIqbal88/PlotNeuralNet.git
+[submodule "presentation"]
+	path = presentation
+	url = git@github.com:rtrevinnoc/thesisPresentation.git

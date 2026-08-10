@@ -1,0 +1,48 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{soul}
+\usepackage{array}
+\usepackage{ragged2e}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+
+\begin{document}
+\setcounter{section}{0}
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf El Mayor Riesgo de Mi Tesis}\\[4pt]
+{\large Tesis I}\\[2pt]
+Roberto Treviño Cervantes
+\end{center}
+
+\section{Reflexión}
+
+\textit{El mayor riesgo de mi tesis es} la validez del uso de una red neuronal convolucional (CNN) entrenada con el conjunto WM-811K como función de costo sustituta del \textit{yield} dentro del lazo de optimización de trayectorias. WM-811K es un repositorio de mapas de obleas (\textit{wafer bin maps}) provenientes de líneas de fabricación reales, sin trazabilidad sobre los perfiles de movimiento que originaron cada patrón de defecto. Por lo tanto, la red aprende a clasificar morfologías agregadas de defecto, pero no relaciona explícitamente una distribución de error de seguimiento con su mapa de \textit{yield} resultante. Si esta correspondencia no se sostiene, la función de costo aprendida puede inducir al PSO a optimizar trayectorias hacia regiones del espacio paramétrico que mejoran una métrica simulada sin reflejo en la calidad real del patrón impreso.
+
+La mitigación se construye en tres capas. Primero, se acota explícitamente el alcance de la contribución a la \textit{optimización de trayectorias consciente del \textit{yield} dentro de la simulación}, sin mención del \textit{yield} de una fábrica real. Segundo, se diseña un protocolo de validación interno: generar mapas sintéticos de defecto a partir de perturbaciones controladas de trayectoria sobre el gemelo digital de Al-Rawashdeh y verificar que la CNN reproduzca las clases morfológicas correspondientes de WM-811K. Tercero, los resultados se reportan como una correspondencia \emph{cualitativa} entre regímenes cinemáticos y firmas de defecto, de modo que la conclusión metodológica permanezca sólida aun si la calibración cuantitativa al \textit{yield} de una fábrica requiere trabajo experimental futuro.
+
+\end{document}

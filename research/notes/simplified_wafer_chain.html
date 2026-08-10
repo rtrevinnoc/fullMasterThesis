@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Wafer Chain Trajectory Tracking</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f8f9fa;
+    padding: 40px;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  h1 { font-size: 1.5rem; color: #0d1b4b; margin-bottom: 30px; }
+  .legend {
+    display: flex;
+    gap: 30px;
+    margin-top: 25px;
+    padding: 15px;
+    background: #f0f4f8;
+    border-radius: 8px;
+    font-size: 0.9rem;
+  }
+  .legend-item { display: flex; align-items: center; gap: 8px; }
+  .box { width: 16px; height: 12px; border-radius: 3px; }
+  .flex-box { background: #c0392b; }
+  .act-box { background: #27ae60; }
+  strong { color: #0d1b4b; }
+</style>
+</head>
+<body>
+
+<!-- <h1>Wafer Scanner Dynamics: Trajectory Tracking vs. Physical Flexure</h1> -->
+
+<div class="container">
+<svg width="1020" height="190" viewBox="0 0 1020 190" font-family="Georgia,serif" font-size="12.5">
+  <!-- Floor -->
+  <rect x="0" y="60" width="36" height="80" fill="#bbb" rx="3"/>
+  <line x1="0" y1="60" x2="36" y2="60" stroke="#888" stroke-width="1.5"/>
+  <line x1="0" y1="70" x2="10" y2="60" stroke="#888" stroke-width="1"/>
+  <line x1="6" y1="70" x2="16" y2="60" stroke="#888" stroke-width="1"/>
+  <line x1="12" y1="70" x2="22" y2="60" stroke="#888" stroke-width="1"/>
+  <line x1="18" y1="70" x2="28" y2="60" stroke="#888" stroke-width="1"/>
+  <line x1="24" y1="70" x2="34" y2="60" stroke="#888" stroke-width="1"/>
+
+  <!-- K1/C1 : Frame on Floor -->
+  <polyline points="36,100 50,100 53,88 59,112 65,88 71,112 77,88 83,112 86,100 100,100" fill="none" stroke="#c0392b" stroke-width="2"/>
+  <line x1="36" y1="120" x2="50" y2="120" stroke="#c0392b" stroke-width="2"/>
+  <rect x="50" y="113" width="36" height="14" fill="none" stroke="#c0392b" stroke-width="2"/>
+  <line x1="86" y1="120" x2="100" y2="120" stroke="#c0392b" stroke-width="2"/>
+  <text x="68" y="84" text-anchor="middle" fill="#c0392b" font-size="11" font-style="italic">K₁,C₁</text>
+
+  <!-- Frame block -->
+  <rect x="100" y="65" width="74" height="70" fill="#d0e8ff" stroke="#3a7bd5" stroke-width="1.5" rx="4"/>
+  <text x="137" y="100" text-anchor="middle" fill="#0d1b4b" font-weight="bold" font-size="12">Frame</text>
+  <text x="137" y="155" text-anchor="middle" fill="#555" font-size="10">i=1 (base)</text>
+
+  <!-- K2/C2 : Long Stroke actuator -->
+  <polyline points="174,100 188,100 191,88 197,112 203,88 209,112 215,88 221,112 224,100 238,100" fill="none" stroke="#27ae60" stroke-width="2"/>
+  <line x1="174" y1="120" x2="188" y2="120" stroke="#27ae60" stroke-width="2"/>
+  <rect x="188" y="113" width="36" height="14" fill="none" stroke="#27ae60" stroke-width="2"/>
+  <line x1="224" y1="120" x2="238" y2="120" stroke="#27ae60" stroke-width="2"/>
+  <text x="206" y="84" text-anchor="middle" fill="#27ae60" font-size="11" font-style="italic">K₂,C₂</text>
+
+  <!-- Long Stroke block -->
+  <rect x="238" y="65" width="74" height="70" fill="#d5f5e3" stroke="#27ae60" stroke-width="1.5" rx="4"/>
+  <text x="275" y="98" text-anchor="middle" fill="#1a5c2e" font-weight="bold" font-size="11">LS motor</text>
+  <text x="275" y="155" text-anchor="middle" fill="#555" font-size="10">i=2, actuated</text>
+
+  <!-- K3/C3 : LS flex -->
+  <polyline points="312,100 326,100 329,88 335,112 341,88 347,112 353,88 359,112 362,100 376,100" fill="none" stroke="#c0392b" stroke-width="2"/>
+  <line x1="312" y1="120" x2="326" y2="120" stroke="#c0392b" stroke-width="2"/>
+  <rect x="326" y="113" width="36" height="14" fill="none" stroke="#c0392b" stroke-width="2"/>
+  <line x1="362" y1="120" x2="376" y2="120" stroke="#c0392b" stroke-width="2"/>
+  <text x="344" y="84" text-anchor="middle" fill="#c0392b" font-size="11" font-style="italic">K₃,C₃</text>
+
+  <!-- LS Flex block -->
+  <rect x="376" y="65" width="74" height="70" fill="#fde8e8" stroke="#c0392b" stroke-width="1.5" rx="4"/>
+  <text x="413" y="98" text-anchor="middle" fill="#7b1a1a" font-weight="bold" font-size="11">LS Flex</text>
+  <text x="413" y="155" text-anchor="middle" fill="#555" font-size="10">i=3, physical</text>
+
+  <!-- K4/C4 : Short Stroke actuator -->
+  <polyline points="450,100 464,100 467,88 473,112 479,88 485,112 491,88 497,112 500,100 514,100" fill="none" stroke="#27ae60" stroke-width="2"/>
+  <line x1="450" y1="120" x2="464" y2="120" stroke="#27ae60" stroke-width="2"/>
+  <rect x="464" y="113" width="36" height="14" fill="none" stroke="#27ae60" stroke-width="2"/>
+  <line x1="500" y1="120" x2="514" y2="120" stroke="#27ae60" stroke-width="2"/>
+  <text x="482" y="84" text-anchor="middle" fill="#27ae60" font-size="11" font-style="italic">K₄,C₄</text>
+
+  <!-- Short Stroke block -->
+  <rect x="514" y="65" width="74" height="70" fill="#d5f5e3" stroke="#27ae60" stroke-width="1.5" rx="4"/>
+  <text x="551" y="98" text-anchor="middle" fill="#1a5c2e" font-weight="bold" font-size="11">SS motor</text>
+  <text x="551" y="155" text-anchor="middle" fill="#555" font-size="10">i=4, actuated</text>
+
+  <!-- K5/C5 : SS flex -->
+  <polyline points="588,100 602,100 605,88 611,112 617,88 623,112 629,88 635,112 638,100 652,100" fill="none" stroke="#c0392b" stroke-width="2"/>
+  <line x1="588" y1="120" x2="602" y2="120" stroke="#c0392b" stroke-width="2"/>
+  <rect x="602" y="113" width="36" height="14" fill="none" stroke="#c0392b" stroke-width="2"/>
+  <line x1="638" y1="120" x2="652" y2="120" stroke="#c0392b" stroke-width="2"/>
+  <text x="620" y="84" text-anchor="middle" fill="#c0392b" font-size="11" font-style="italic">K₅,C₅</text>
+
+  <!-- SS Flex block -->
+  <rect x="652" y="65" width="74" height="70" fill="#fde8e8" stroke="#c0392b" stroke-width="1.5" rx="4"/>
+  <text x="689" y="98" text-anchor="middle" fill="#7b1a1a" font-weight="bold" font-size="11">SS Flex</text>
+  <text x="689" y="155" text-anchor="middle" fill="#555" font-size="10">i=5, physical</text>
+
+  <!-- K6/C6 : Wafer Stage -->
+  <polyline points="726,100 740,100 743,88 749,112 755,88 761,112 767,88 773,112 776,100 790,100" fill="none" stroke="#c0392b" stroke-width="2"/>
+  <line x1="726" y1="120" x2="740" y2="120" stroke="#c0392b" stroke-width="2"/>
+  <rect x="740" y="113" width="36" height="14" fill="none" stroke="#c0392b" stroke-width="2"/>
+  <line x1="776" y1="120" x2="790" y2="120" stroke="#c0392b" stroke-width="2"/>
+  <text x="758" y="84" text-anchor="middle" fill="#c0392b" font-size="11" font-style="italic">K₆,C₆</text>
+
+  <!-- Wafer Stage -->
+  <rect x="790" y="65" width="84" height="70" fill="#fff3cd" stroke="#f0ad4e" stroke-width="1.5" rx="4"/>
+  <text x="832" y="100" text-anchor="middle" fill="#7d5a00" font-weight="bold" font-size="11">Wafer Stage</text>
+  <text x="832" y="155" text-anchor="middle" fill="#555" font-size="10">i=7 end-effector</text>
+
+  <!-- Scan Profile indicators -->
+  <path d="M200,45 Q275,30 350,45" fill="none" stroke="#27ae60" stroke-width="1" stroke-dasharray="4,2" opacity="0.8"/>
+  <text x="275" y="25" text-anchor="middle" fill="#27ae60" font-size="10" font-weight="bold">LS Scan Trajectory f₂(t)</text>
+  
+  <path d="M480,45 Q550,30 620,45" fill="none" stroke="#27ae60" stroke-width="1" stroke-dasharray="4,2" opacity="0.8"/>
+  <text x="550" y="25" text-anchor="middle" fill="#27ae60" font-size="10" font-weight="bold">SS Fine Profile f₄(t)</text>
+
+  <!-- Connection to Die -->
+  <line x1="874" y1="100" x2="910" y2="100" stroke="#333" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="918" y="104" fill="#333" font-size="11">Exposure Point</text>
+  <!-- Resulting Trajectory Visualization -->
+  <!-- <g transform="translate(890, 25)"> -->
+    <!-- <text x="40" y="-8" text-anchor="middle" fill="#0d1b4b" font-weight="bold" font-size="10">Scan Profile y(t)</text> -->
+    <!-- <rect x="0" y="0" width="80" height="40" fill="#fff" stroke="#eee" rx="2"/> -->
+    <!-- Grid -->
+    <!-- <line x1="0" y1="30" x2="80" y2="30" stroke="#f0f0f0" stroke-width="1"/> -->
+    <!-- Ideal Trajectory (Command) -->
+    <!-- <path d="M10,35 L25,10 L55,10 L70,35" fill="none" stroke="#27ae60" stroke-width="1.5" stroke-dasharray="3,1" opacity="0.5"/> -->
+    <!-- Real Trajectory (with flexure/vibration) -->
+    <!-- <path d="M10,35 L12,31 L14,33 L16,28 L18,22 L20,18 L22,12 L25,10 L28,12 L31,9 L34,11 L37,10 L40,8 L43,11 L46,9 L49,11 L52,10 L55,10 L58,15 L61,20 L64,25 L67,30 L70,35" fill="none" stroke="#c0392b" stroke-width="1"/> -->
+    <!-- <text x="40" y="50" text-anchor="middle" fill="#555" font-size="9">Tracking at i=7</text> -->
+  <!-- </g> -->
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#333"/>
+    </marker>
+  </defs>
+</svg>
+
+<!-- <div class="legend"> -->
+  <!-- <div class="legend-item"> -->
+    <!-- <div class="box act-box"></div> -->
+    <!-- <span><strong>Actuated Stages (Green):</strong> Actively track a trajectory command. <em>f</em> represents the large scanning displacement (e.g. 100mm).</span> -->
+  <!-- </div> -->
+  <!-- <div class="legend-item"> -->
+    <!-- <div class="box flex-box"></div> -->
+    <!-- <span><strong>Flex/Bearing Stages (Red):</strong> Passive physical connections. <em>f</em> represents tiny vibration/lag (nanometers).</span> -->
+  <!-- </div> -->
+<!-- </div> -->
+<!-- </div> -->
+
+<!-- <p style="margin-top: 30px; font-size: 0.85rem; color: #666; max-width: 800px; text-align: center; line-height: 1.6;"> -->
+  <!-- <strong>Tracking Logic:</strong> The absolute position of the wafer is the sum of all displacements: --> 
+  <!-- <span style="font-family: monospace; background: #eee; padding: 2px 5px;">Σ f = f_frame + f_LS_motor + f_LS_flex + ...</span>. --> 
+  <!-- The large scanning motion comes from the green stages, while the tracking errors and vibrations are contributed by the red flex stages. -->
+<!-- </p> -->
+
+</body>
+</html>

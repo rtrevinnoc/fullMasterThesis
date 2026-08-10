@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Characterization of a Generic Lithography Machine: Dynamics Explainer</title>
+    <style>
+        body { 
+            font-family: "Times New Roman", Times, serif; 
+            line-height: 1.5; 
+            color: #1a1a1a; 
+            max-width: 1000px; 
+            margin: 0 auto; 
+            padding: 40px; 
+            background: #fff; 
+        }
+        .paper-header { 
+            text-align: center; 
+            border-bottom: 2px solid #000; 
+            margin-bottom: 30px; 
+            padding-bottom: 10px; 
+        }
+        .paper-title { font-size: 24px; font-weight: bold; margin-bottom: 5px; }
+        .authors { font-style: italic; font-size: 16px; }
+        
+        .section-title { 
+            font-variant: small-caps; 
+            font-size: 18px; 
+            border-bottom: 1px solid #ccc; 
+            margin-top: 30px; 
+            color: #333; 
+        }
+
+        #sim-viewport { 
+            position: relative; 
+            width: 100%; 
+            height: 300px; 
+            background: #f9f9f9; 
+            border: 1px solid #aaa; 
+            margin: 20px 0; 
+            overflow-x: auto;
+        }
+
+        .body-label {
+            position: absolute;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            border: 1.5px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            z-index: 10;
+        }
+
+        /* Paper Colors (Matching Figures 5 & 6) */
+        .base-frame { background: #dcdcdc; width: 100px; height: 80px; top: 110px; } /* m1 */
+        .ls-stage { background: #adc2eb; width: 80px; height: 60px; top: 120px; }    /* m2 */
+        .ls-flex { background: #adc2eb; width: 40px; height: 50px; top: 125px; border-style: dashed; } /* m3 */
+        .ss-stage { background: #ffcccc; width: 60px; height: 40px; top: 130px; }    /* m4 */
+
+        .spring-wire {
+            position: absolute;
+            height: 2px;
+            background-image: linear-gradient(90deg, #333 50%, transparent 50%);
+            background-size: 10px 2px;
+            top: 150px;
+            z-index: 5;
+        }
+
+        .math { font-family: "Cambria Math", "Libertinus Math", serif; font-style: italic; }
+        .equation { 
+            background: #f4f4f4; 
+            padding: 15px; 
+            border-left: 5px solid #004a99; 
+            margin: 20px 0; 
+            font-size: 16px;
+        }
+
+        .control-panel { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 30px; 
+            background: #eee; 
+            padding: 20px; 
+            border-radius: 4px;
+        }
+
+        .vector-sum {
+            font-size: 14px;
+            color: #d9534f;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background: #f0f0f0; }
+    </style>
+</head>
+<body>
+
+<div class="paper-header">
+    <div class="paper-title">Characterization of Generalized Displacements <span class="math">f<sub>ij</sub></span></div>
+    <div class="authors">Technical Supplement for Multibody Dynamics Verification</div>
+</div>
+
+<p>This supplement demonstrates the <strong>recursive kinematic chain</strong> defined in Section 2.2. It clarifies that while <span class="math">f<sub>ij</sub></span> represents the total relative displacement, the "unphysical force" is neutralized by the <strong>Active Control Wrench</strong> <span class="math">u<sub>j</sub></span>.</p>
+
+<div class="section-title">1. Interactive Kinematic Chain (j = 3, Wafer Chain)</div>
+<div id="sim-viewport">
+    <div id="m1" class="body-label base-frame">Base Frame<br>(m<sub>1</sub>)</div>
+    <div id="m2" class="body-label ls-stage">Long Stroke<br>(m<sub>2</sub>)</div>
+    <div id="m3" class="body-label ls-flex">LS Flex<br>(m<sub>3</sub>)</div>
+    <div id="m4" class="body-label ss-stage">Short Stroke<br>(m<sub>4</sub>)</div>
+    
+    <div id="s1" class="spring-wire"></div>
+    <div id="s2" class="spring-wire"></div>
+    <div id="s3" class="spring-wire"></div>
+    <div id="s4" class="spring-wire"></div>
+</div>
+
+<div class="control-panel">
+    <div>
+        <label><strong>Actuated Scan Command</strong> (<span class="math">f<sub>2,3</sub></span>)</label>
+        <input type="range" id="input-f2" min="0" max="400" value="0" style="width:100%">
+        <p><small>Input for the 100mm Coarse Trajectory.</small></p>
+    </div>
+    <div>
+        <label><strong>Parasitic Structural Delta</strong> (<span class="math">f<sub>3,3</sub></span>)</label>
+        <input type="range" id="input-f3" min="-40" max="40" value="0" style="width:100%">
+        <p><small>Nanometric deviation due to compliance (K<sub>3</sub>).</small></p>
+    </div>
+</div>
+
+<div class="vector-sum" id="absolute-pos">
+    Inertial Position (Eq. 2.1): f<sup>0</sup><sub>3,3</sub> = f<sup>0</sup><sub>2,3</sub> + f<sub>3,3</sub> = 0.000 mm
+</div>
+
+<div class="section-title">2. Mathematical Reconciliation (The "Teacher's Paradox")</div>
+<div class="equation">
+    <strong>Paper Equation (2.10):</strong> <span class="math">M<sub>j</sub>p̈<sub>j</sub> + N<sub>j</sub>ṗ<sub>j</sub> + Q<sub>j</sub>p<sub>j</sub> = u<sub>j</sub></span><br><br>
+    If <span class="math">p<sub>j</sub></span> contains a 100mm displacement and <span class="math">Q<sub>j</sub></span> is 10<sup>12</sup> N/m, the term <span class="math">Q<sub>j</sub>p<sub>j</sub></span> is indeed ~10<sup>11</sup> N.<br>
+    <strong>However</strong>, the Control Wrench <span class="math">u<sub>j</sub></span> is defined as:<br>
+    <span class="math">u<sub>j</sub> = Q<sub>j</sub>p<sub>ref</sub> + M<sub>j</sub>p̈<sub>ref</sub> + ...</span><br><br>
+    Substituting <span class="math">u<sub>j</sub></span> into (2.10) yields the <strong>Error Dynamics</strong>:<br>
+    <span class="math">M<sub>j</sub>ë<sub>j</sub> + N<sub>j</sub>ė<sub>j</sub> + <span style="color:#004a99">Q<sub>j</sub>(p<sub>j</sub> - p<sub>ref</sub>)</span> = 0</span><br><br>
+    The motor only produces force against the <span style="color:#004a99">Tracking Error</span> (e.g., 1nm), not the total distance.
+</div>
+
+<div class="section-title">3. Stage Parameter Mapping</div>
+<table>
+    <tr>
+        <th>Variable</th>
+        <th>Physical Representation</th>
+        <th>Nominal Length (L<sub>0</sub>)</th>
+        <th>Simulation Role</th>
+    </tr>
+    <tr>
+        <td class="math">f<sub>2,j</sub>, f<sub>4,j</sub></td>
+        <td>Actuated Stages (Lorentz Motors)</td>
+        <td><span style="color:blue">Dynamic Setpoint</span></td>
+        <td>Controlled via <code>actuator kp</code></td>
+    </tr>
+    <tr>
+        <td class="math">f<sub>3,j</sub>, f<sub>5,j</sub></td>
+        <td>Passive Flexures (Bearings/Metal)</td>
+        <td><span style="color:green">Fixed Structural Design</span></td>
+        <td>Controlled via <code>joint stiffness</code></td>
+    </tr>
+    <tr>
+        <td class="math">f<sup>0</sup><sub>ij</sub></td>
+        <td>Inertial Coordinate</td>
+        <td>N/A</td>
+        <td>Absolute position for ray-tracing</td>
+    </tr>
+</table>
+
+<script>
+    const f2Slider = document.getElementById('input-f2');
+    const f3Slider = document.getElementById('input-f3');
+    const absPosText = document.getElementById('absolute-pos');
+
+    const m1 = document.getElementById('m1');
+    const m2 = document.getElementById('m2');
+    const m3 = document.getElementById('m3');
+    const m4 = document.getElementById('m4');
+
+    const s1 = document.getElementById('s1');
+    const s2 = document.getElementById('s2');
+    const s3 = document.getElementById('s3');
+    const s4 = document.getElementById('s4');
+
+    function update() {
+        const f2 = parseFloat(f2Slider.value); 
+        const f3 = parseFloat(f3Slider.value); 
+        
+        // Origins
+        const x1 = 50;  
+        const x2 = x1 + 100 + f2; 
+        const x3 = x2 + 80 + f3;  
+        const x4 = x3 + 40;       
+
+        // Update Bodies
+        m1.style.left = x1 + 'px';
+        m2.style.left = x2 + 'px';
+        m3.style.left = x3 + 'px';
+        m4.style.left = x4 + 'px';
+
+        // Update Springs (Wires)
+        s1.style.left = '0px'; s1.style.width = x1 + 'px';
+        s2.style.left = (x1 + 100) + 'px'; s2.style.width = f2 + 'px';
+        s3.style.left = (x2 + 80) + 'px'; s3.style.width = (x3 - (x2+80)) + 'px';
+        s4.style.left = (x3 + 40) + 'px'; s4.style.width = '40px';
+
+        // Update Text
+        const totalMm = (f2/4).toFixed(3);
+        const vibNm = f3.toFixed(0);
+        absPosText.innerHTML = `<strong>Kinematic Chain (Eq 2.1):</strong> f<sup>0</sup><sub>3,3</sub> = (${totalMm} mm scan) + (${vibNm} nm vibration) = ${(parseFloat(totalMm) + f3/1000000).toFixed(6)} mm`;
+    }
+
+    f2Slider.addEventListener('input', update);
+    f3Slider.addEventListener('input', update);
+    update();
+</script>
+
+</body>
+</html>

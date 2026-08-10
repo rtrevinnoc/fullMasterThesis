@@ -1,0 +1,165 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{xcolor}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\usepackage{soul}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{ragged2e}
+\usepackage[style=ieee, backend=biber]{biblatex}
+\addbibresource{references.bib}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+
+\begin{document}
+\setcounter{section}{0}
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Identificación de un Gap Científico}\\[4pt]
+{\large Tesis I}\\[2pt]
+Roberto Treviño Cervantes
+\end{center}
+
+\section{Contexto}
+
+Los sistemas de fotolitografía tipo \textit{step-and-scan} son la piedra angular de la fabricación de circuitos integrados modernos. La proyección repetida del patrón de cada capa sobre obleas de silicio de 300\,mm exige combinar velocidad de traslación elevada con precisión de posicionamiento a escala nanométrica: el error de superposición (\textit{overlay}) entre capas consecutivas debe mantenerse por debajo de 4\,nm, el tiempo de asentamiento tras cada movimiento de escalonado no debe exceder los 10\,ms, y la productividad operativa supera las 175 obleas por hora en máquinas de estado del arte \supercite{Butler2011_PositionControl, Schmidt2012_UltraPrecision}. El costo de capital de una máquina puede superar los 150 millones de dólares, por lo que cada milisegundo ahorrado en el ciclo de movimiento se traduce directamente en mayor rendimiento económico.
+
+La revisión sistemática de la literatura (período 2020--2025, $n=12$ artículos seleccionados bajo criterios PRISMA \supercite{Page2021_PRISMA}) muestra que la investigación reciente se distribuye en seis categorías metodológicas: \textit{input shaping}, sincronización de cadenas, control adaptable, redes neuronales, control basado en datos y modelado predictivo \supercite{Song2021_Review, Heertjes2020_Control}. La tendencia más prominente en los últimos dos años del período es el empleo de perfiles de movimiento de cuarto orden (\textit{snap-limited}, 15 segmentos), que presentan un espectro de potencia más concentrado en bajas frecuencias que los perfiles de tercer orden \supercite{Al-Rawashdeh2023a}, reduciendo así la excitación de los modos estructurales de la máquina. No obstante, esta tendencia revela también una brecha metodológica que se describe a continuación.
+
+\section{Análisis de Brechas}
+
+La Tabla~\ref{tab:gaps} compara el estado del arte en tres dimensiones críticas para el diseño de trayectorias frente al estado que sería necesario para resolver el problema de investigación planteado. Las columnas indican lo que los trabajos existentes han abordado, lo que permanece sin resolver, y la evidencia bibliográfica que fundamenta cada juicio.
+
+\begingroup
+\small
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.4}
+\begin{longtable}{L{3.2cm} L{5cm} L{5cm}}
+\caption{Análisis de brechas en la literatura de control de trayectorias para escáneres de obleas.}
+\label{tab:gaps} \\
+\toprule
+\textbf{Dimensión} & \textbf{Estado del Arte} & \textbf{Brecha Identificada} \\
+\midrule
+\endfirsthead
+\multicolumn{3}{c}{\small\textit{(continuación de la Tabla~\ref{tab:gaps})}} \\[4pt]
+\toprule
+\textbf{Dimensión} & \textbf{Estado del Arte} & \textbf{Brecha Identificada} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+
+Modelo de la máquina utilizado en planeación &
+Los métodos de conformación de entrada emplean modelos cinemáticos reducidos de uno o dos cuerpos. El modelo multi-cuerpo completo en espacio de estados de Al-Rawashdeh et al.\ \supercite{Al-Rawashdeh2022_Caracterization} no se usa en ninguno de los doce artículos para diseñar trayectorias. &
+Ningún trabajo utiliza la formulación completa de tres cadenas seriales (bastidor base, cadena de oblea, cadena óptica, cadena del reticlo) para optimizar la forma del perfil de movimiento con base en los modos estructurales del sistema. \\[4pt]
+
+Métrica de evaluación de trayectorias &
+Todos los trabajos revisados evalúan las trayectorias con métricas como tiempo de asentamiento, error cuadrático medio (MSE), \textit{overlay}, o tiempo total de operación \supercite{Al-Rawashdeh2023a, Al-Rawashdeh2023b}. &
+No existe ningún trabajo que utilice la morfología del defecto sobre la oblea expresado en la cantidad de chips funcionales (\textit{yield}) como función de costo directa durante la generación u optimización de la trayectoria. \\[4pt]
+
+Conexión trayectoria--calidad del patrón impreso &
+Los modelos predictivos revisados \supercite{Chen2023, Subramanian2024} introducen modelos de planta o modelos térmicos, pero el criterio de validación sigue siendo el error de seguimiento o indicadores temporales. Los conjuntos de datos de mapas de defecto de obleas (e.g., WM-811K \supercite{Wu2015_WM811K}) no han sido incorporados al lazo de optimización de trayectorias. &
+La industria carece de una metodología que transforme de forma predictiva los parámetros cinemáticos de alto orden $(v_{max},\, a_{max},\, j_{max},\, s_{max})$ en una estimación de la morfología del error sobre el patrón del circuito integrado antes de ejecutar la trayectoria. \\[4pt]
+
+Perfiles de orden superior y penalización en productividad &
+Los trabajos recientes generan perfiles de cuarto orden y reportan tiempos de operación óptimos, pero la relación entre mayor orden del perfil y pérdida potencial de \textit{throughput} (\textit{move-time penalty}) no está cuantificada en términos de \textit{yield} \supercite{Heertjes2023_CDC, Al-Rawashdeh2023a}. &
+No se ha establecido una proporción entre \textit{throughput} y \textit{yield} en función de los parámetros de una trayectoria de cuarto orden, lo que impide tomar decisiones informadas sobre el diseño del perfil de movimiento para geometrías específicas de circuito integrado. \\[4pt]
+
+Uso de inteligencia artificial en la función de costo &
+Las redes neuronales revisadas actúan como compensadores de controladores (RBF en FOSMC \supercite{Kuang2020}); no existe ningún trabajo que use una CNN como modelo subrogado de evaluación de defectos dentro de un lazo de optimización de trayectorias. &
+La integración de una red neuronal convolucional entrenada sobre datos reales de manufactura (e.g., WM-811K \supercite{Wu2015_WM811K}) como función de costo dinámica en un optimizador bio-inspirado para trayectorias litográficas no ha sido documentada en la literatura. \\
+
+\end{longtable}
+\endgroup
+
+\section{Gap Científico Identificado}
+
+Del análisis anterior se concluye que existe una \textbf{desconexión crítica entre la planificación de la trayectoria y el rendimiento (\textit{yield}) final de la oblea de silicio}. El estado del arte en control de movimiento optimiza métricas servo-mecánicas aisladas del contexto del proceso que se busca controlar: la impresión de un circuito integrado con geometría determinada sobre un sustrato fotosensible. En términos formales, el vacío puede enunciarse como sigue:
+
+\begin{framed}
+\textbf{Gap identificado.} No existe en la literatura una metodología que mapee de forma predictiva los parámetros cinemáticos de alto orden de la trayectoria $(v_{max},\, a_{max},\, j_{max},\, s_{max})$ a la morfología del error sobre el patrón del circuito integrado, ni que utilice dicha morfología como función de costo durante la generación y optimización de perfiles de movimiento de cuarto orden para escáneres litográficos. La ausencia de este vínculo impide explorar perfiles de aceleración más agresivos de manera informada, limitando simultáneamente el \textit{throughput} alcanzable y el \textit{yield} de la oblea.
+\end{framed}
+
+La justificación de relevancia industrial es directa: cada punto porcentual de \textit{yield} perdido en la fabricación de circuitos se traduce en obleas desechadas, incrementando el costo por chip. Dado que el costo de capital de un escáner supera los 150 millones de dólares y la productividad requerida implica menos de 0.2\,s de exposición por \textit{die} \supercite{Butler2011_PositionControl}, la optimización conjunta de \textit{throughput} y \textit{yield} representa un problema de alto impacto económico. El presente trabajo se sitúa en el ámbito de la manufactura inteligente, proponiendo un enfoque en el que el conocimiento del proceso litográfico retroalimenta la planeación de la trayectoria.
+
+\section{Pregunta de Investigación}
+
+La identificación del vacío anterior conduce a la siguiente pregunta de investigación:
+
+\begin{framed}
+¿En qué medida la integración de una red neuronal convolucional como modelo subrogado de predicción de defectos permite optimizar los parámetros cinemáticos de una trayectoria de cuarto orden para maximizar el rendimiento (\textit{yield}) industrial sin penalizar la productividad (\textit{throughput}) del sistema de fotolitografía?
+\end{framed}
+
+\subsection{Variables de Investigación}
+
+La pregunta de investigación involucra las siguientes variables:
+
+\begin{itemize}[leftmargin=1.5em]
+
+\item \textbf{Variables independientes:}
+\begin{itemize}
+    \item Tiempos de los segmentos del perfil de trayectoria de cuarto orden (15 segmentos).
+    \item Límites de los parámetros cinemáticos: velocidad máxima $v_{max}$, aceleración máxima $a_{max}$, \textit{jerk} máximo $j_{max}$, \textit{snap} máximo $s_{max}$.
+\end{itemize}
+
+\item \textbf{Variables dependientes:}
+\begin{itemize}
+    \item Rendimiento de manufactura (\textit{yield}): fracción de obleas sin defectos críticos en el mapa de defectos.
+    \item Productividad (\textit{throughput}): número de obleas procesadas por hora.
+    \item Error de seguimiento dinámico: desviación entre la trayectoria de referencia y la respuesta del modelo dinámico multi-cuerpo \supercite{Al-Rawashdeh2022_Caracterization}.
+\end{itemize}
+
+\end{itemize}
+
+\subsection{Enfoque de Solución Propuesto}
+
+La respuesta a la pregunta de investigación se articulará mediante un \textit{framework} computacional que integra tres componentes:
+
+\begin{enumerate}[leftmargin=1.5em, label=\textbf{\arabic*.}]
+
+\item \textbf{Modelo dinámico como gemelo digital.} El modelo de espacio de estados multi-cuerpo de la máquina de fotolitografía \supercite{Al-Rawashdeh2022_Caracterization} servirá como simulador (\textit{digital twin}) para calcular los errores de seguimiento producidos por un perfil de trayectoria con parámetros $(v_{max},\, a_{max},\, j_{max},\, s_{max})$ dados. Los errores de seguimiento se transformarán en mapas de desplazamiento espacial sobre la oblea.
+
+\item \textbf{Modelo subrogado de defectos.} Una red neuronal convolucional (CNN) entrenada sobre el conjunto de datos WM-811K \supercite{Wu2015_WM811K}, con 811\,457 mapas de defectos de manufactura real, clasificará los tipos de fallo asociados a cada mapa de desplazamiento, actuando como función de costo dinámica que estima el \textit{yield} esperado para una trayectoria dada.
+
+\item \textbf{Optimización bio-inspirada.} Un algoritmo de enjambre de partículas (PSO) iterará sobre el espacio de parámetros cinemáticos, evaluando cada candidato mediante el gemelo digital y la CNN, para encontrar el perfil de trayectoria que maximice el \textit{yield} estimado sin exceder la penalización de tiempo de movimiento (\textit{move-time penalty}) que reduciría el \textit{throughput} por debajo del umbral operativo.
+
+\end{enumerate}
+
+\noindent Este enfoque transforma la planeación de trayectorias de un problema puramente servo-mecánico a uno de manufactura inteligente orientado al proceso, cerrando la brecha identificada en la literatura.
+
+\printbibliography
+
+\end{document}

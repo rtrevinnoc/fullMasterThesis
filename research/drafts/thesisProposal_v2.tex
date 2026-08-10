@@ -1,0 +1,353 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=2.5cm, headsep=0.25in]{geometry}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{soul}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{ragged2e}
+\usepackage{float}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,shapes.geometric,calc}
+\usepackage[style=ieee, backend=biber]{biblatex}
+\addbibresource{references_v2.bib}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+\colorlet{shadecolor}{orange!10}
+
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\Centering\arraybackslash}p{#1}}
+
+\definecolor{boxhdr}{HTML}{0A3D62}
+\definecolor{boxbg}{HTML}{EAF1F8}
+
+\newtcolorbox{infobox}[1]{
+  enhanced, breakable, sharp corners,
+  colback=boxbg, colframe=boxhdr, coltitle=white,
+  fonttitle=\bfseries, title=#1, boxrule=0.5pt,
+  left=6pt, right=6pt, top=4pt, bottom=4pt
+}
+
+\title{Documento Integrador de Propuesta de Investigación}
+\author{Roberto Treviño Cervantes}
+\date{1 de junio de 2026}
+
+\begin{document}
+
+\begin{center}
+{\LARGE \bfseries Documento Integrador de Propuesta de Investigación} \\[4pt]
+{\large Tesis I --- Maestría en Ciencias de la Ingeniería Eléctrica} \\[2pt]
+{\normalsize Facultad de Ingeniería Mecánica y Eléctrica, UANL}
+\end{center}
+
+\vspace{4pt}
+
+%% =====================================================================
+\section*{Datos generales}
+%% =====================================================================
+
+\begin{infobox}{Identificación del proyecto}
+\begin{tabular}{@{}p{4.8cm} L{9.5cm}@{}}
+\textbf{Nombre del estudiante:}    & Roberto Treviño Cervantes \\
+\textbf{Matrícula:}                & 1915003 \\
+\textbf{LGAC:}                     & Tecnología e Innovación Mecatrónica \\
+\textbf{Director(a) propuesto(a):} & Juan Angel Rodríguez Liñán\\
+\textbf{Fecha:}                    & 1 de junio de 2026 \\
+\textbf{Título preliminar:} &
+Optimización de Trayectorias de Orden Superior Informadas por el Rendimiento de la Oblea para Sistemas \textit{Step-and-Scan} \\
+\end{tabular}
+\end{infobox}
+
+%% =====================================================================
+\section{Problema de investigación}
+%% =====================================================================
+
+\subsection*{Contexto}
+
+Los sistemas de fotolitografía tipo \textit{step-and-scan} constituyen una parte fundamental de la fabricación de circuitos integrados (IC) modernos. La proyección repetida del patrón de cada capa sobre obleas de silicio de 300\,mm exige combinar velocidades de traslación elevadas con precisión de posicionamiento a escala nanométrica: el error de superposición (\textit{overlay}) entre capas consecutivas debe mantenerse por debajo de 4\,nm, el tiempo de asentamiento (\textit{settling time}) tras cada movimiento de escalonado no debe exceder 10\,ms, y la productividad operativa supera las 175 obleas por hora en máquinas del estado del arte \cite{Butler2011_PositionControl,Schmidt2012_UltraPrecision}. El costo de capital de un escáner EUV de última generación supera los 150 millones de dólares, por lo que cada milisegundo ahorrado en el ciclo de movimiento, y cada punto porcentual de \textit{yield} preservado, se traduce directamente en mayor rendimiento económico.
+
+El proceso litográfico requiere desplazar la oblea a alta velocidad para maximizar la productividad (\textit{throughput}), bajo la restricción de que los perfiles de aceleración no comprometan el contraste óptico ni la superposición exacta de las capas. La literatura reciente explora trayectorias de cuarto orden, conocidas como perfiles \textit{snap-limited}, que concentran el espectro de excitación en bajas frecuencias y reducen la respuesta de los modos estructurales débilmente amortiguados de la plataforma \cite{Al-Rawashdeh2023a,Heertjes2023_CDC}. Sin embargo, el incremento de precisión mediante métodos tradicionales suele conllevar una penalización en el tiempo de movimiento (\textit{move-time penalty}), y la cuantificación de esta relación permanece como un vacío abierto en la literatura.
+
+Los modelos actuales de planeación asumen, además, que el tiempo de asentamiento es suficiente para garantizar la fidelidad del circuito, ignorando la relación directa entre las vibraciones dinámicas residuales y los defectos espaciales que afectan el rendimiento final (\textit{yield}) de la oblea. Esta investigación se sitúa en el ámbito de la \textbf{manufactura inteligente}, proponiendo un enfoque basado en datos que considera la morfología del error sobre la oblea durante la planeación de la trayectoria, abriendo así la posibilidad de explorar perfiles de aceleración antes considerados demasiado agresivos en sistemas ciegos al contexto del patrón impreso.
+
+\subsection*{Planteamiento del problema}
+
+\begin{infobox}{Enunciado del problema}
+\textbf{A pesar de} que la literatura reciente explora trayectorias de cuarto orden (\textit{snap-limited}) para reducir vibraciones y errores de sincronización en escáneres litográficos, \textbf{actualmente} estos perfiles se optimizan exclusivamente con respecto a métricas servo-mecánicas (tiempo de asentamiento, error cuadrático medio de seguimiento, \textit{overlay}) sin considerar la calidad del patrón impreso sobre la oblea, \textbf{lo cual provoca} pérdidas de rendimiento (\textit{yield}) y una reducción de la productividad efectiva del proceso de fabricación de circuitos integrados \textbf{en} la industria de semiconductores, al limitar el diseño a parámetros cinemáticos conservadores cuya relación con la morfología del defecto sobre la oblea es desconocida.
+\end{infobox}
+
+El problema satisface las cinco condiciones requeridas:
+
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+\item \textbf{Específico:} se acota a perfiles de trayectoria de cuarto orden para escáneres de fotolitografía \textit{step-and-scan}.
+\item \textbf{Investigable:} se aborda mediante un \textit{framework} computacional integrado que articula simulación dinámica, aprendizaje profundo y optimización bio-inspirada, todos verificables.
+\item \textbf{Delimitado:} se restringe al modelado dinámico multi-cuerpo de 3 grados de libertad (ejes X--Y, y la rotación en el plano) sobre la simulación de la plataforma; queda fuera el diseño óptico, los efectos térmicos y la validación en hardware físico.
+\item \textbf{Alineado con la LGAC:} pertenece a la línea de \textbf{Tecnología e Innovación Mecatrónica}, al integrar sistemas inteligentes para resolver problemas de control de movimiento industrial.
+\item \textbf{Refleja una necesidad científica y tecnológica:} cierra la brecha documentada entre la planeación de trayectorias y la morfología del defecto sobre la oblea, con impacto económico directo en la industria semiconductora.
+\end{itemize}
+
+%% =====================================================================
+\section{Estado del arte y gap científico}
+%% =====================================================================
+
+\subsection*{Panorama del campo}
+
+Una revisión sistemática siguiendo el protocolo PRISMA 2020 \cite{Page2021_PRISMA} sobre publicaciones del período 2020--2025 ($n=12$ artículos seleccionados) muestra que la investigación en control de movimiento para escáneres litográficos se distribuye en seis categorías metodológicas: (i) \textit{input shaping} y diseño de perfiles de alto orden \cite{Al-Rawashdeh2023a,Al-Rawashdeh2023b,Heertjes2023_CDC}, (ii) sincronización de cadenas \cite{Al-Rawashdeh2021,Li2020}, (iii) control adaptable \cite{Kuang2021}, (iv) redes neuronales como compensadores de controlador \cite{Kuang2020}, (v) control basado en datos \cite{Al-Rawashdeh2024,Liu2024,Sun2024} y (vi) modelado predictivo \cite{Chen2023,Subramanian2024}. Revisiones críticas recientes confirman esta distribución \cite{Song2021_Review,Heertjes2020_Control,Heertjes2023_ICM}.
+
+\subsection*{Enfoques principales y comparación crítica}
+
+La tendencia dominante en los últimos dos años del período revisado es el uso de perfiles de cuarto orden (\textit{snap-limited}) con 15 segmentos, fundamentados en el modelo multi-cuerpo de Al-Rawashdeh et al.\ \cite{Al-Rawashdeh2022_Caracterization}, que representa la máquina como un bastidor base con tres cadenas seriales acopladas (oblea, óptica y retículo). Estos trabajos demuestran reducciones significativas en la excitación de modos estructurales débilmente amortiguados, pero validan exclusivamente con métricas servo-mecánicas (MSE, \textit{overlay}, tiempo de asentamiento). En paralelo, las redes neuronales empleadas en este dominio se restringen a compensadores tipo RBF dentro de controladores FOSMC \cite{Kuang2020}, sin que existan trabajos que las usen como funciones de costo en la etapa de planeación.
+
+\subsection*{Limitaciones y gap científico identificado}
+
+Cuatro limitaciones convergen en la brecha que motiva esta investigación. \textbf{Primera:} ningún trabajo de los doce revisados utiliza la formulación completa de tres cadenas seriales para diseñar trayectorias en función de los modos estructurales. \textbf{Segunda:} no existe trabajo que utilice la morfología del defecto sobre la oblea, expresada en la cantidad de \textit{chips} funcionales (\textit{yield}), como función de costo durante la generación u optimización de la trayectoria. \textbf{Tercera:} los conjuntos de datos de mapas de defectos de manufactura real (WM-811K \cite{Wu2015_WM811K}, con 811\,457 mapas etiquetados) no se han incorporado al lazo de optimización. \textbf{Cuarta:} la relación \textit{throughput}--\textit{yield} en función de los parámetros cinemáticos $(v_{max},\,a_{max},\,j_{max},\,s_{max})$ permanece sin cuantificar.
+
+\begin{framed}
+\textbf{Gap científico.} No existe en la literatura una metodología que mapee de forma predictiva los parámetros cinemáticos de alto orden de la trayectoria a la morfología del error sobre el patrón del circuito integrado, ni que utilice dicha morfología como función de costo durante la optimización de perfiles de cuarto orden para escáneres litográficos. La ausencia de este vínculo impide explorar perfiles de aceleración más agresivos de manera informada, limitando simultáneamente el \textit{throughput} alcanzable y el \textit{yield} de la oblea.
+\end{framed}
+
+%% =====================================================================
+\section{Objetivos y preguntas de investigación}
+%% =====================================================================
+
+\subsection*{Objetivo general}
+
+Desarrollar un \textit{framework} computacional que integre una simulación del escáner litográfico, una red neuronal convolucional entrenada sobre WM-811K como modelo subrogado de evaluación de defectos, y un algoritmo de optimización por enjambre de partículas (PSO), con el fin de generar trayectorias de cuarto orden que maximicen el rendimiento (\textit{yield}) estimado sin penalizar la productividad (\textit{throughput}) del proceso.
+
+\subsection*{Objetivos específicos}
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{C{0.8cm} L{14cm}}
+\toprule
+\textbf{No.} & \textbf{Objetivo específico} \\
+\midrule
+O1 & Implementar el modelo dinámico multi-cuerpo de \cite{Al-Rawashdeh2022_Caracterization} como simulación, restringido al plano X--Y, capaz de simular el error de seguimiento ante un perfil de trayectoria parametrizado. \\
+O2 & Implementar el generador analítico de trayectorias de cuarto orden a partir de los parámetros cinemáticos $(v_{max},\,a_{max},\,j_{max},\,s_{max})$ y los tiempos de cada segmento. \\
+O3 & Entrenar y validar una red neuronal convolucional sobre el conjunto WM-811K \cite{Wu2015_WM811K} para clasificar las nueve clases de morfología de defecto sobre el mapa de la oblea. \\
+O4 & Diseñar la transformación que convierte el error de seguimiento dinámico simulado en un mapa de defectos comparable con las entradas de la CNN. \\
+O5 & Implementar el algoritmo PSO con la CNN como función de costo dinámica, acoplado a la simulación, para optimizar los parámetros cinemáticos de la trayectoria. \\
+O6 & Evaluar el \textit{framework} mediante escenarios comparativos que cuantifiquen la relación \textit{throughput}--\textit{yield} frente a líneas base de tercer orden y de cuarto orden no optimizadas. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{Pregunta general}
+
+\begin{framed}
+¿En qué medida la integración de una red neuronal convolucional como modelo subrogado de predicción de defectos permite optimizar los parámetros cinemáticos de una trayectoria de cuarto orden para maximizar el rendimiento (\textit{yield}) industrial sin penalizar la productividad (\textit{throughput}) del sistema de fotolitografía?
+\end{framed}
+
+\subsection*{Preguntas específicas}
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{C{0.8cm} L{14cm}}
+\toprule
+\textbf{No.} & \textbf{Pregunta específica} \\
+\midrule
+P1 & ¿Qué fidelidad mínima de la simulación es necesaria para que el mapa de error de seguimiento simulado sea distinguible por la CNN entre clases morfológicas de defecto? \\
+P2 & ¿Cómo se mapean los parámetros $(v_{max},\,a_{max},\,j_{max},\,s_{max})$ y los tiempos de los segmentos a las clases de defecto reconocidas por WM-811K? \\
+P3 & ¿Qué arquitectura de CNN ofrece el mejor compromiso entre precisión de clasificación y costo computacional cuando se utiliza como evaluador dentro del lazo PSO? \\
+P4 & ¿Bajo qué condiciones el PSO converge a perfiles que mejoran simultáneamente \textit{yield} y \textit{throughput} respecto a las líneas base? \\
+P5 & ¿Qué ganancia porcentual de \textit{yield} es alcanzable manteniendo un \textit{throughput} comparable al de los perfiles de cuarto orden no optimizados del estado del arte? \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%% =====================================================================
+\section{Diseño metodológico}
+%% =====================================================================
+
+\subsection*{Enfoque metodológico}
+
+La investigación adopta un enfoque \textbf{cuantitativo, metodológico y computacional}, basado en la construcción de un \textit{framework} de simulación y la validación numérica mediante experimentos controlados. No involucra hardware físico: el alcance es deliberadamente digital, conforme al uso establecido del modelo de \cite{Al-Rawashdeh2022_Caracterization} como sustituto del escáner para investigación académica.
+
+\subsection*{Variables e indicadores}
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{L{3.5cm} L{4.5cm} L{2.5cm} L{3.5cm}}
+\toprule
+\textbf{Variable / indicador} & \textbf{Descripción} & \textbf{Unidad / métrica} & \textbf{Método de evaluación} \\
+\midrule
+\multicolumn{4}{l}{\textit{Independientes}} \\
+\midrule
+Tiempos de segmento $T_{1..15}$ & Duración de cada uno de los 15 segmentos del perfil de 4to orden. & ms & Parámetros de entrada al generador analítico. \\
+$v_{max},a_{max},j_{max},s_{max}$ & Límites cinemáticos del perfil. & m/s, m/s$^2$, m/s$^3$, m/s$^4$ & Variables de decisión del PSO. \\
+\midrule
+\multicolumn{4}{l}{\textit{Dependientes}} \\
+\midrule
+\textit{Yield} estimado & Fracción de obleas sin defecto crítico. & \% & Salida de la CNN sobre el mapa de defectos sintético. \\
+\textit{Throughput} & Obleas por hora alcanzables con el perfil. & WPH & Cálculo a partir del tiempo total de ciclo simulado. \\
+Error de seguimiento dinámico & Diferencia entre trayectoria de referencia y respuesta del modelo. & nm & Simulación. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{Sistema o caso de estudio}
+
+El caso de estudio es un escáner litográfico \textit{step-and-scan} representado por el modelo multi-cuerpo de tres cadenas seriales (oblea, óptica, retículo) acopladas a un marco base, según \cite{Al-Rawashdeh2022_Caracterization}. Se considera la versión reducida a 3 grados de libertad en el plano X--Y; se omite el eje Z porque solo interviene en la alineación previa de la fotomáscara. El patrón de referencia es una geometría de \textit{die} de $26\times32$\,mm.
+
+\subsection*{Escenarios de análisis}
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{L{3cm} L{6cm} L{5cm}}
+\toprule
+\textbf{Escenario} & \textbf{Descripción} & \textbf{Objetivo} \\
+\midrule
+E1 -- Línea base 3er orden & Perfil \textit{jerk-limited} convencional. & Referencia de productividad/calidad clásica. \\
+E2 -- Línea base 4to orden & Perfil \textit{snap-limited} con parámetros recomendados por \cite{Al-Rawashdeh2023a}. & Estado del arte servo-mecánico. \\
+E3 -- 4to orden + PSO clásico & Perfil 4to orden optimizado con función de costo basada en MSE. & Aislar el efecto del orden cinemático del de la nueva función de costo. \\
+E4 -- 4to orden + PSO + CNN & Propuesta de tesis (\textit{framework} completo). & Validar la mejora en \textit{yield} sin penalizar \textit{throughput}. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{Herramientas y plataformas}
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{L{4.5cm} L{9.5cm}}
+\toprule
+\textbf{Herramienta} & \textbf{Propósito} \\
+\midrule
+Python, NumPy/SciPy y MuJoCo & Implementación de la simulación y del generador analítico de perfiles de 4to orden. \\
+PyTorch & Entrenamiento y despliegue de la CNN sobre WM-811K. \\
+PySwarms & Implementación del algoritmo PSO con la CNN como función de costo. \\
+AWS EC2 \texttt{g4dn.xlarge} (GPU NVIDIA T4) & Entrenamiento de la CNN y aceleración de las evaluaciones del lazo PSO. \\
+Matplotlib / TikZ & Visualización de mapas de defecto, espectros de perfil y resultados comparativos. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{Estrategia de validación}
+
+La validación se articula en tres capas: (i) \textbf{validación de la simulación}, replicando resultados publicados en \cite{Al-Rawashdeh2022_Caracterization,Al-Rawashdeh2023a} sobre el error de seguimiento de perfiles de referencia conocidos; (ii) \textbf{validación de la CNN}, mediante particiones estándar de WM-811K con métricas de \textit{accuracy}, \textit{macro-F1} y matriz de confusión por clase morfológica; (iii) \textbf{validación del \textit{framework} integrado}, mediante el contraste de los escenarios E1--E4, evaluando si el escenario E4 domina simultáneamente en \textit{yield} y \textit{throughput} (frente de Pareto) respecto a E1--E3.
+
+%% =====================================================================
+\section{Coherencia objetivo--metodología}
+%% =====================================================================
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{L{2.2cm} L{3.5cm} L{4cm} L{4.5cm}}
+\toprule
+\textbf{Objetivo} & \textbf{Variable / indicador} & \textbf{Método} & \textbf{Evidencia esperada} \\
+\midrule
+O1 & Error de seguimiento dinámico (nm) & Simulación numérica del modelo multi-cuerpo en X--Y. & Curva de error dinámico replicando los resultados de \cite{Al-Rawashdeh2022_Caracterization}. \\
+O2 & $T_{1..15}$, $v_{max},a_{max},j_{max},s_{max}$ & Generador analítico de 15 segmentos. & Perfiles continuos en posición, velocidad, aceleración, \textit{jerk} y \textit{snap} con condiciones de frontera nulas. \\
+O3 & \textit{Accuracy} de la CNN & Entrenamiento supervisado sobre WM-811K con validación cruzada. & Métricas superiores al estado del arte para las 9 clases. \\
+O4 & Mapa de defectos sintético & Transformación error-a-mapa en una rejilla compatible con WM-811K. & Mapas etiquetables por la CNN con confianza calibrada. \\
+O5 & \textit{Yield} estimado, \textit{throughput} & PSO acoplado a simulación y CNN. & Convergencia del enjambre con perfiles que dominan a las líneas base. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%% =====================================================================
+\section{Riesgos y viabilidad}
+%% =====================================================================
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{L{4cm} C{1.6cm} L{8.5cm}}
+\toprule
+\textbf{Riesgo} & \textbf{Impacto} & \textbf{Mitigación} \\
+\midrule
+Acceso restringido a WM-811K & Alto & Generación de un conjunto sintético equivalente mediante perturbaciones controladas de la simulación, replicando las clases morfológicas. \\
+PSO estancado en mínimos locales por la no-convexidad de la función de costo aprendida & Medio & Reducción dimensional del espacio de búsqueda, fijación de subconjuntos de parámetros, múltiples inicializaciones y \textit{warm-start} con la línea base de 4to orden. \\
+Capacidad de cómputo insuficiente para entrenar la CNN y ejecutar PSO acoplado a la simulación & Alto & Uso de instancias GPU \texttt{g4dn.xlarge} de AWS por horas; configuración reducida (X--Y sin rotación) como banco de pruebas a menor escala. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Viabilidad.} Los datos (WM-811K), el modelo dinámico y la infraestructura de cómputo (AWS por horas) están disponibles. El alcance se ajusta a los cinco meses comprometidos en la ruta crítica.
+
+%% =====================================================================
+\section{Cronograma preliminar}
+%% =====================================================================
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{L{5.5cm} C{1.3cm} C{1.3cm} C{1.3cm} C{1.3cm} C{1.3cm}}
+\toprule
+\textbf{Actividad} & \textbf{May} & \textbf{Jun} & \textbf{Jul} & \textbf{Ago} & \textbf{Sep} \\
+\midrule
+Refinamiento del modelo dinámico (O1, O2) & \cellcolor{boxhdr} & & & & \\
+Simulaciones iniciales y barridos paramétricos & & \cellcolor{boxhdr} & & & \\
+Entrenamiento y validación de la CNN (O3, O4) & & & \cellcolor{boxhdr} & & \\
+Integración PSO--CNN--simulación y análisis (O5, O6) & & & & \cellcolor{boxhdr} & \\
+Escritura del manuscrito final y entrega & & & & & \cellcolor{boxhdr} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Cada celda sombreada corresponde al hito mensual definido en la ruta crítica del proyecto. Los entregables son acumulativos: cada mes consolida una pieza verificable que alimenta al siguiente.
+
+%% =====================================================================
+\section{Referencias preliminares}
+%% =====================================================================
+
+\nocite{Butler2011_PositionControl,Schmidt2012_UltraPrecision,Al-Rawashdeh2022_Caracterization,
+Ginsberg1984_AdvancedDynamics,Page2021_PRISMA,Song2021_Review,Heertjes2023_ICM,
+Heertjes2020_Control,Wu2015_WM811K,Al-Rawashdeh2023a,Al-Rawashdeh2023b,Heertjes2023_CDC,
+Al-Rawashdeh2021,Li2020,Kuang2021,Kuang2020,Al-Rawashdeh2024,Liu2024,Sun2024,Chen2023,Subramanian2024}
+
+\printbibliography[heading=none]
+
+%% =====================================================================
+\section{Reflexión final del estudiante}
+%% =====================================================================
+
+\begin{infobox}{Principal aporte esperado}
+La principal contribución prevista es un \textit{framework} reproducible que cierra la desconexión entre la planeación servo-mecánica de trayectorias y la calidad del patrón impreso, al usar por primera vez una CNN entrenada con datos reales de manufactura (WM-811K) como función de costo dinámica dentro de un optimizador PSO sobre perfiles \textit{snap-limited} de cuarto orden. Esto habilita la exploración informada de perfiles más agresivos sin incurrir en pérdidas masivas de \textit{yield}.
+\end{infobox}
+
+\begin{infobox}{Principal riesgo técnico}
+La complejidad combinada de la función de costo --modelo multi-cuerpo más CNN-- puede dilatar los tiempos de convergencia del PSO y dificultar la reproducibilidad. Se mitiga con reducción dimensional del espacio de búsqueda y modelos subrogados más ligeros durante la inicialización del optimizador.
+\end{infobox}
+
+\begin{infobox}{Principal fortaleza metodológica}
+La estrategia se apoya en tres pilares maduros y verificables independientemente: (1) el modelo multi-cuerpo publicado de \cite{Al-Rawashdeh2022_Caracterization}; (2) el conjunto WM-811K con 811\,457 mapas etiquetados de manufactura real; (3) algoritmos estándar (PSO, CNN). La novedad reside en su integración, no en sus componentes, lo que reduce el riesgo metodológico y refuerza la trazabilidad de los resultados.
+\end{infobox}
+
+\end{document}
