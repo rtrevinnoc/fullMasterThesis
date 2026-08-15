@@ -10,7 +10,7 @@ Configuration ladder:
            spring-coupling lag. The LS command is offset by -lag_fit to
            place the END-EFFECTOR, not the LS carrier, on the reference.
   case3a : case2 + fine-stage feedback: PI on the measured end-effector
-           error, commanding the fine-stage actuator.
+           error, commanding the short-stroke (SS) actuator directly.
   case3b : case2 + fine-stage feedback with a Hybrid Integrator-Gain System
            (HIGS) element replacing the linear integrator.
 
@@ -34,9 +34,9 @@ ALPHA = 0.25
 DT = 1e-4
 HOLD_TIME = 0.4
 CTRL = {
-    "w_ls_x": 0, "w_ls_y": 1, "w_st_y": 7,
-    "r_ls_x": 9, "r_ls_y": 10, "r_st_y": 16,
-    "w_ls_x_v": 18, "w_ls_y_v": 19, "r_ls_x_v": 20, "r_ls_y_v": 21,
+    "w_ls_x": 0, "w_ls_y": 1, "w_ss_y": 4,
+    "r_ls_x": 6, "r_ls_y": 7, "r_ss_y": 10,
+    "w_ls_x_v": 12, "w_ls_y_v": 13, "r_ls_x_v": 14, "r_ls_y_v": 15,
 }
 
 
@@ -85,8 +85,13 @@ class PI:
         return float(np.clip(self.kp * e + self.i, -self.clip, self.clip))
 
 
-FINE_PI = dict(kp=40.0, ki=15000.0)
-FINE_HIGS = dict(kp=40.0, wi=2 * np.pi * 2500.0, wh=2 * np.pi * 1000.0, kh=1.0)
+# Retuned 2026-08-11 after the stage-mass fix (litho_sim.py: Stage body
+# mass/inertia corrected from the 0.5 kg actuator placeholder to the paper's
+# m7=10.5 kg). That correction drops the SS->Stage corner from ~825 Hz to
+# ~180 Hz, much closer to the fine loop's range, so the stability boundary is
+# far lower gain than before (see tune_fine.py / tune_fine_poststagefix.log).
+FINE_PI = dict(kp=16.0, ki=480.0)
+FINE_HIGS = dict(kp=16.0, wi=2 * np.pi * 200.0, wh=2 * np.pi * 80.0, kh=1.0)
 FINE_CLIP_W = 5e-3
 FINE_CLIP_R = 2e-2
 
@@ -243,8 +248,8 @@ def _run(dies, die_l, v, a, j, s, config, ff_w=(0.0, 0.0), ff_r=(0.0, 0.0),
         e_w = data.body("wafer").xpos[1] - off_w - yw
         e_r = data.body("mask").xpos[1] - off_r - yr
         if fine_w is not None:
-            data.ctrl[CTRL["w_st_y"]] = fine_w.update(-e_w)
-            data.ctrl[CTRL["r_st_y"]] = fine_r.update(-e_r)
+            data.ctrl[CTRL["w_ss_y"]] = fine_w.update(-e_w)
+            data.ctrl[CTRL["r_ss_y"]] = fine_r.update(-e_r)
 
         if want_lag_samples:
             lag_samples[0][0].append(vw); lag_samples[0][1].append(aw)

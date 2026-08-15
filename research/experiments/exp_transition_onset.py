@@ -44,12 +44,14 @@ fig_dir = sys.argv[1] if len(sys.argv) > 1 else "."
 CONFIG = sys.argv[2] if len(sys.argv) > 2 else "case3b"
 os.makedirs(fig_dir, exist_ok=True)
 
-V, A, J, S = 0.8, 20.0, 1600.0, 100.0  # spec-compliant tight-snap baseline
-# (2026-08-11 stage-mass fix moved the spec-compliance crossing from s=1e3 to
-# ~s=100 -- see driver_sweep_spec.py / sweep_spec.log)
+# RELATIVE-ONSET VARIANT (kept for reference): baseline snap + a threshold
+# referenced to the settled run, so the row-change spatial onset is visible.
+# The main exp_transition.py uses the absolute 7 nm spec, under which the
+# controller absorbs the settling (no onset) -- that is the reported result.
+V, A, J, S = 0.8, 20.0, 1600.0, 1e5    # baseline snap
 DIE_L = 0.016
 WAFER_R = 0.150
-T_STEPS = [0.15, 0.12, 0.10, 0.09, 0.08, 0.07, 0.06, 0.05, 0.04]
+T_STEPS = [0.20, 0.19, 0.18, 0.175, 0.17, 0.165, 0.16, 0.15, 0.12]
 T_EXP = 5.5e-3 / (V / lc.ALPHA)
 WINDOW = max(1, int(T_EXP / lc.DT))
 
@@ -67,15 +69,16 @@ print(f"  ff_w={tuple(round(x, 6) for x in ff_w)} "
       f"ff_r={tuple(round(x, 6) for x in ff_r)}", flush=True)
 
 cmap = ListedColormap(["#f0f0f0", "#3a7ca5", "#e8c547"])
-threshold = 7e-9      # absolute spec: exposure-window (cruise) MSD <= 7 nm
-print(f"threshold = {threshold*1e9:.1f} nm (absolute exposure-window spec)", flush=True)
+threshold = None      # relative onset: 2x the median MSD of the most-settled run
 rows = []
 for t_step in T_STEPS:
     per_die = lc.run_wafer(dies, DIE_L, V, A, J, S, CONFIG,
                            ff_w=ff_w, ff_r=ff_r, collect="all", t_step=t_step)
-    # exposure-window (cruise) MSD: middle third of the scan, per the spec
-    msd = np.array([lc.moving_stats(seg[len(seg)//3:2*len(seg)//3], WINDOW)[1]
-                    for seg in per_die])
+    msd = np.array([lc.moving_stats(seg, WINDOW)[1] for seg in per_die])
+    if threshold is None:                       # most-settled run defines it
+        threshold = 2.0 * np.median(msd)
+        print(f"threshold = 2 x median MSD @ t_step={T_STEPS[0]:.2f} "
+              f"= {threshold*1e9:,.1f} nm", flush=True)
     status = np.where(msd > threshold, 2, 1)
     wm = costfn.dies_to_map(dies, DIE_L, WAFER_R, status)
     j_map, info = costfn.map_cost(wm)

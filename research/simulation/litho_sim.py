@@ -51,7 +51,7 @@ K_LS_F_ROT = 1e9;  C_LS_F_ROT = 1e8
 K_SS_F_ROT = 1e9;  C_SS_F_ROT = 1e8
 K_ST_F_ROT = 1e9;  C_ST_F_ROT = 1e8
 K8_W_ROT   = 1e9;  C8_W_ROT   = 1e8
-K8_R_ROT   = 1e8;  C8_R_ROT   = 1e8
+K8_R_ROT   = 1e9;  C8_R_ROT   = 1e8  # was 1e8; paper Appendix B gives 1e9 (matches K8_W_ROT)
 K2_O_ROT   = 1e9;  C2_O_ROT   = 1e8
 K3_O_ROT   = 20.0; C3_O_ROT   = 60.0
 K4_O_ROT   = 20.0; C4_O_ROT   = 60.0
@@ -328,11 +328,12 @@ def get_model_xml(die_l, die_grid_xml):
                             <joint name="w_ssf_y"  type="slide" axis="0 1 0" stiffness="{K_SS_F}"     damping="{C_SS_F}"/>
                             <joint name="w_ssf_rz" type="hinge" axis="0 0 1" stiffness="{K_SS_F_ROT}" damping="{C_SS_F_ROT}"/>
                             <geom type="box" size="0.18 0.18 0.03" material="ss_alum" contype="0" conaffinity="0"/>
-                            <body name="w_st_act" pos="0 0 0.04">
-                                <inertial pos="0 0 0" mass="{M_ACT}" diaginertia="{I_ACT_XX} {I_ACT_XX} {I_ACT_ZZ}"/>
-                                <joint name="w_st_x"  type="slide" axis="1 0 0" stiffness="0" damping="{KV_ACT_TRANS}"/>
-                                <joint name="w_st_y"  type="slide" axis="0 1 0" stiffness="0" damping="{KV_ACT_TRANS}"/>
-                                <joint name="w_st_rz" type="hinge" axis="0 0 1" stiffness="0" damping="{KV_ACT_ROT}"/>
+                            <body name="w_stage" pos="0 0 0.04">
+                                <!-- m7 / stage-mass fix: was wrongly M_ACT/I_ACT (0.5 kg actuator placeholder) -->
+                                <inertial pos="0 0 0" mass="{M_ST_F}" diaginertia="{I_ST_F_XX} {I_ST_F_XX} {I_ST_F_ZZ}"/>
+                                <joint name="w_stage_x"  type="slide" axis="1 0 0" stiffness="{K_ST_F}"     damping="{C_ST_F}"/>
+                                <joint name="w_stage_y"  type="slide" axis="0 1 0" stiffness="{K_ST_F}"     damping="{C_ST_F}"/>
+                                <joint name="w_stage_rz" type="hinge" axis="0 0 1" stiffness="{K_ST_F_ROT}" damping="{C_ST_F_ROT}"/>
                                 <geom type="cylinder" size="0.16 0.015" material="ws_alum" contype="0" conaffinity="0"/>
                                 <body name="wafer" pos="0 0 0.02">
                                     <inertial pos="0 0 0" mass="{M_WAFR}" diaginertia="{I_WAFR_XX} {I_WAFR_XX} {I_WAFR_ZZ}"/>
@@ -370,11 +371,12 @@ def get_model_xml(die_l, die_grid_xml):
                             <joint name="r_ssf_y"  type="slide" axis="0 1 0" stiffness="{K_SS_F}"     damping="{C_SS_F}"/>
                             <joint name="r_ssf_rz" type="hinge" axis="0 0 1" stiffness="{K_SS_F_ROT}" damping="{C_SS_F_ROT}"/>
                             <geom type="box" size="0.18 0.18 0.03" material="ss_alum" contype="0" conaffinity="0"/>
-                            <body name="r_st_act" pos="0 0 -0.04">
-                                <inertial pos="0 0 0" mass="{M_ACT}" diaginertia="{I_ACT_XX} {I_ACT_XX} {I_ACT_ZZ}"/>
-                                <joint name="r_st_x"  type="slide" axis="1 0 0" stiffness="0" damping="{KV_ACT_TRANS}"/>
-                                <joint name="r_st_y"  type="slide" axis="0 1 0" stiffness="0" damping="{KV_ACT_TRANS}"/>
-                                <joint name="r_st_rz" type="hinge" axis="0 0 1" stiffness="0" damping="{KV_ACT_ROT}"/>
+                            <body name="r_stage" pos="0 0 -0.04">
+                                <!-- m7 / stage-mass fix: was wrongly M_ACT/I_ACT (0.5 kg actuator placeholder) -->
+                                <inertial pos="0 0 0" mass="{M_ST_F}" diaginertia="{I_ST_F_XX} {I_ST_F_XX} {I_ST_F_ZZ}"/>
+                                <joint name="r_stage_x"  type="slide" axis="1 0 0" stiffness="{K_ST_F}"     damping="{C_ST_F}"/>
+                                <joint name="r_stage_y"  type="slide" axis="0 1 0" stiffness="{K_ST_F}"     damping="{C_ST_F}"/>
+                                <joint name="r_stage_rz" type="hinge" axis="0 0 1" stiffness="{K_ST_F_ROT}" damping="{C_ST_F_ROT}"/>
                                 <geom type="box" size="0.1 0.1 0.015" material="ws_alum" contype="0" conaffinity="0"/>
                                 <body name="mask" pos="0 0 -0.02">
                                     <inertial pos="0 0 0" mass="{M_MASK}" diaginertia="{I_MASK_XX} {I_MASK_XX} {I_MASK_ZZ}"/>
@@ -427,18 +429,12 @@ def get_model_xml(die_l, die_grid_xml):
         <position name="w_ss_x"  joint="w_ss_x"  kp="{KP_ACT}"/>
         <position name="w_ss_y"  joint="w_ss_y"  kp="{KP_ACT}"/>
         <position name="w_ss_rz" joint="w_ss_rz" kp="{KP_ACT}"/>
-        <position name="w_st_x"  joint="w_st_x"  kp="{KP_ACT}"/>
-        <position name="w_st_y"  joint="w_st_y"  kp="{KP_ACT}"/>
-        <position name="w_st_rz" joint="w_st_rz" kp="{KP_ACT}"/>
         <position name="r_ls_x"  joint="r_ls_x"  kp="{KP_ACT}"/>
         <position name="r_ls_y"  joint="r_ls_y"  kp="{KP_ACT}"/>
         <position name="r_ls_rz" joint="r_ls_rz" kp="{KP_ACT}"/>
         <position name="r_ss_x"  joint="r_ss_x"  kp="{KP_ACT}"/>
         <position name="r_ss_y"  joint="r_ss_y"  kp="{KP_ACT}"/>
         <position name="r_ss_rz" joint="r_ss_rz" kp="{KP_ACT}"/>
-        <position name="r_st_x"  joint="r_st_x"  kp="{KP_ACT}"/>
-        <position name="r_st_y"  joint="r_st_y"  kp="{KP_ACT}"/>
-        <position name="r_st_rz" joint="r_st_rz" kp="{KP_ACT}"/>
         <velocity name="w_ls_x_v" joint="w_ls_x" kv="{KV_ACT_TRANS}"/>
         <velocity name="w_ls_y_v" joint="w_ls_y" kv="{KV_ACT_TRANS}"/>
         <velocity name="r_ls_x_v" joint="r_ls_x" kv="{KV_ACT_TRANS}"/>
@@ -480,24 +476,25 @@ def main():
             step_start = time.time()
             xw, yw, xr, yr = controller.get_ref(data.time)
             data.ctrl[0] = xw; data.ctrl[1] = yw; data.ctrl[2] = 0
-            data.ctrl[9] = xr; data.ctrl[10] = yr; data.ctrl[11] = 0
+            data.ctrl[6] = xr; data.ctrl[7] = yr; data.ctrl[8] = 0
             # LS velocity references (error-velocity damping), finite-differenced
             if prev_ref is not None:
                 dt = model.opt.timestep
-                data.ctrl[18] = (xw - prev_ref[0]) / dt
-                data.ctrl[19] = (yw - prev_ref[1]) / dt
-                data.ctrl[20] = (xr - prev_ref[2]) / dt
-                data.ctrl[21] = (yr - prev_ref[3]) / dt
+                data.ctrl[12] = (xw - prev_ref[0]) / dt
+                data.ctrl[13] = (yw - prev_ref[1]) / dt
+                data.ctrl[14] = (xr - prev_ref[2]) / dt
+                data.ctrl[15] = (yr - prev_ref[3]) / dt
             prev_ref = (xw, yw, xr, yr)
+            # fine-stage feedback commands the SS actuator directly (w_ss_y=4, r_ss_y=10)
             if args.control == 'higs':
                 ew_y = yw - data.body('wafer').xpos[1]
                 er_y = yr - data.body('mask').xpos[1]
                 ew_y_dot = -data.qvel[model.joint('wafer_y').dofadr[0]]
                 er_y_dot = -data.qvel[model.joint('mask_y').dofadr[0]]
-                data.ctrl[7] = higs_w.update(ew_y, ew_y_dot)
-                data.ctrl[16] = higs_r.update(er_y, er_y_dot)
+                data.ctrl[4] = higs_w.update(ew_y, ew_y_dot)
+                data.ctrl[10] = higs_r.update(er_y, er_y_dot)
             else:
-                data.ctrl[7] = 0; data.ctrl[16] = 0
+                data.ctrl[4] = 0; data.ctrl[10] = 0
             cancel_reactions(data)
             mujoco.mj_step(model, data)
             step_counter += 1

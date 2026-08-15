@@ -8,6 +8,7 @@ __pycache__/
 *$py.class
 venv/
 .venv/
+.venv-sim/
 
 # Simulation/Data
 *.pkl

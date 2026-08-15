@@ -93,13 +93,13 @@ def run_config(v, a, j, s, tag):
     while data.time < max_sim_time:
         xw, yw, xr, yr = controller.get_ref(data.time)
         data.ctrl[0] = xw; data.ctrl[1] = yw; data.ctrl[2] = 0
-        data.ctrl[9] = xr; data.ctrl[10] = yr; data.ctrl[11] = 0
+        data.ctrl[6] = xr; data.ctrl[7] = yr; data.ctrl[8] = 0
         if prev_ref is not None:      # LS error-velocity damping references
             dt = model.opt.timestep
-            data.ctrl[18] = (xw - prev_ref[0]) / dt
-            data.ctrl[19] = (yw - prev_ref[1]) / dt
-            data.ctrl[20] = (xr - prev_ref[2]) / dt
-            data.ctrl[21] = (yr - prev_ref[3]) / dt
+            data.ctrl[12] = (xw - prev_ref[0]) / dt
+            data.ctrl[13] = (yw - prev_ref[1]) / dt
+            data.ctrl[14] = (xr - prev_ref[2]) / dt
+            data.ctrl[15] = (yr - prev_ref[3]) / dt
         prev_ref = (xw, yw, xr, yr)
         # pre-step pairing: body state and reference both at time t
         if controller.state == "SCANNING":

@@ -50,7 +50,7 @@ def main():
     # Warm-up / Settling period (20ms)
     for _ in range(2000):
         xw, yw, xr, yr = controller.get_ref(data.time)
-        data.ctrl[0] = xw; data.ctrl[1] = yw; data.ctrl[9] = xr; data.ctrl[10] = yr
+        data.ctrl[0] = xw; data.ctrl[1] = yw; data.ctrl[6] = xr; data.ctrl[7] = yr
         mujoco.mj_step(model, data)
 
     # Simulation Scan
@@ -58,10 +58,10 @@ def main():
     while data.time < max_time:
         xw, yw, xr, yr = controller.get_ref(data.time)
         data.ctrl[0] = xw; data.ctrl[1] = yw; data.ctrl[2] = 0
-        data.ctrl[9] = xr; data.ctrl[10] = yr; data.ctrl[11] = 0
-        
-        # Open-loop (Pure Feedforward)
-        data.ctrl[7] = 0; data.ctrl[16] = 0
+        data.ctrl[6] = xr; data.ctrl[7] = yr; data.ctrl[8] = 0
+
+        # Open-loop (Pure Feedforward): fine-stage correction (SS actuator) off
+        data.ctrl[4] = 0; data.ctrl[10] = 0
         
         mujoco.mj_step(model, data)
         

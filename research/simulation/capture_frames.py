@@ -36,7 +36,7 @@ def capture_frames():
         
         # Set actuators (using indices from the script)
         data.ctrl[0] = xw; data.ctrl[1] = yw   # w_ls
-        data.ctrl[18] = xr; data.ctrl[19] = yr # r_ls
+        data.ctrl[6] = xr; data.ctrl[7] = yr   # r_ls
         
         mujoco.mj_step(model, data)
         
