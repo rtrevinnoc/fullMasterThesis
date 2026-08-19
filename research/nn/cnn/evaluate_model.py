@@ -69,9 +69,7 @@ def main():
     ax.set_yticks(range(9))
     ax.set_xticklabels(class_names, rotation=40, ha='right')
     ax.set_yticklabels(class_names)
-    ax.set_xlabel('Predicción')
-    ax.set_ylabel('Etiqueta real')
-    ax.set_title(f'Matriz de confusión normalizada (acc {acc:.2f}%)')
+
 
     for i in range(9):
         for j in range(9):

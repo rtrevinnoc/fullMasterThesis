@@ -200,8 +200,7 @@ ax12a.grid(True, alpha=0.25)
 ax12b.plot(t_arr, xw_ref, color="#1f77b4", lw=1.0, label="Desired step position")
 ax12b.set_ylabel("X position (m)"); ax12b.set_xlabel("Time (s)")
 ax12b.legend(fontsize=9, loc="upper left"); ax12b.grid(True, alpha=0.25)
-fig1.suptitle("Fig. 12 -- Desired Step-and-Scan Trajectories (Case 1, full model)",
-             fontsize=10)
+
 fig1.tight_layout()
 fig1.savefig(os.path.join(fig_dir, "case1_fig12_trajectories.png"), dpi=150,
             bbox_inches="tight")
@@ -221,8 +220,7 @@ for ax_t, err, lbl, col in [
     for t0, t1 in exp_windows:
         ax_t.axvspan(t0, t1, alpha=0.18, color="purple")
 axes[3].set_xlabel("Time (s)", fontsize=11)
-fig2.suptitle("Tracking error, Case 1 (no fine stages, full model)\n"
-             "Shaded bands: exposure windows", fontsize=13, fontweight="bold")
+
 fig2.savefig(os.path.join(fig_dir, "case1_tracking_errors.png"), dpi=150,
             bbox_inches="tight")
 print("Saved case1_tracking_errors.png")
@@ -245,8 +243,7 @@ axmsd.set_ylabel("Moving std. dev. (m)", fontsize=11); axmsd.set_xlabel("Time (s
 axmsd.ticklabel_format(axis="y", style="sci", scilimits=(0, 0))
 axmsd.set_ylim(0, MSD_LIM); axmsd.legend(fontsize=9, loc="upper right")
 axmsd.grid(True, alpha=0.2)
-fig3.suptitle("MA/MSD performance indices, Case 1 (no fine stage, full model)",
-             fontsize=13, fontweight="bold")
+
 fig3.tight_layout()
 fig3.savefig(os.path.join(fig_dir, "case1_fig14_ma_msd.png"), dpi=150,
             bbox_inches="tight")
@@ -273,8 +270,7 @@ for ax_t in axes4:
     ax_t.set_xlabel("Time (s)", fontsize=9)
     for t0, t1 in exp_windows:
         ax_t.axvspan(t0, t1, alpha=0.1, color="purple")
-fig4.suptitle("Case 1 -- Stage Velocities and Coarse-vs-End-Effector Lag",
-             fontsize=11, fontweight="bold")
+
 fig4.tight_layout()
 fig4.savefig(os.path.join(fig_dir, "case1_velocity_lag.png"), dpi=150,
             bbox_inches="tight")
@@ -300,8 +296,7 @@ axes5[2].plot(t_arr[zm], lag_r[zm], "#ff7f0e", lw=1.2, label="Reticle lag (nm)")
 axes5[2].axvspan(tw0, tw1, alpha=0.18, color="purple")
 axes5[2].set_ylabel("Spring lag (nm)"); axes5[2].set_xlabel("Time (s)")
 axes5[2].legend(fontsize=8); axes5[2].grid(True, alpha=0.3)
-fig5.suptitle("Case 1 -- First Exposure Window (Zoomed)", fontsize=11,
-             fontweight="bold")
+
 fig5.tight_layout()
 fig5.savefig(os.path.join(fig_dir, "case1_exposure_zoom.png"), dpi=150,
             bbox_inches="tight")
