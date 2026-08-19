@@ -98,6 +98,13 @@ PlotNeuralNet/        third-party LaTeX library for NN architecture diagrams
   fine-stage runs are in `archive_finestage_20260810/`. Don't regenerate
   without reason; if regenerated, update the chapter numbers.
 
+## research/experiments_alrawashdeh/ (Parallel Al-Rawashdeh State-Space Suite)
+
+- `rawashdeh_ss_sim.py` — Exact 16-body 96-state linear state-space plant ($\dot{x} = A x + B u$) matching Al-Rawashdeh et al. (2022) Appendix B equations and parameters directly, including the near-rigid $K_{\text{act}} = 10^{12}\ \text{N/m}$ and $C_{\text{act}} = 10^{10}\ \text{N s/m}$ actuated joint stiffnesses. Discretized via exact block matrix exponential scaling-and-squaring ($A_d, B_d$) for unconditional numerical stability.
+- `rawashdeh_control.py` — Control ladder implementation (Case 1, Case 2 FF, Case 3a PI, Case 3b HIGS) operating directly on `StateSpaceLithoPlant`.
+- Complete parallel experiment suite (`exp_case1_full.py`, `exp_controllers.py`, `exp_order_comparison.py`, `driver_sweep_spec.py`, `driver_sweep.py`, `exp_transition.py`, `exp_transition_onset.py`, `exp_pso.py`, `tune_fine.py`, `exp6_order_baselines.py`, `driver_perturb.py`) configured for the exact state-space plant. Allows direct numerical verification against Al-Rawashdeh et al. (2022) graphs alongside the primary MuJoCo simulation test bed.
+
+
 ## Build commands
 
 ```bash
