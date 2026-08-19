@@ -66,7 +66,7 @@ ff_w, ff_r = lc.calibrate_lag(V, A, J, S)
 print(f"  ff_w={tuple(round(x, 6) for x in ff_w)} "
       f"ff_r={tuple(round(x, 6) for x in ff_r)}", flush=True)
 
-cmap = ListedColormap(["#f0f0f0", "#3a7ca5", "#e8c547"])
+cmap = ListedColormap(["#f0f0f0", "#4caf50", "#f44336"])
 threshold = 7e-9      # absolute spec: exposure-window (cruise) MSD <= 7 nm
 print(f"threshold = {threshold*1e9:.1f} nm (absolute exposure-window spec)", flush=True)
 rows = []

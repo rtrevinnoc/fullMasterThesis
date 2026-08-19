@@ -89,4 +89,10 @@ axes[-1].set_xlabel("time within scan [ms]", fontsize=8)
 fig.tight_layout()
 fig.savefig(os.path.join(fig_dir, "controllers_esyn.png"), dpi=160,
             bbox_inches="tight")
+with open(os.path.join(fig_dir, "controllers_esyn.csv"), "w") as f:
+    f.write("time_ms," + ",".join(CONFIGS) + "\n")
+    t_ms = np.arange(len(traces[CONFIGS[0]][1])) * lc.DT * 1e3
+    for i in range(len(t_ms)):
+        row = [f"{t_ms[i]:.3f}"] + [f"{traces[cfg][1][i]*1e9:.3f}" for cfg in CONFIGS]
+        f.write(",".join(row) + "\n")
 print(f"\nSaved {os.path.join(fig_dir, 'controllers_esyn.png')}")

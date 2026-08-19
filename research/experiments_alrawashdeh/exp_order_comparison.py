@@ -97,4 +97,11 @@ axes[-1].set_xlabel("time within scan [ms]", fontsize=8)
 fig.tight_layout()
 fig.savefig(os.path.join(fig_dir, "order_comparison_esyn.png"), dpi=160,
             bbox_inches="tight")
+with open(os.path.join(fig_dir, "order_comparison_esyn.csv"), "w") as f:
+    headers = [f"{p}_{c}" for c, _ in CONTROLLERS for p, _ in PROFILES]
+    f.write("time_ms," + ",".join(headers) + "\n")
+    t_ms = np.arange(len(traces[(PROFILES[0][0], CONTROLLERS[0][0])])) * lc.DT * 1e3
+    for i in range(len(t_ms)):
+        row = [f"{t_ms[i]:.3f}"] + [f"{traces[(p, c)][i]*1e9:.3f}" for c, _ in CONTROLLERS for p, _ in PROFILES]
+        f.write(",".join(row) + "\n")
 print(f"\nSaved {os.path.join(fig_dir, 'order_comparison_esyn.png')}")

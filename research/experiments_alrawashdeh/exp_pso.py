@@ -79,7 +79,7 @@ def window_for(v):
 THRESH = 7e-9    # absolute spec: exposure-window (cruise) MSD <= 7 nm
 print(f"threshold = {THRESH*1e9:.1f} nm (absolute exposure-window spec)", flush=True)
 
-cmap = ListedColormap(["#f0f0f0", "#3a7ca5", "#e8c547"])
+cmap = ListedColormap(["#f0f0f0", "#4caf50", "#f44336"])
 history = []
 
 

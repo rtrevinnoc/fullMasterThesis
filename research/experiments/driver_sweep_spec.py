@@ -38,7 +38,7 @@ SPEC = 7e-9
 PF = profiles.factory(4)
 dies = litho_sim.get_wafer_dies(WAFER_R, DIE_L)
 WINDOW = max(1, int((5.5e-3 / (V / lc.ALPHA)) / lc.DT))
-cmap = ListedColormap(["#f0f0f0", "#3a7ca5", "#e8c547"])
+cmap = ListedColormap(["#f0f0f0", "#4caf50", "#f44336"])
 
 print(f"{len(dies)} dies, Case 3b, spec = exposure-window MSD <= {SPEC*1e9:.0f} nm", flush=True)
 ff_w, ff_r = lc.calibrate_lag(V, A, J, 1e5)
@@ -65,6 +65,10 @@ for s in [1e5, 2e4, 1e4, 5e3, 1e3, 1e2, 5e1]:
     ax.set_xticks([]); ax.set_yticks([])
     fig.savefig(os.path.join(out_dir, f"specsweep_map_s{int(s)}.png"), dpi=160, bbox_inches="tight")
     plt.close(fig)
+    with open(os.path.join(out_dir, f"specsweep_s{int(s)}.csv"), "w") as f:
+        f.write("scan_idx,x,y,ma_nm,msd_nm,fail\n")
+        for k, (di, m_a, m_s, fl) in enumerate(zip(dies, ma, msd, status == 2)):
+            f.write(f"{k},{di[0]:.3f},{di[1]:.3f},{m_a*1e9:.1f},{m_s*1e9:.1f},{int(fl)}\n")
 
 print("\nSUMMARY (snap lever vs the 7 nm exposure-window spec, Case 3b)")
 print(f"{'s_max':>8} {'t_scan':>8} {'max MA':>10} {'max MSD':>10} {'fail':>7} {'CNN':>10} {'T_wafer':>8}")

@@ -142,7 +142,7 @@ def to_map(status):
     return wm
 
 
-cmap = ListedColormap(["#f0f0f0", "#3a7ca5", "#e8c547"])
+cmap = ListedColormap(["#f0f0f0", "#4caf50", "#f44336"])
 
 print(f"Baseline run ({len(dies)} dies)...", flush=True)
 base_means, base_msds = run_sim(None)
@@ -170,6 +170,10 @@ for name, pert in [("none", None), ("vibration", "vibration"),
     fig.savefig(os.path.join(out_dir, f"perturb_map_{name}.png"),
                 dpi=160, bbox_inches="tight")
     plt.close(fig)
+    with open(os.path.join(out_dir, f"perturb_{name}.csv"), "w") as f:
+        f.write("scan_idx,x,y,ma_shift_nm,msd_nm,fail\n")
+        for k, (di, ma, m, fl) in enumerate(zip(dies, ma_shift, msds, status == 2)):
+            f.write(f"{k},{di[0]:.3f},{di[1]:.3f},{ma*1e9:.1f},{m*1e9:.1f},{int(fl)}\n")
     results.append((name, pred, conf, nfail))
 
 print("\nSUMMARY (cruise segment, MA-shift > 100 nm or MSD > 2x baseline median)")

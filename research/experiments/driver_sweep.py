@@ -58,7 +58,7 @@ cnn.load_state_dict(torch.load(os.path.join(CNN_DIR, "wafer_cnn.pth"),
                                map_location="cpu"))
 cnn.eval()
 
-cmap = ListedColormap(["#f0f0f0", "#3a7ca5", "#e8c547"])
+cmap = ListedColormap(["#f0f0f0", "#4caf50", "#f44336"])
 
 
 def moving_std(x, w):
@@ -151,6 +151,10 @@ def run_config(v, a, j, s, tag):
     fig.savefig(os.path.join(out_dir, f"sweep_map_{tag}.png"),
                 dpi=160, bbox_inches="tight")
     plt.close(fig)
+    with open(os.path.join(out_dir, f"sweep_{tag}.csv"), "w") as f:
+        f.write("scan_idx,x,y,msd_nm,fail\n")
+        for k, (di, m, fl) in enumerate(zip(dies, die_msd, status == 2)):
+            f.write(f"{k},{di[0]:.3f},{di[1]:.3f},{m*1e9:.1f},{int(fl)}\n")
 
     print(f"[{tag}] v={v} a={a} j={j} s={s:g} | scan_profile={controller.profile.t_total*1e3:.1f}ms "
           f"| MSD[nm]: median={np.median(die_msd)*1e9:.2f} max={die_msd.max()*1e9:.2f} "
