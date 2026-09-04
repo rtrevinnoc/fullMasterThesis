@@ -209,6 +209,27 @@ used everywhere; old fine-stage runs archived in `archive_finestage_20260810/`.
   plants silently reported side by side under one label). This project uses
   NO reduced/toy model anywhere, by standing user directive — every number
   in the thesis traces to the real full MuJoCo simulation.
+- **litho_control.py segmentation fix (2026-08-19, verified 2026-09-03)**:
+  `_run`'s per-die segment close-off was checked *after* `mujoco.mj_step`,
+  letting the new die's first SCANNING sample — taken at the
+  stepping-to-scanning handoff, where Case 1's uncontrolled short-stroke lag
+  is largest — leak into the tail of the PREVIOUS die's array as a spurious
+  one-sample spike. Fixed by moving the check before `mj_step`. This landed
+  after the 2026-08-11 stage-mass-fix reruns, so every archived `.log` in
+  `research/experiments/` predated it until re-verified: reran
+  `exp_case1_full.py`, `exp_controllers.py`, `exp_order_comparison.py`, and
+  `exp_pso.py` (e3, e4 seed 0, e4 seed 1) on 2026-09-03. Result: **no
+  headline number in the thesis or the CNCA paper changed** at reported
+  precision — the spike only matters at a pass/fail boundary, and every
+  cited number sits either deep in compliance or deep in saturation (e.g.
+  Case 1 MA 954,955→955,046 nm, Case 3a MA 7,653→7,676 nm; PSO E3/E4 optima
+  reproduced bit-for-bit on the free parameters). Archived logs/CSVs
+  overwritten with the fresh, post-fix runs; no chapter or CNCA edits were
+  needed. (Housekeeping note: running the two E4 seeds concurrently once
+  clobbered the shared `pso_best_map_e4.png`/`pso_history_e4.csv` filenames,
+  since the script names them by scenario, not seed — recovered by renaming
+  the clobbered pair to `..._seed1` and rerunning seed 0 alone; PSO reruns
+  for this project should be run one at a time per scenario going forward.)
 - **THE headline unified result — the snap bound walks the exposure error from
   coarse to full spec, at a throughput cost** (snap-vs-spec sweep, Case 3b,
   full wafer, exposure-window MSD): s=10⁵ → 994 nm MSD / 7.52 µm MA / 49-of-49
