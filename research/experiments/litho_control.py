@@ -228,6 +228,24 @@ def _run(dies, die_l, v, a, j, s, config, ff_w=(0.0, 0.0), ff_r=(0.0, 0.0),
         t = data.time - t_origin
         xw, yw, xr, yr, vw, aw, vr, ar, vxw = ref_kin(controller, t)
 
+        # ref_kin (via controller.get_ref) may have just advanced die_idx --
+        # close off the PREVIOUS die's segment now, before any sample for
+        # the new die is appended to `cur` below. Checking this after
+        # mj_step (the old placement) let the new die's first SCANNING
+        # sample -- taken right at the stepping-to-scanning handoff, where
+        # Case 1's uncontrolled short-stroke lag is largest -- leak into
+        # the tail of the PREVIOUS die's array as a spurious one-sample
+        # spike with nothing plotted after it.
+        if controller.die_idx != last_die_idx and last_die_idx != -1:
+            seg = np.array(cur)
+            if collect == "cruise" and len(seg) >= 3:
+                seg = seg[len(seg) // 3: 2 * len(seg) // 3]
+            per_die.append(seg)
+            cur = []
+            if len(per_die) >= len(dies):
+                break
+        last_die_idx = controller.die_idx
+
         yw_cmd, yr_cmd = yw, yr
         if config in ("case2", "case3a", "case3b"):
             yw_cmd = yw - (ff_w[0] * vw + ff_w[1] * aw)
@@ -265,15 +283,6 @@ def _run(dies, die_l, v, a, j, s, config, ff_w=(0.0, 0.0), ff_r=(0.0, 0.0),
         cancel_reactions(data)
 
         mujoco.mj_step(model, data)
-        if controller.die_idx != last_die_idx and last_die_idx != -1:
-            seg = np.array(cur)
-            if collect == "cruise" and len(seg) >= 3:
-                seg = seg[len(seg) // 3: 2 * len(seg) // 3]
-            per_die.append(seg)
-            cur = []
-            if len(per_die) >= len(dies):
-                break
-        last_die_idx = controller.die_idx
 
     extras = None
     if want_lag_samples:

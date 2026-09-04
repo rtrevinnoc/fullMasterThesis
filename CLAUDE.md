@@ -96,7 +96,7 @@ PlotNeuralNet/        third-party LaTeX library for NN architecture diagrams
   drivers; `run_headless.py` — glfw stub runner.
 - Archived `*.log` / `*.csv` files are the runs cited in the thesis. Old
   fine-stage runs are in `archive_finestage_20260810/`. Don't regenerate
-  without reason; if regenerated, update the chapter numbers.
+  without reason; if regenerated, update the chapter numbers. **All map and time-series experiment scripts natively export `.csv` files alongside their plots to permanently cache raw metrics (like MSD and MA shifts) without requiring MuJoCo reruns.**
 
 ## research/experiments_alrawashdeh/ (Parallel Al-Rawashdeh State-Space Suite)
 
@@ -139,10 +139,12 @@ If `latexmk` says "up-to-date" but you just edited, add `-g` to force.
 - **Citations**: keys follow `LastName + Year + Tag` (e.g.
   `Butler2011_PositionControl`). Add new entries to **both** bib files.
   Deck uses biblatex authoryear; fullThesis uses natbib/amsplain.
+- **Cross-references**: Spell out "Figure", "Table", "Section", "Chapter" completely in the text. Only use "Eq." for equations.
 - **Never invent numbers**: every figure/metric in the experiments chapter must
   trace to a script output archived in `research/experiments/`.
-- **Figure sizing (deck)**: TikZ uses `[scale=N]`, never `\resizebox` around
-  labeled TikZ. Slide body text floor: `\footnotesize`.
+- **Figure sizing & Formatting**: TikZ uses `[scale=N]`, never `\resizebox` around
+  labeled TikZ. Slide body text floor: `\footnotesize`. Avoid redundant `matplotlib` titles (`fig.suptitle` or `ax.set_title`) if the LaTeX caption already describes the plot. Keep `bbox_inches="tight"` to minimize whitespace, and rely on LaTeX for figure separation spacing (which has been tightened in `TesisPrincipal.tex`).
+- **Visuals**: Wafer fingerprints must use green (`#4caf50`) for passing and red (`#f44336`) for failing (supersedes old blue/yellow schema).
 - **No emojis** in any file.
 
 ## Methodological anchors & experiment status (as of 2026-08-11, stage-mass-fix rebuild)
@@ -310,7 +312,8 @@ used everywhere; old fine-stage runs archived in `archive_finestage_20260810/`.
 - **Disturbance campaign** (Exp 2/3 CNN validation): vibration→Center (94/241
   failing, 40.3% confidence — was 93/241 at 55.5% pre-stage-mass-fix, same
   class, weaker confidence), drift→Donut (99.9 %), scratch→Loc; clean→none.
-  Uses its own MA-shift + 2× criterion (not the 7 nm spec).
+  Uses its own **MA-shift + 2× median MSD criterion (not the 7 nm spec)**.
+  **CRITICAL**: The MA criterion here is the *relative MA shift* relative to the unperturbed baseline ($|\Delta \bar{e}_{\text{syn}}| > 100\text{ nm}$), NOT an absolute MA > 100 nm. Since Case 1's baseline absolute MA is 955 µm, an absolute 100 nm threshold would cause 100% of dies to fail instantly. The MA-shift metric is offset-immune.
 - **Gap framing**: inverse problem (fingerprint → cause) is established
   industry practice (Lam 2015); this thesis fills the **forward direction**.
 - **LSTM/GRU surrogate**: secondary; NOT re-run on the 2-stage plant — its

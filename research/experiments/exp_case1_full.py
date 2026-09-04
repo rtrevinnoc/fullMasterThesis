@@ -227,16 +227,16 @@ print("Saved case1_tracking_errors.png")
 
 # Fig 14 -- MA/MSD performance indices
 fig3, (axma, axmsd) = plt.subplots(2, 1, figsize=(10, 6), sharex=True)
-MA_LIM, MSD_LIM = 1e-6, 2.5e-8
-axma.plot(t_arr, np.clip(ma_syn, -MA_LIM, MA_LIM), color="#1f4e79", lw=0.7,
-          label="MA (Case 1, no fine stage)")
+MA_LIM = max(1e-6, float(np.max(np.abs(ma_syn))) * 1.1)
+MSD_LIM = max(2.5e-8, float(np.max(msd_syn)) * 1.1)
+axma.plot(t_arr, ma_syn, color="#1f4e79", lw=0.7, label="MA (Case 1, no fine stage)")
 axma.axhline(MA_UPPER, color="#c00000", ls="--", lw=1.0, label="MA upper spec")
 axma.axhline(MA_LOWER, color="#843c0c", ls="--", lw=1.0, label="MA lower spec")
 axma.set_ylabel("Moving average (m)", fontsize=11)
 axma.ticklabel_format(axis="y", style="sci", scilimits=(0, 0))
-axma.set_ylim(-1e-6, 1e-6); axma.legend(fontsize=9, loc="upper right")
+axma.set_ylim(-MA_LIM, MA_LIM); axma.legend(fontsize=9, loc="upper right")
 axma.grid(True, alpha=0.2)
-axmsd.plot(t_arr, np.clip(msd_syn, 0.0, MSD_LIM), color="#1f4e79", lw=0.7,
+axmsd.plot(t_arr, msd_syn, color="#1f4e79", lw=0.7,
            label="MSD (Case 1, no fine stage)")
 axmsd.axhline(MSD_UPPER, color="#c00000", ls="--", lw=1.0, label="MSD spec")
 axmsd.set_ylabel("Moving std. dev. (m)", fontsize=11); axmsd.set_xlabel("Time (s)")
