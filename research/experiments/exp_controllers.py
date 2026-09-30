@@ -44,10 +44,10 @@ print(f"  reticle: lv = {ff_r[0]*1e3:.4f} mm/(m/s)   la = {ff_r[1]*1e6:.3f} um/(
 
 CONFIGS = ["case1", "case2", "case3a", "case3b"]
 LABELS = {
-    "case1": "Case 1: LS PID only",
-    "case2": "Case 2: + spring-compensation FF",
-    "case3a": "Case 3a: + SS-stage PI",
-    "case3b": "Case 3b: + SS-stage HIGS",
+    "case1": "Case 1: long-stroke PD only",
+    "case2": "Case 2: + lag-compensation FF",
+    "case3a": "Case 3a: + short-stroke PI",
+    "case3b": "Case 3b: + short-stroke HIGS",
 }
 
 results = {}
@@ -81,11 +81,11 @@ for ax, cfg in zip(axes, CONFIGS):
     n = len(seg)
     ax.axvspan(t_ms[n // 3], t_ms[2 * n // 3], color="gold", alpha=0.25,
                label="cruise (exposure)")
-    ax.set_title(LABELS[cfg], fontsize=9, loc="left")
-    ax.set_ylabel("$e_{syn}$ [nm]", fontsize=8)
-    ax.tick_params(labelsize=7)
-    ax.legend(fontsize=7, loc="upper right")
-axes[-1].set_xlabel("time within scan [ms]", fontsize=8)
+    ax.set_title(LABELS[cfg], fontsize=12, loc="left")
+    ax.set_ylabel("$e_{syn}$ [nm]", fontsize=11)
+    ax.tick_params(labelsize=10)
+    ax.legend(fontsize=10, loc="upper right")
+axes[-1].set_xlabel("time within scan [ms]", fontsize=11)
 fig.tight_layout()
 fig.savefig(os.path.join(fig_dir, "controllers_esyn.png"), dpi=160,
             bbox_inches="tight")

@@ -8,7 +8,6 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
-from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 
 # Workaround for older pandas pickle
@@ -55,6 +54,25 @@ def load_and_preprocess_data(pickle_path):
     print(f"Total samples after filtering: {len(df)}")
     return df
 
+def stratified_split(X, y, test_size=0.2, seed=42):
+    # sklearn's train_test_split is unavailable here: this machine's scipy
+    # build fails to dlopen (Fortran extensions rejected by the macOS 27
+    # beta's dyld with a __DATA/__thread_bss validation error), so sklearn's
+    # import chain (via scipy.stats/scipy.optimize) breaks at import time.
+    rng = np.random.RandomState(seed)
+    train_idx, test_idx = [], []
+    for c in np.unique(y):
+        idx = np.where(y == c)[0]
+        rng.shuffle(idx)
+        n_test = int(round(len(idx) * test_size))
+        test_idx.extend(idx[:n_test])
+        train_idx.extend(idx[n_test:])
+    train_idx = np.array(train_idx)
+    test_idx = np.array(test_idx)
+    rng.shuffle(train_idx)
+    rng.shuffle(test_idx)
+    return X[train_idx], X[test_idx], y[train_idx], y[test_idx]
+
 class WaferDataset(Dataset):
     def __init__(self, wafer_maps, labels):
         self.wafer_maps = wafer_maps
@@ -84,16 +102,21 @@ def train():
     X = df['waferMap'].values
     y = df['label'].values
     
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
-    
+    X_train, X_test, y_train, y_test = stratified_split(X, y, test_size=0.2, seed=42)
+
     train_dataset = WaferDataset(X_train, y_train)
     test_dataset = WaferDataset(X_test, y_test)
-    
+
     train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True, num_workers=0)
     test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False, num_workers=0)
-    
+
     model = WaferCNN(num_classes=9).to(device)
-    criterion = nn.CrossEntropyLoss()
+    class_counts = np.bincount(y_train, minlength=9)
+    class_weights = class_counts.sum() / (9 * class_counts.clip(min=1))
+    print(f"Class counts (train): {class_counts.tolist()}")
+    print(f"Class weights: {np.round(class_weights, 3).tolist()}")
+    weight_tensor = torch.tensor(class_weights, dtype=torch.float32, device=device)
+    criterion = nn.CrossEntropyLoss(weight=weight_tensor)
     optimizer = optim.Adam(model.parameters(), lr=0.001)
     
     epochs = 5

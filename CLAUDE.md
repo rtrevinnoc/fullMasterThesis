@@ -84,7 +84,9 @@ PlotNeuralNet/        third-party LaTeX library for NN architecture diagrams
   yield loss to be traded for throughput; P_ood is the wall that stops
   over-aggression once the wafer saturates to an implausible (Center/…)
   morphology. Plausible classes: none/Scratch/Edge-Loc/Random. `exp_pso`
-  uses a throughput REWARD (γ·T_wafer/T_ref, γ=1) so the trade is active.
+  uses a throughput REWARD (γ·T_wafer/T_ref, default γ=1) so the trade is
+  active; scenario E4' uses γ=0.5, see "class-weighted CNN retrain + PSO
+  E4' fix" below.
 - `exp_controllers.py` (FF/PI/HIGS ladder), `exp_case1_full.py` (Experiment 1,
   the paper's real Case 1 — full topology, zero fine stages — run on the full
   model; regenerates the `case1_*.png` figures), `exp_transition.py`,
@@ -209,6 +211,26 @@ used everywhere; old fine-stage runs archived in `archive_finestage_20260810/`.
   plants silently reported side by side under one label). This project uses
   NO reduced/toy model anywhere, by standing user directive — every number
   in the thesis traces to the real full MuJoCo simulation.
+- **class-weighted CNN retrain + PSO E4' fix (2026-09-05, ported into
+  fullThesis/ and CLAUDE.md 2026-09-28 — previously only in CNCA/)**:
+  `research/nn/cnn/wafer_cnn.pth` retrained under class-weighted
+  cross-entropy loss (weight inversely proportional to class support),
+  superseding the unweighted model archived as
+  `wafer_cnn_unweighted_20260904.pth`. Test accuracy drops 96.88 %→92.90 %,
+  macro-F1 0.77→0.74, but Scratch recall rises 0.00→0.61 (at precision
+  0.14) — see `train_epoch_log_weighted.txt`, `confusion_matrix.png`
+  (weighted, current) vs `confusion_matrix_unweighted.png` (archived).
+  Separately, `exp_pso.py` was re-run with a log-uniform swarm
+  initialization and throughput weight γ=0.5 (scenario E4', log in
+  `pso_e4_spread_g0.5.log`/`pso_history_e4_spread_g0.5.csv`): converges to
+  a fully clean wafer (v=0.95, a=28.8, j=2713, s=717, 0/49, none,
+  J_map=0.5235, T_wafer=30.8 s), resolving the PSO E4 seed-sensitivity open
+  item below. Log-uniform init alone at γ=1 still saturates (every clean
+  candidate's throughput penalty exceeds J_map's ceiling of 2.0); both
+  changes are needed together. E3's own J_map is unaffected by this fix and
+  stays 0.043 (`pso_e3_exact.log`) — the CNCA paper's Sept-2026 revision
+  misreports E3's J_map as 0.524 (E4's value copied onto the wrong row);
+  the thesis keeps E3 at the archived-log-verified 0.043.
 - **litho_control.py segmentation fix (2026-08-19, verified 2026-09-03)**:
   `_run`'s per-die segment close-off was checked *after* `mujoco.mj_step`,
   letting the new die's first SCANNING sample — taken at the
@@ -254,16 +276,15 @@ used everywhere; old fine-stage runs archived in `archive_finestage_20260810/`.
 - **Hypothesis status**: H1 (sensitivity) CONFIRMED and now clean — every bound
   incl. snap is monotone, and the old velocity-reversal / snap-inert anomalies
   are gone (they were artefacts of the quintic generator). H2 (expressiveness)
-  partial — spatial patterns emerge; classification limited by the CNN
-  (Scratch recall 0). H3 (optimality) CONFIRMED in the posed form for E3
-  (servo cost); E4 (CNN cost) is **NOT confirmed within the tested seed/
-  iteration budget post-stage-mass-fix** — both the default seed and the
-  previously-escaping alternate seed now get stuck on the Center-saturation
-  plateau for the full 48-eval budget (the compliant snap region moved
-  ~100x tighter, shrinking its share of the necessarily-widened search box).
-  This is a real property of pattern-based costs as search landscapes, not a
-  validation failure — but it is now a stronger, currently-unresolved open
-  item than before (see Open items).
+  still partial — spatial patterns emerge; classification limited by the CNN's
+  Scratch precision (0.14, after the class-weighted retrain lifted recall
+  0.00→0.61 — see "class-weighted CNN retrain + PSO E4' fix" above) and by
+  probability calibration. H3 (optimality) CONFIRMED for E3 (servo cost) and,
+  as of the same fix, for E4 (CNN cost) as well: default linear-uniform
+  init/γ=1 still gets stuck on the Center-saturation plateau on both tested
+  seeds, but log-uniform init + γ=0.5 (scenario E4') converges to a spec-
+  compliant, fully clean wafer. The plateau is an initialization/weighting
+  artifact of the search, not an intrinsic property of the cost surface.
 - **Thresholds = the real spec, MSD ≤ 7 nm exposure-window** (adopted as the
   die criterion across sweep/transition/PSO, user decision). Die pass/fail =
   cruise (middle-third) MSD, NOT full-scan max. MA reaches the [−1.25,+2] nm
@@ -301,9 +322,10 @@ used everywhere; old fine-stage runs archived in `archive_finestage_20260810/`.
   exists and is correctly priced once found (E3 finds it on the identical,
   widened box) — but it is now a much smaller fraction of that box, so 48
   evals from either tested seed aren't enough to land inside it by chance.
-  The seed-sensitivity problem is WORSE, not better, post-fix. Fix ideas
-  (still not implemented): seed more particles away from the saturated
-  baseline, or warm-start E4's swarm from E3's optimum.
+  RESOLVED (2026-09-05, see "class-weighted CNN retrain + PSO E4' fix"
+  above): log-uniform swarm init + throughput weight γ=0.5 (scenario E4')
+  converges to 0/49 failing, none, J_map=0.5235, T_wafer=30.8 s. Log-uniform
+  init alone at γ=1 still saturates.
 - **Order × controller**: under bare PID cruise MSD improves 4.4× with order
   (unchanged by either fix — Case 1 never drives the fine loop, and this
   ratio held constant through both the m6 fix and the stage-mass fix); under
@@ -322,9 +344,11 @@ used everywhere; old fine-stage runs archived in `archive_finestage_20260810/`.
   holds through 160 ms, then a 103-die bulk failure read as *Loc* at 150 ms,
   then full *Center* saturation (232/241) at 120 ms. KEPT for spatially-
   resolved study (`exp_transition_onset.py`).
-- **CNN**: 96.88 % hold-out accuracy, macro-F1 0.77, **Scratch recall = 0**
-  (imbalance; retrain with class weights is the H2 lever, LSWMD.pkl present).
-  Plant-independent — not re-run.
+- **CNN**: class-weighted model (current, `wafer_cnn.pth`) — 92.90 % hold-out
+  accuracy, macro-F1 0.74, **Scratch recall 0.61** (precision 0.14). Prior
+  unweighted model (archived, `wafer_cnn_unweighted_20260904.pth`) — 96.88 %
+  accuracy, macro-F1 0.77, Scratch recall 0. See "class-weighted CNN retrain
+  + PSO E4' fix" above. Plant-independent — not re-run per plant fix.
 - **Case 1 / full model** (Exp 1, now the real full MuJoCo model — see "Case 1
   correction" above): no fine stages → misses spec by several orders of
   magnitude (max|MA| 955 µm, max MSD 25.0 µm — identical, by construction, to
@@ -339,15 +363,14 @@ used everywhere; old fine-stage runs archived in `archive_finestage_20260810/`.
   industry practice (Lam 2015); this thesis fills the **forward direction**.
 - **LSTM/GRU surrogate**: secondary; NOT re-run on the 2-stage plant — its
   numbers (31.5 mm MA etc.) are stale; the §-critique argument still holds.
-- **Open items**: LSTM surrogate re-run; CNN Scratch rebalancing (H2);
-  higher-fidelity fine-stage model to reach the paper's *two-stage* tens-of-nm
-  at reasonable throughput; finer snap grid below s=50 to find the MA-band
+- **Open items**: LSTM surrogate re-run; CNN Scratch precision/calibration
+  (recall fixed 2026-09-05, precision still 0.14, see H2 above); higher-
+  fidelity fine-stage model to reach the paper's *two-stage* tens-of-nm at
+  reasonable throughput; finer snap grid below s=50 to find the MA-band
   crossing point (now well below s=50 post-stage-mass-fix, not yet located);
-  PSO E4 seed-sensitivity fix — **more urgent post-stage-mass-fix**, since
-  neither tested seed now escapes the Center plateau (seed more particles
-  away from the saturated baseline, or warm-start from E3's optimum);
-  **presentation/ deck still on old (pre-m6-fix AND pre-stage-mass-fix)
-  numbers**.
+  **presentation/ deck still on old (pre-m6-fix, pre-stage-mass-fix, AND
+  pre-class-weighted-CNN/PSO-E4' numbers)**. PSO E4 seed-sensitivity is
+  RESOLVED (see above), not an open item.
 
 ## Don'ts
 

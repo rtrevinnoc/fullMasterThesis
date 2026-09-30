@@ -12,7 +12,24 @@ The wafer runs with a short settling budget (transition regime) so that the
 cost actually varies over the search space. The failure threshold is fixed
 from a well-settled reference run and shared by every candidate.
 
-Usage: python3 exp_pso.py <fig_dir> <scenario: e3|e4> [config] [seed]
+Usage: python3 exp_pso.py <fig_dir> <scenario: e3|e4> [config] [seed] [variant] [gamma]
+
+variant (e4 only, default "baseline"): the two escape strategies the CNCA
+paper lists as future work for E4's Center-saturation plateau.
+  warmstart: seed one particle at E3's archived servo-cost optimum
+             (v=0.668, a=44.94, j=5000, s=170; pso_e3_exact.log) instead of
+             letting the whole swarm search from the saturated baseline out.
+  spread:    initialize the swarm log-uniformly over BOUNDS instead of
+             linearly; BOUNDS spans orders of magnitude (s in [50, 5e5]) so
+             linear-uniform draws put >99% of initial mass at high snap,
+             i.e. deep in the same saturation the baseline particle sits in.
+  both:      warmstart + spread together.
+
+gamma (optional, default 1.0): override of GAMMA below, to test whether E4's
+Center-saturation plateau is a cost-scale mismatch rather than a search
+problem -- J_map only ranges over [0, 2.0], but every compliant point found
+by the warmstart/spread variants had T_wafer far above T_REF, so at GAMMA=1
+its throughput penalty alone exceeds the entire achievable J_map gain.
 """
 import sys
 import types
@@ -45,13 +62,17 @@ fig_dir = sys.argv[1]
 SCENARIO = sys.argv[2].lower()
 CONFIG = sys.argv[3] if len(sys.argv) > 3 else "case3a"
 SEED = int(sys.argv[4]) if len(sys.argv) > 4 else 0
+VARIANT = sys.argv[5].lower() if len(sys.argv) > 5 else "baseline"
 os.makedirs(fig_dir, exist_ok=True)
+
+E3_OPTIMUM = np.array([0.668, 44.94, 5000.0, 170.0])  # archived pso_e3_exact.log BEST
 
 DIE_L = 0.032
 WAFER_R = 0.150
 T_STEP = 0.15            # transition-regime settling budget
 T_REF = 15.0             # reference wafer cycle time for the throughput reward
-GAMMA = 1.0              # throughput weight: cost carries GAMMA * t_wafer / T_REF
+GAMMA = float(sys.argv[6]) if len(sys.argv) > 6 else 1.0
+                         # throughput weight: cost carries GAMMA * t_wafer / T_REF
                          # (faster is cheaper; the pattern term is the wall)
 BOUNDS = np.array([[0.2, 1.5],        # v [m/s]
                    [5.0, 45.0],       # a [m/s^2]
@@ -67,8 +88,8 @@ N_ITER = 8
 
 dies = litho_sim.get_wafer_dies(WAFER_R, DIE_L)
 
-print(f"[{SCENARIO}] config={CONFIG} dies={len(dies)} t_step={T_STEP}s "
-      f"T_ref={T_REF}s gamma={GAMMA}", flush=True)
+print(f"[{SCENARIO}] config={CONFIG} variant={VARIANT} dies={len(dies)} "
+      f"t_step={T_STEP}s T_ref={T_REF}s gamma={GAMMA}", flush=True)
 print("Calibrating feedforward at baseline ...", flush=True)
 FF_W, FF_R = lc.calibrate_lag(0.8, 20.0, 1600.0, 1e5)
 
@@ -115,7 +136,10 @@ def evaluate(x):
 
 import pickle  # noqa: E402
 
-CKPT = os.path.join(fig_dir, f".pso_ckpt_{SCENARIO}_{CONFIG}_{SEED}.pkl")
+TAG = SCENARIO if VARIANT == "baseline" else f"{SCENARIO}_{VARIANT}"
+if GAMMA != 1.0:
+    TAG += f"_g{GAMMA:g}"
+CKPT = os.path.join(fig_dir, f".pso_ckpt_{TAG}_{CONFIG}_{SEED}.pkl")
 dim = 4
 start_it = 0
 if os.path.exists(CKPT):
@@ -129,8 +153,14 @@ if os.path.exists(CKPT):
     print(f"resumed from checkpoint at iteration {start_it}/{N_ITER}", flush=True)
 else:
     rng = np.random.default_rng(SEED)
-    pos = BOUNDS[:, 0] + rng.random((N_PARTICLES, dim)) * (BOUNDS[:, 1] - BOUNDS[:, 0])
+    if VARIANT in ("spread", "both"):
+        log_lo, log_hi = np.log10(BOUNDS[:, 0]), np.log10(BOUNDS[:, 1])
+        pos = 10 ** (log_lo + rng.random((N_PARTICLES, dim)) * (log_hi - log_lo))
+    else:
+        pos = BOUNDS[:, 0] + rng.random((N_PARTICLES, dim)) * (BOUNDS[:, 1] - BOUNDS[:, 0])
     pos[0] = [0.8, 20.0, 1600.0, 1e5]           # seed the baseline
+    if VARIANT in ("warmstart", "both"):
+        pos[1] = E3_OPTIMUM.copy()              # warm-start from E3's servo-cost optimum
     vel = np.zeros((N_PARTICLES, dim))
     pbest = pos.copy()
     pbest_cost = np.full(N_PARTICLES, np.inf)
@@ -173,10 +203,10 @@ fig, ax = plt.subplots(figsize=(3.2, 3.2))
 ax.imshow(gbest_map, cmap=cmap, vmin=0, vmax=2, origin="lower",
           interpolation="nearest")
 ax.set_xticks([]); ax.set_yticks([])
-fig.savefig(os.path.join(fig_dir, f"pso_best_map_{SCENARIO}.png"),
+fig.savefig(os.path.join(fig_dir, f"pso_best_map_{TAG}.png"),
             dpi=160, bbox_inches="tight")
 
-with open(os.path.join(fig_dir, f"pso_history_{SCENARIO}.csv"), "w") as f:
+with open(os.path.join(fig_dir, f"pso_history_{TAG}.csv"), "w") as f:
     f.write("v,a,j,s,cost,failing,label,j_map,t_wafer\n")
     for (x, cost, nfail, label, j_map, t_wafer) in history:
         f.write(f"{x[0]:.4f},{x[1]:.2f},{x[2]:.0f},{x[3]:.0f},"

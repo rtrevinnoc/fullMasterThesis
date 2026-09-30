@@ -6,8 +6,6 @@ import pandas as pd
 import cv2
 import torch
 from torch.utils.data import DataLoader
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix, classification_report
 import matplotlib.pyplot as plt
 
 import pandas.core.indexes
@@ -15,7 +13,41 @@ sys.modules['pandas.indexes'] = pandas.core.indexes
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from model import WaferCNN
-from train_model import WaferDataset, load_and_preprocess_data, label_map
+from train_model import WaferDataset, load_and_preprocess_data, label_map, stratified_split
+
+
+def confusion_matrix(trues, preds, labels):
+    # sklearn.metrics is unavailable here: see the note in train_model.py's
+    # stratified_split (scipy Fortran extensions fail to dlopen on this
+    # machine's macOS 27 beta).
+    n = len(labels)
+    cm = np.zeros((n, n), dtype=np.int64)
+    for t, p in zip(trues, preds):
+        cm[t, p] += 1
+    return cm
+
+
+def classification_report(trues, preds, target_names, zero_division=0):
+    trues = np.asarray(trues)
+    preds = np.asarray(preds)
+    n = len(target_names)
+    cm = confusion_matrix(trues, preds, labels=list(range(n)))
+    lines = [f"{'':14s}{'precision':>10s}{'recall':>10s}{'f1-score':>10s}{'support':>10s}"]
+    f1s = []
+    for i, name in enumerate(target_names):
+        support = int(cm[i, :].sum())
+        tp = int(cm[i, i])
+        pred_pos = int(cm[:, i].sum())
+        precision = tp / pred_pos if pred_pos > 0 else 0.0
+        recall = tp / support if support > 0 else 0.0
+        f1 = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0.0
+        f1s.append(f1)
+        lines.append(f"{name:14s}{precision:10.2f}{recall:10.2f}{f1:10.2f}{support:10d}")
+    acc = float((trues == preds).mean())
+    lines.append("")
+    lines.append(f"{'accuracy':14s}{'':10s}{'':10s}{acc:10.2f}{len(trues):10d}")
+    lines.append(f"{'macro avg':14s}{'':10s}{'':10s}{np.mean(f1s):10.2f}{len(trues):10d}")
+    return "\n".join(lines)
 
 OUT_PNG = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'confusion_matrix.png')
 PRESENTATION_PNG = '/Users/rtrevinnoc/maestria/tesis/presentation/pictures/cnn_confmat.png'
@@ -30,7 +62,7 @@ def main():
     X = df['waferMap'].values
     y = df['label'].values
 
-    _, X_test, _, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+    _, X_test, _, y_test = stratified_split(X, y, test_size=0.2, seed=42)
     print(f"Held-out test set size: {len(X_test)}")
 
     test_dataset = WaferDataset(X_test, y_test)
